@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>JOJOUP 初一语文 · 能力诊断</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:#c9d6e8;
+     display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:20px 0}
+#phone{width:390px;min-height:844px;background:#f2f6fc;position:relative;overflow:hidden;
+       box-shadow:0 12px 40px rgba(20,50,100,.25);border-radius:34px}
+@media(max-width:430px){body{padding:0;background:#f2f6fc}#phone{width:100%;min-height:100vh;border-radius:0;box-shadow:none}}
+
+.scr{display:none;min-height:844px;flex-direction:column}
+.scr.on{display:flex}
+@media(max-width:430px){.scr{min-height:100vh}}
+
+.nav{background:linear-gradient(120deg,#2f6fd0,#4a8ee6);color:#fff;padding:22px 20px 18px;position:relative;flex-shrink:0}
+.nav h1{font-size:19px;font-weight:700}
+.nav p{font-size:12px;opacity:.85;margin-top:4px}
+.nav .back{position:absolute;left:16px;top:22px;font-size:20px;cursor:pointer;opacity:.9}
+.nav.pad h1,.nav.pad p{padding-left:26px}
+
+/* 步骤条 */
+.steps{display:flex;background:#fff;padding:12px 0;border-bottom:1px solid #eef2f7;flex-shrink:0}
+.steps div{flex:1;text-align:center;font-size:11px;color:#b3bfd0;position:relative}
+.steps div b{display:block;width:20px;height:20px;line-height:20px;border-radius:50%;background:#eef2f7;
+             color:#b3bfd0;margin:0 auto 4px;font-size:11px}
+.steps div.ac{color:#2f6fd0;font-weight:700}
+.steps div.ac b{background:#2f6fd0;color:#fff}
+.steps div.dn b{background:#cfe3fb;color:#2f6fd0}
+.steps div.dn{color:#7fa5d8}
+
+.ct{padding:18px 18px 100px;flex:1}
+.h2{font-size:17px;font-weight:800;color:#1f2d3d;margin-bottom:4px}
+.h3{font-size:12px;color:#93a1b5;margin-bottom:14px;line-height:1.6}
+
+.btn{position:fixed;left:50%;transform:translateX(-50%);bottom:24px;width:354px;padding:15px;
+     background:#2f6fd0;color:#fff;border:0;border-radius:26px;font-size:16px;font-weight:700;
+     cursor:pointer;box-shadow:0 6px 18px rgba(47,111,208,.35);font-family:inherit}
+.btn:disabled{background:#c3cfe0;box-shadow:none}
+.btn.gh{background:#fff;color:#2f6fd0;border:2px solid #2f6fd0;box-shadow:none}
+@media(max-width:430px){.btn{width:calc(100% - 36px)}}
+.btnwrap{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:390px;height:92px;
+         background:linear-gradient(transparent,#f2f6fc 40%);pointer-events:none}
+@media(max-width:430px){.btnwrap{width:100%}}
+
+/* 入口卡 */
+.entry{position:relative;background:#fff;border-radius:16px;padding:18px;margin-bottom:13px;cursor:pointer;
+       box-shadow:0 2px 10px rgba(30,70,140,.07);border:2px solid transparent;transition:.15s;display:flex}
+.entry:active{transform:scale(.98)}
+.entry.rec{border-color:#2f6fd0}
+.entry .ico{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;
+            font-size:23px;margin-right:13px;flex-shrink:0}
+.i1{background:#fdeaea}.i2{background:#eaf2fd}.i3{background:#e6f5ec}
+.entry .tx{flex:1}
+.entry .tx b{font-size:15px;color:#1f2d3d;display:block;margin-bottom:3px}
+.entry .tx p{font-size:12px;color:#93a1b5;line-height:1.55}
+.entry .mt{margin-top:7px;display:flex;gap:6px;flex-wrap:wrap}
+.entry .mt span{font-size:10px;padding:3px 8px;border-radius:8px;background:#f2f6fc;color:#6b7d94}
+.entry .mt span.hi{background:#eaf2fd;color:#2f6fd0;font-weight:700}
+.reco{position:absolute;right:14px;top:14px;font-size:10px;background:#2f6fd0;color:#fff;padding:3px 9px;border-radius:9px}
+
+/* 拍照 */
+.upl{background:#fff;border:2px dashed #b9cde8;border-radius:16px;padding:40px 20px;text-align:center;cursor:pointer}
+.upl .e{font-size:44px}
+.upl b{display:block;font-size:15px;color:#2f6fd0;margin-top:12px}
+.upl p{font-size:12px;color:#93a1b5;margin-top:6px;line-height:1.6}
+.paper{background:#fff;border-radius:14px;padding:16px;box-shadow:0 2px 10px rgba(30,70,140,.07)}
+.paper .sheet{background:#fbfcfe;border:1px solid #e8eef7;border-radius:8px;padding:14px;font-size:11px;color:#8b99ad;line-height:2}
+.paper .sheet u{text-decoration:none;background:#fdeaea;color:#d9534f;padding:1px 4px;border-radius:3px}
+
+/* 表单 */
+.fld{background:#fff;border-radius:14px;padding:16px;margin-bottom:11px;box-shadow:0 2px 10px rgba(30,70,140,.07)}
+.fld label{font-size:12px;color:#93a1b5;display:block;margin-bottom:9px}
+.fld input{width:100%;border:0;border-bottom:2px solid #eef2f7;font-size:24px;font-weight:700;
+           color:#1f2d3d;padding:5px 0;outline:none;font-family:inherit}
+.fld input:focus{border-color:#2f6fd0}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:9px 16px;border-radius:20px;background:#fff;border:2px solid #eef2f7;font-size:13px;
+      color:#5a6b80;cursor:pointer}
+.chip.on{border-color:#2f6fd0;background:#eaf2fd;color:#2f6fd0;font-weight:700}
+
+/* 钩子页 */
+.hook{background:#fff;border-radius:16px;padding:22px 20px;box-shadow:0 2px 10px rgba(30,70,140,.07)}
+.hook .num{font-size:46px;font-weight:800;color:#2f6fd0;line-height:1}
+.hook .num em{font-style:normal;font-size:15px;color:#93a1b5;margin-left:6px}
+.hook .lv{display:inline-block;font-size:12px;background:#e6f5ec;color:#3a9e63;padding:4px 12px;border-radius:12px;margin-top:10px}
+.hook p{font-size:14px;color:#33414f;line-height:1.85;margin-top:16px}
+.hook p b{color:#1b4b8f}
+.warn{background:#fff8ec;border-left:5px solid #f0c987;border-radius:10px;padding:15px;margin-top:14px;
+      font-size:13px;color:#8a6a3c;line-height:1.8}
+.warn b{color:#b9762a}
+
+/* 答题 */
+.prog{background:#fff;padding:12px 18px;flex-shrink:0;border-bottom:1px solid #eef2f7}
+.prog .t{display:flex;justify-content:space-between;font-size:12px;color:#93a1b5;margin-bottom:8px}
+.prog .t b{color:#2f6fd0}
+.pbar{height:5px;background:#eef2f7;border-radius:3px;overflow:hidden}
+.pbar div{height:100%;background:linear-gradient(90deg,#4a8ee6,#2f6fd0);border-radius:3px;transition:.3s}
+.blk{display:inline-block;font-size:10px;padding:3px 9px;border-radius:8px;background:#eaf2fd;color:#2f6fd0;margin-bottom:11px}
+.psg{background:#fbfcfe;border:1px solid #e8eef7;border-radius:11px;padding:14px;font-size:13px;
+     color:#5a6b80;line-height:1.95;margin-bottom:14px}
+.qz{font-size:15px;color:#1f2d3d;line-height:1.7;font-weight:600;margin-bottom:14px}
+.opt{background:#fff;border:2px solid #eef2f7;border-radius:12px;padding:13px 15px;margin-bottom:9px;
+     font-size:14px;color:#33414f;cursor:pointer;line-height:1.6;display:flex}
+.opt i{font-style:normal;font-weight:700;color:#b3bfd0;margin-right:9px}
+.opt.on{border-color:#2f6fd0;background:#eaf2fd}
+.opt.on i{color:#2f6fd0}
+
+/* loading */
+.load{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 40px}
+.ring{width:56px;height:56px;border:4px solid #dce7f6;border-top-color:#2f6fd0;border-radius:50%;
+      animation:sp .9s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.load b{font-size:16px;color:#1f2d3d;margin-top:22px}
+.load .lg{margin-top:20px;width:100%}
+.load .lg div{font-size:13px;color:#b3bfd0;padding:7px 0;transition:.3s}
+.load .lg div.on{color:#2f6fd0;font-weight:600}
+
+/* 报告 */
+.rcard{background:#fff;border-radius:16px;padding:17px;margin-bottom:13px;box-shadow:0 2px 10px rgba(30,70,140,.07)}
+.rt{font-size:15px;font-weight:800;color:#1b4b8f;margin-bottom:3px;display:flex;align-items:center}
+.rt s{text-decoration:none;width:4px;height:15px;background:#2f6fd0;border-radius:3px;margin-right:8px}
+.rs{font-size:11px;color:#a3b0c2;margin:0 0 13px 12px}
+.brow{margin-bottom:17px}
+.brow .bt{display:flex;align-items:center;margin-bottom:7px}
+.brow .bt b{font-size:13px;color:#1f2d3d;flex:1;min-width:0}
+.brow .bt b em{font-style:normal;font-size:10px;color:#a3b0c2;font-weight:400;margin-left:5px}
+.brow .bt .pct{font-size:14px;font-weight:800;margin:0 7px 0 8px;flex-shrink:0}
+.bb{height:9px;background:#eef2f7;border-radius:5px;overflow:hidden}
+.bb div{height:100%;border-radius:5px;transition:.7s}
+.lo .bb div{background:linear-gradient(90deg,#f08a7a,#e05c46)}.lo .pct{color:#d9534f}
+.md .bb div{background:linear-gradient(90deg,#f0c987,#e0a33a)}.md .pct{color:#d1873a}
+.hi .bb div{background:linear-gradient(90deg,#7fce9f,#3a9e63)}.hi .pct{color:#3a9e63}
+.pri{font-size:10px;padding:3px 8px;border-radius:7px;flex-shrink:0;font-style:normal}
+.p1{background:#fdeaea;color:#d9534f}.p2{background:#fdf3e0;color:#d1873a}.p3{background:#f2f4f7;color:#a3b0c2}
+.frm{background:#f7f9fc;border-radius:10px;padding:12px;font-size:11px;color:#7d8da3;line-height:1.85;margin-top:4px}
+.frm b{color:#1b4b8f}
+.key{background:linear-gradient(120deg,#eaf2fd,#f0f6ff);border-left:5px solid #2f6fd0;border-radius:12px;padding:17px}
+.key b{font-size:17px;color:#1b4b8f;line-height:1.55;display:block}
+.key p{font-size:12px;color:#5a6b80;line-height:1.85;margin-top:10px}
+.evi{background:#fff;border-radius:9px;padding:10px 12px;margin-top:11px;font-size:11px;color:#7d8da3;line-height:1.8}
+.evi u{text-decoration:none;color:#3a9e63;font-weight:700}
+.evi s{text-decoration:none;color:#d9534f;font-weight:700}
+
+/* 逐题归因(L3) */
+.qa{display:flex;align-items:center;padding:9px 0;border-bottom:1px solid #f4f7fb;font-size:12px}
+.qa:last-child{border:0}
+.qa .n{width:34px;color:#a3b0c2}
+.qa .m{flex:1;color:#33414f}
+.qa .g{font-size:10px;padding:2px 8px;border-radius:7px}
+.g1{background:#fdeaea;color:#d9534f}.g2{background:#fff3e0;color:#d1873a}
+
+/* 学习安排 */
+.day{margin-bottom:15px}
+.dh{display:flex;align-items:center;margin-bottom:9px}
+.dh b{font-size:15px;color:#1f2d3d}
+.dh span{font-size:11px;color:#a3b0c2;margin-left:8px}
+.dh s{text-decoration:none;flex:1;height:1px;background:#e3eaf4;margin-left:11px}
+.ls{background:#fff;border-radius:13px;padding:14px;margin-bottom:9px;box-shadow:0 2px 8px rgba(30,70,140,.06);
+    border-left:4px solid #cfd8e5}
+.ls.dy{border-left-color:#e05c46}
+.ls .lh{display:flex;justify-content:space-between;align-items:flex-start}
+.ls .lh b{font-size:14px;color:#1f2d3d;line-height:1.5;flex:1;padding-right:8px}
+.ls .lh span{font-size:9px;padding:3px 7px;border-radius:7px;flex-shrink:0}
+.sdy{background:#fdeaea;color:#d9534f}.sfx{background:#f2f4f7;color:#a3b0c2}
+.ls .lm{font-size:11px;color:#a3b0c2;margin-top:6px}
+.ls .flow{display:flex;gap:5px;margin-top:10px}
+.ls .flow span{font-size:9px;background:#f2f6fc;color:#6b7d94;padding:3px 7px;border-radius:6px}
+.ls .flow span:last-child{background:#eaf2fd;color:#2f6fd0;font-weight:700}
+.retest{background:linear-gradient(120deg,#2f6fd0,#4a8ee6);color:#fff;border-radius:13px;padding:16px}
+.retest b{font-size:14px;display:block;margin-bottom:6px}
+.retest p{font-size:11px;opacity:.9;line-height:1.75}
+
+/* 结束 */
+.cmp{display:flex;gap:9px;margin-bottom:12px}
+.cmp>div{flex:1;background:#fff;border-radius:12px;padding:13px 11px;box-shadow:0 2px 8px rgba(30,70,140,.06)}
+.cmp h4{font-size:10px;color:#a3b0c2;font-weight:600;margin-bottom:7px;line-height:1.4}
+.cmp .v{font-size:16px;font-weight:800;color:#1f2d3d;white-space:nowrap}
+.cmp .v i{font-style:normal;color:#cfd8e5;font-size:12px;margin:0 2px}
+.up{color:#3a9e63}.flat{color:#a3b0c2}
+.wk{display:flex;align-items:center;background:#fff;border-radius:11px;padding:12px 14px;margin-bottom:8px;
+    box-shadow:0 2px 8px rgba(30,70,140,.06)}
+.wk .p{width:62px;font-size:11px;font-weight:800;color:#2f6fd0}
+.wk .m{flex:1}.wk .m b{font-size:13px;color:#1f2d3d;display:block}
+.wk .m em{font-style:normal;font-size:10px;color:#a3b0c2}
+.mtab{display:flex;background:#fff;padding:9px 12px;gap:7px;flex-shrink:0;border-bottom:1px solid #eef2f7}
+.mtab div{flex:1;text-align:center;padding:8px 0;font-size:12px;color:#93a1b5;border-radius:9px;cursor:pointer}
+.mtab div.on{background:#eaf2fd;color:#2f6fd0;font-weight:800}
+.mtab div.lk{color:#cbd5e2}
+.focus{background:linear-gradient(120deg,#2f6fd0,#4a8ee6);color:#fff;border-radius:14px;padding:15px 16px;margin-bottom:13px}
+.focus em{font-style:normal;font-size:11px;opacity:.85;display:block;margin-bottom:5px}
+.focus b{font-size:16px}
+.focus p{font-size:11px;opacity:.9;margin-top:7px;line-height:1.7}
+.chg{display:flex;align-items:center;padding:10px 0;border-bottom:1px solid #f4f7fb}
+.chg:last-child{border:0}
+.chg .nm{flex:1;font-size:12.5px;color:#1f2d3d;min-width:0}
+.chg .nm i{font-style:normal;font-size:9px;color:#fff;background:#2f6fd0;padding:2px 6px;border-radius:6px;margin-left:5px}
+.chg .vs{font-size:12.5px;color:#a3b0c2;white-space:nowrap}
+.chg .vs b{color:#1f2d3d;font-weight:800;font-size:14px}
+.chg .dt{width:52px;text-align:right;font-size:11.5px;font-weight:800;white-space:nowrap}
+.d-up{color:#3a9e63}.d-dn{color:#d9534f}.d-fl{color:#c3cfe0}
+.grid{display:flex;flex-wrap:wrap;gap:8px}
+.grid div{width:calc(33.33% - 6px);background:#f7f9fc;border-radius:10px;padding:11px 8px;text-align:center}
+.grid div b{display:block;font-size:17px;font-weight:800;color:#1f2d3d}
+.grid div b.al{color:#d9534f}
+.grid div em{font-style:normal;font-size:10px;color:#a3b0c2;display:block;margin-top:4px}
+.prob{background:#fff8ec;border-left:5px solid #f0c987;border-radius:11px;padding:13px 15px;margin-bottom:9px}
+.prob b{font-size:13px;color:#b9762a;display:block;margin-bottom:6px}
+.prob p{font-size:11.5px;color:#8a6a3c;line-height:1.85}
+.prob p b{display:inline;color:#b9762a;font-size:11.5px}
+.rec{background:#eaf2fd;border-left:5px solid #2f6fd0;border-radius:11px;padding:13px 15px;margin-bottom:9px}
+.rec b{font-size:13px;color:#1b4b8f;display:block;margin-bottom:6px}
+.rec p{font-size:11.5px;color:#5a6b80;line-height:1.85}
+.rec p b{display:inline;color:#1b4b8f;font-size:11.5px}
+.tip{font-size:11px;color:#93a1b5;line-height:1.85;text-align:center;padding:14px 8px}
+.tip b{color:#1b4b8f}
+</style></head><body><div id="phone">
+
+<!-- S0 入口 -->
+<div class="scr on" id="s0">
+  <div class="nav"><h1>初一语文 · 能力诊断</h1><p>先测出哪块在漏分，再决定练什么</p></div>
+  <div class="ct">
+    <div class="h2">选一种方式开始</div>
+    <div class="h3">三种方式精度不同，用时也不同。没有卷子在手边，建议直接做 15 道题。</div>
+
+    <div class="entry" onclick="go('s1')"><div class="ico i1">📄</div><div class="tx">
+      <b>拍照上传试卷</b><p>拍一张最近的语文卷子，逐题分析失分原因</p>
+      <div class="mt"><span>约 1 分钟</span><span class="hi">精度最高 · 到题型</span></div></div></div>
+
+    <div class="entry rec" onclick="go('s3')"><div class="reco">推荐</div><div class="ico i2">📝</div><div class="tx">
+      <b>做 15 道题</b><p>覆盖六大板块，自动算出每块的掌握度</p>
+      <div class="mt"><span>约 3–5 分钟</span><span class="hi">精度中 · 到板块</span></div></div></div>
+
+    <div class="entry" onclick="go('s2')"><div class="ico i3">💯</div><div class="tx">
+      <b>填最近一次考试分数</b><p>10 秒了解孩子目前大致位置</p>
+      <div class="mt"><span>约 10 秒</span><span>精度低 · 到科目</span></div></div></div>
+
+    <div class="tip" style="margin-top:20px">诊断结果只用于安排学习内容<br><b>不会给出任何提分承诺</b></div>
+  </div>
+</div>
+
+<!-- S1 拍照 -->
+<div class="scr" id="s1">
+  <div class="nav pad"><span class="back" onclick="go('s0')">‹</span><h1>拍照上传试卷</h1><p>精度最高 · 逐题失分归因</p></div>
+  <div class="ct">
+    <div class="h2">上传一张最近的语文卷子</div>
+    <div class="h3">整张拍清楚，能看见题目和孩子的作答。期中、月考、单元卷都可以。</div>
+    <div class="upl" id="up" onclick="shot()"><div class="e">📷</div><b>点击拍照 / 从相册选择</b><p>支持 JPG、PNG，单张不超过 10M</p></div>
+    <div id="pv" style="display:none">
+      <div class="paper"><div class="sheet">
+        七年级上学期 语文期中试卷<br>
+        一、积累运用（20分）……… 得分 <u>13</u><br>
+        二、古诗文（15分）……… 得分 <u>7</u><br>
+        三、现代文阅读（30分）……… 得分 <u>14</u><br>
+        四、名著（5分）……… 得分 <u>1</u><br>
+        五、作文（30分）……… 得分 21<br>
+        <b style="color:#5a6b80">总分 56 / 100</b>
+      </div></div>
+      <div class="warn" style="margin-top:12px">已识别 <b>5 个大题、23 道小题</b>，其中 <b>11 道失分</b>。<br>下一步会逐题判断：<b>哪些是不会，哪些是会了但没答对</b>——这两种练法完全相反。</div>
+    </div>
+    <div class="btnwrap"></div><button class="btn" id="b1" disabled onclick="run('L3')">先上传卷子</button>
+  </div>
+</div>
+
+<!-- S2 分数 -->
+<div class="scr" id="s2">
+  <div class="nav pad"><span class="back" onclick="go('s0')">‹</span><h1>填最近一次考试分数</h1><p>10 秒 · 先看大致位置</p></div>
+  <div class="ct">
+    <div class="fld"><label>语文分数</label><input id="sc" type="number" placeholder="79" oninput="chk()"></div>
+    <div class="fld"><label>卷面满分</label><div class="chips" id="fs">
+      <div class="chip on" onclick="pick(this,'fs')">100</div><div class="chip" onclick="pick(this,'fs')">120</div><div class="chip" onclick="pick(this,'fs')">150</div></div></div>
+    <div class="fld"><label>哪次考试</label><div class="chips" id="ex">
+      <div class="chip on" onclick="pick(this,'ex')">期中</div><div class="chip" onclick="pick(this,'ex')">期末</div><div class="chip" onclick="pick(this,'ex')">月考</div><div class="chip" onclick="pick(this,'ex')">单元卷</div></div></div>
+    <div class="tip">满分和考试类型必须填准 —— <b>同样 79 分，100 分制和 150 分制完全是两回事。</b></div>
+    <div class="btnwrap"></div><button class="btn" id="b2" disabled onclick="hook()">看结果</button>
+  </div>
+</div>
+
+<!-- S2b 钩子 -->
+<div class="scr" id="s2b">
+  <div class="nav pad"><span class="back" onclick="go('s2')">‹</span><h1>初步结果</h1><p>基于一个分数能看出的，到这里为止</p></div>
+  <div class="ct">
+    <div class="hook">
+      <div class="num" id="hn">79<em id="hf">/ 100 · 期中</em></div>
+      <div class="lv" id="hl">初一年级 · 中上水平</div>
+      <p id="hp"></p>
+    </div>
+    <div class="warn"><b>但一个总分说不出该练什么。</b><br>初一语文的分主要由<b>作文和阅读</b>撑着，这两块占了一半以上。基础、古诗文、名著上的窟窿，会被这个总分整个盖住——<b>等到初二显出来就晚了。</b></div>
+    <div class="tip" style="margin-top:18px">下一步：15 道题，3–5 分钟<br><b>测出六大板块里，究竟是哪块在漏分</b></div>
+    <div class="btnwrap"></div><button class="btn" onclick="go('s3')">花 3 分钟测一下 →</button>
+  </div>
+</div>
+
+<!-- S3 答题 -->
+<div class="scr" id="s3">
+  <div class="nav pad"><span class="back" onclick="prev()">‹</span><h1>能力诊断 · 15 题</h1><p>凭第一反应作答，不用查资料</p></div>
+  <div class="prog"><div class="t"><span id="pt">第 1 题 / 共 15 题</span><b id="pb">基础积累</b></div><div class="pbar"><div id="pf" style="width:6.7%"></div></div></div>
+  <div class="ct" id="qc"></div>
+  <div class="btnwrap"></div><button class="btn" id="b3" disabled onclick="next()">下一题</button>
+</div>
+
+<!-- S4 分析中 -->
+<div class="scr" id="s4">
+  <div class="nav"><h1>正在分析</h1><p>马上就好</p></div>
+  <div class="load"><div class="ring"></div><b id="lb">正在分析作答…</b>
+    <div class="lg" id="lg"></div></div>
+</div>
+
+<!-- S5 报告 -->
+<div class="scr" id="s5">
+  <div class="nav"><h1>能力诊断报告</h1><p id="s5sub">基于 15 道题的作答</p></div>
+  <div class="steps"><div class="ac"><b>1</b>诊断</div><div><b>2</b>3天8节</div><div><b>3</b>复测</div><div><b>4</b>月度跟踪</div></div>
+  <div class="ct">
+    <div class="rcard"><div class="rt"><s></s>六大板块，哪块在漏分</div><div class="rs">条越短说明掌握得越差</div>
+      <div id="bars"></div>
+      <div class="frm"><b>排序规则：失分权重 =（1 − 掌握度）× 卷面占分</b><br>
+      所以不是"最弱的先练"，是<b>"丢分最多的先练"</b>——名著就算全错也只占 5 分，写作哪怕有七成，因为占 30 分，也要往前排。</div>
+    </div>
+
+    <div class="key" id="keybox"></div>
+
+    <div class="rcard" id="qabox" style="display:none;margin-top:13px">
+      <div class="rt"><s></s>逐题失分归因</div><div class="rs">拍照诊断独有 · 区分"不会"和"会了没答对"</div>
+      <div class="qa"><div class="n">6 题</div><div class="m">现代文阅读 · 赏析与主旨</div><div class="g g2">会了没答对</div></div>
+      <div class="qa"><div class="n">3 题</div><div class="m">古诗文 · 实词与句意</div><div class="g g1">不会</div></div>
+      <div class="qa"><div class="n">2 题</div><div class="m">名著 · 情节与人物</div><div class="g g1">不会</div></div>
+      <div class="frm" style="margin-top:10px">失分里有 <b>6 道是"会了没答对"</b>——这类不需要重学知识，<b>补答题方法见效最快</b>。</div>
+    </div>
+
+    <div class="btnwrap"></div><button class="btn" onclick="plan()">看接下来 3 天怎么练 →</button>
+  </div>
+</div>
+
+<!-- S6 学习安排 -->
+<div class="scr" id="s6">
+  <div class="nav pad"><span class="back" onclick="go('s5')">‹</span><h1>3 天 8 节 · 体验安排</h1><p id="s6sub"></p></div>
+  <div class="steps"><div class="dn"><b>✓</b>诊断</div><div class="ac"><b>2</b>3天8节</div><div><b>3</b>复测</div><div><b>4</b>月度跟踪</div></div>
+  <div class="ct" id="planc"></div>
+  <div class="btnwrap"></div><button class="btn" onclick="go('s7')">3 天之后呢？ →</button>
+</div>
+
+<!-- S7 复测与年课 -->
+<div class="scr" id="s7">
+  <div class="nav pad"><span class="back" onclick="go('s6')">‹</span><h1>第 3 天结束后</h1><p>先复测，再决定要不要继续</p></div>
+  <div class="steps"><div class="dn"><b>✓</b>诊断</div><div class="dn"><b>✓</b>3天8节</div><div class="ac"><b>3</b>复测</div><div><b>4</b>月度跟踪</div></div>
+  <div class="ct">
+    <div class="rcard"><div class="rt"><s></s>复测：换题不换考点</div><div class="rs">5 分钟 · 把"练过的"和"没练的"摆在一起</div>
+      <div class="cmp" id="cmpbox"></div>
+      <div class="frm">没练的那一栏是<b>故意留的</b>——它证明变化来自训练，<b>不是来自"又长大了三天"</b>。</div>
+    </div>
+
+    <div class="rcard"><div class="rt"><s></s>剩下的板块，按这个顺序过</div><div class="rs">按失分权重排，不按教材顺序排</div>
+      <div id="wkbox"></div>
+      <div class="frm">每个周期有终点、有复测。<b>什么时候能看到反馈是写明的</b>，不是"买了慢慢学"。</div>
+    </div>
+
+    <div class="key"><b>"记叙文三天就有变化，剩下几块按同样的方法一块一块过。"</b>
+      <p>这句话里没有任何提分承诺 —— 但它比"提分 30 分"有力，因为<b>你刚刚自己验证过一次。</b></p></div>
+
+    <div class="tip" style="margin-top:16px">诊断 → 定向练 → 复测<br><b>别家卖的是课时，我们给的是训练计划和复测</b></div>
+    <div class="btnwrap"></div><button class="btn" onclick="go('s8')">进了年课之后呢？ →</button>
+  </div>
+</div>
+
+
+<!-- S8 月度学习报告 -->
+<div class="scr" id="s8">
+  <div class="nav pad"><span class="back" onclick="go('s7')">‹</span><h1>年课 · 月度学习报告</h1><p>每月一封，记录变化，也指出问题</p></div>
+  <div class="steps"><div class="dn"><b>✓</b>诊断</div><div class="dn"><b>✓</b>3天8节</div><div class="dn"><b>✓</b>复测</div><div class="ac"><b>4</b>月度跟踪</div></div>
+  <div class="mtab" id="mtab"></div>
+  <div class="ct" id="mc"></div>
+  <div class="btnwrap"></div><button class="btn gh" onclick="reset()">↺ 重新体验一遍</button>
+</div>
+
+</div>
+<script>
+/* ============ 题库 ============ */
+var P1='那年冬天，母亲每天天不亮就起来给我做早饭。有一次我半夜醒来，看见厨房还亮着灯——她正戴着老花镜，一针一针地缝我磨破的书包带。灯光把她的影子投在墙上，很大，也很静。我没有出声，悄悄回了房间。第二天，书包带结实得像新的一样，我背了整整一个学期。';
+var P2='候鸟迁徙时，主要依靠三种方式导航：一是太阳和星辰的位置，二是地球磁场，三是沿途的山脉、河流等地标。其中，地磁导航最为可靠，即使在阴天也不受影响。';
+var Q=[
+{b:'base',q:'下列词语中没有错别字的一项是',o:['决别　瘫痪','诀别　瘫痪','诀别　摊痪','决别　摊痪'],a:1},
+{b:'base',q:'填入横线处最恰当的一项是：<br>他的发言很有道理，大家听完都______。',o:['随声附和','不以为然','心悦诚服','津津乐道'],a:2},
+{b:'base',q:'下列句子没有语病的一项是',o:['通过这次活动，使我明白了许多道理。','我们要防止溺水事故不再发生。','这本书让我受益匪浅。','春天的济南是一年中最美的季节。'],a:2},
+{b:'guwen',q:'补写诗句：<br>潮平两岸阔，__________。（王湾《次北固山下》）',o:['风正一帆悬','江春入旧年','海日生残夜','乡书何处达'],a:0},
+{b:'guwen',q:'《陈太丘与友期行》中"太丘舍去"的"舍"，意思是',o:['房屋','舍弃、丢下','居住','施舍'],a:1},
+{b:'guwen',q:'"友人惭，下车引之，元方入门不顾。"对这句话理解正确的一项是',o:['元方没有看见友人下车','元方头也不回地进了门，表示对友人失信无礼的不满','元方害怕友人责备自己','元方站在门口等友人道歉'],a:1},
+{b:'jixu',p:P1,q:'这段文字主要写了什么？',o:['母亲每天很早起床做饭','母亲深夜为"我"缝补书包带','"我"半夜醒来睡不着觉','"我"的书包带非常结实'],a:1},
+{b:'jixu',p:P1,q:'"灯光把她的影子投在墙上，很大，也很静。"这句话的表达效果是',o:['说明当时灯光很亮','借影子的描写烘托母亲形象，也写出夜的静谧，含蓄传达"我"的感动','说明家里的墙壁很白净','交代了事情发生的具体地点'],a:1},
+{b:'jixu',p:P1,q:'结尾"我背了整整一个学期"表达了作者怎样的情感？',o:['对书包质量的满意','对母亲默默付出的感念，书包带承载着母爱','对家庭贫困的无奈','对上学这件事的厌倦'],a:1},
+{b:'shuoming',p:P2,q:'根据文段，阴天时候鸟主要依靠什么导航？',o:['太阳的位置','星辰的位置','地球磁场','沿途的地标'],a:2},
+{b:'shuoming',p:P2,q:'"主要依靠三种方式导航：一是……二是……三是……"主要使用的说明方法是',o:['打比方','分类别','列数字','作比较'],a:1},
+{b:'mingzhu',q:'《朝花夕拾·五猖会》中，父亲要求"我"必须背完才能去看会的那本书是',o:['《山海经》','《鉴略》','《天演论》','《二十四孝图》'],a:1},
+{b:'mingzhu',q:'《朝花夕拾》中，为少年鲁迅买来他渴慕已久的《山海经》的人是',o:['藤野先生','长妈妈','范爱农','衍太太'],a:1},
+{b:'xiezuo',q:'以《我的老师》为题写记叙文，下面哪个材料最能表现老师"关心学生"？',o:['老师上课很认真，每节课都讲满 45 分钟','老师的板书写得非常漂亮','我发烧那天，老师把外套披在我身上，背我去医务室','老师教了二十年书，经验很丰富'],a:2},
+{b:'xiezuo',q:'要写出一个人"紧张"，下面哪个细节最有表现力？',o:['他很紧张。','他心里非常紧张，紧张得不得了。','他攥着演讲稿的手心全是汗，纸角被捏得发皱。','他紧张地站在台上。'],a:2}
+];
+var B={base:{n:'基础积累',s:'字词·成语·病句',w:20},guwen:{n:'古诗文',s:'默写·实词·句意',w:15},
+jixu:{n:'记叙文阅读',s:'概括·赏析·主旨',w:20},shuoming:{n:'说明文阅读',s:'筛选·说明方法',w:10},
+mingzhu:{n:'名著阅读',s:'情节·人物',w:5},xiezuo:{n:'写作意识',s:'选材·细节描写',w:30}};
+var LIB={
+jixu:[['记叙文·内容概括的采分点','一句话概括题，答案藏在三个地方'],['记叙文·赏析题答题模板','"手法+内容+情感"三步，套上就有分']],
+xiezuo:[['写作·细节描写怎么写','把"很紧张"换成手心的汗'],['写作·写人选材三原则','为什么"讲满45分钟"不算好材料']],
+guwen:[['古诗文·文言实词速记法','一个字在课文里的三种意思'],['古诗文·默写不丢分的三个习惯','会背却写错字，最可惜']],
+base:[['基础积累·高频成语辨析','考来考去就那 60 个'],['基础积累·病句常见五类','看到"通过…使…"就该警觉']],
+shuoming:[['说明文·信息筛选定位法','原文找答案，不用自己想'],['说明文·说明方法辨析','分类别和作比较怎么分']],
+mingzhu:[['名著·《朝花夕拾》考点串讲','考的就那几篇、那几个人'],['名著·《西游记》人物与情节','5 分不该白丢']]};
+var FIX=[['通法·怎么找采分点','阅卷老师按点给分，先看有几个点'],['通法·答题规范与踩分','同样的意思，这样写才拿得到分']];
+
+/* ============ 状态 ============ */
+var cur=0,ans=[],mode='L2',res=null;
+
+function go(id){document.querySelectorAll('.scr').forEach(function(e){e.classList.remove('on')});
+  document.getElementById(id).classList.add('on');window.scrollTo(0,0);
+  var p=document.getElementById('phone');if(p)p.scrollTop=0;}
+
+function shot(){document.getElementById('up').style.display='none';
+  document.getElementById('pv').style.display='block';
+  var b=document.getElementById('b1');b.disabled=false;b.textContent='开始分析这张卷子';}
+
+function pick(el,g){document.getElementById(g).querySelectorAll('.chip').forEach(function(c){c.classList.remove('on')});el.classList.add('on');}
+function chk(){document.getElementById('b2').disabled=!document.getElementById('sc').value;}
+
+function hook(){
+  var v=parseInt(document.getElementById('sc').value)||79;
+  var f=parseInt(document.getElementById('fs').querySelector('.on').textContent);
+  var e=document.getElementById('ex').querySelector('.on').textContent;
+  var r=v/f, lv, tx;
+  if(r>=.85){lv='初一年级 · 优秀';tx='这个分数在初一属于<b>优秀</b>。';}
+  else if(r>=.75){lv='初一年级 · 中上水平';tx='这个分数在初一属于<b>中上</b>。';}
+  else if(r>=.6){lv='初一年级 · 中等';tx='这个分数在初一属于<b>中等</b>。';}
+  else{lv='初一年级 · 需要重视';tx='这个分数<b>需要重视</b>了。';}
+  document.getElementById('hn').innerHTML=v+'<em>/ '+f+' · '+e+'</em>';
+  document.getElementById('hl').textContent=lv;
+  document.getElementById('hp').innerHTML=tx+'<br><br>但到此为止——<b>一个总分只能告诉你孩子大概在哪个位置，说不出他该练什么。</b>';
+  go('s2b');
+}
+
+/* ===== 答题 ===== */
+function render(){
+  var q=Q[cur],h='';
+  h+='<div class="blk">'+B[q.b].n+'</div>';
+  if(q.p)h+='<div class="psg">'+q.p+'</div>';
+  h+='<div class="qz">'+(cur+1)+'. '+q.q+'</div>';
+  for(var i=0;i<q.o.length;i++){
+    h+='<div class="opt'+(ans[cur]===i?' on':'')+'" onclick="sel('+i+')"><i>'+'ABCD'[i]+'</i><span>'+q.o[i]+'</span></div>';}
+  document.getElementById('qc').innerHTML=h;
+  document.getElementById('pt').textContent='第 '+(cur+1)+' 题 / 共 15 题';
+  document.getElementById('pb').textContent=B[q.b].n;
+  document.getElementById('pf').style.width=((cur+1)/15*100)+'%';
+  var b=document.getElementById('b3');
+  b.disabled=(ans[cur]===undefined);
+  b.textContent=(cur===14?'提交，生成报告':'下一题');
+}
+function sel(i){ans[cur]=i;render();}
+function next(){if(cur<14){cur++;render();}else{run('L2');}}
+function prev(){if(cur>0){cur--;render();}else{go('s0');}}
+
+/* ===== 计算 ===== */
+function calc(){
+  var g={};for(var k in B)g[k]={c:0,t:0};
+  for(var i=0;i<15;i++){g[Q[i].b].t++;if(ans[i]===Q[i].a)g[Q[i].b].c++;}
+  var arr=[];for(var k in B){
+    var m=g[k].t?g[k].c/g[k].t:0;
+    arr.push({k:k,n:B[k].n,s:B[k].s,w:B[k].w,m:Math.round(m*100),loss:(1-m)*B[k].w});}
+  arr.sort(function(a,b){return b.loss-a.loss});
+  /* 归因 */
+  var ok=function(i){return ans[i]===Q[i].a};
+  var t;
+  if(ok(6)&&(!ok(7)||!ok(8)))
+    t={h:'孩子读得懂，但不会按采分点答题。',
+       p:'这不是阅读能力问题，是答题方法问题——<b>初一最高频、也最容易补的一类。</b>',
+       e:'依据：内容概括题 <u>答对</u>，赏析题/主旨题 <s>答错</s>。看懂了，但不知道答案该怎么组织。'};
+  else if(ok(3)&&(!ok(4)||!ok(5)))
+    t={h:'古诗文只会背，不理解。',
+       p:'现在靠记忆还能拿默写分，<b>但初二开始考课外文言，这条路就走不通了。</b>',
+       e:'依据：默写题 <u>答对</u>，实词/句意题 <s>答错</s>。记住了字，没记住意思。'};
+  else if(!ok(11)&&!ok(12))
+    t={h:'名著基本没读，5 分在白送。',
+       p:'名著是六块里<b>最容易补的</b>——考点集中，突击串讲就能拿住。',
+       e:'依据：名著两题 <s>全错</s>。不是读不懂，是没读。'};
+  else if(arr[0].m<50&&arr[1].m<50&&arr[2].m<50)
+    t={h:'多个板块同时偏弱，先看学习时间。',
+       p:'三块以上同时薄弱，通常<b>不是单科方法问题</b>，建议先确认孩子每天真正投入的有效时间。',
+       e:'依据：'+arr[0].n+'、'+arr[1].n+'、'+arr[2].n+' 掌握度均低于 50%。'};
+  else
+    t={h:'主要问题集中在'+arr[0].n+'。',
+       p:'这一块占卷面 <b>'+arr[0].w+' 分</b>，是目前丢分最多的地方，应当优先训练。',
+       e:'依据：'+arr[0].n+' 掌握度 <s>'+arr[0].m+'%</s>，失分权重全科最高。'};
+  return {arr:arr,t:t};
+}
+function fake(){ /* L3 拍照：预设一组 */
+  var d=[['jixu',35],['xiezuo',70],['guwen',47],['base',65],['shuoming',60],['mingzhu',20]],arr=[];
+  d.forEach(function(x){var b=B[x[0]];arr.push({k:x[0],n:b.n,s:b.s,w:b.w,m:x[1],loss:(1-x[1]/100)*b.w});});
+  arr.sort(function(a,b){return b.loss-a.loss});
+  return {arr:arr,t:{h:'孩子读得懂，但不会按采分点答题。',
+    p:'卷面 11 处失分里，有 <b>6 处是"会了没答对"</b>——知识不缺，缺的是答题方法。',
+    e:'依据：现代文阅读的概括题 <u>得分</u>，赏析题和主旨题 <s>大面积失分</s>。'}};
+}
+
+/* ===== 分析动画 ===== */
+function run(m){
+  mode=m;go('s4');
+  var steps=(m==='L3')
+    ?['识别试卷结构与题号…','比对标准答案，定位失分点…','区分"不会"与"会了没答对"…','按板块归集，计算掌握度…','生成诊断结论…']
+    :['校对 15 道作答…','按六大板块归集得分…','计算失分权重与优先级…','交叉验证，定位真实问题…','生成诊断结论…'];
+  var lg=document.getElementById('lg');
+  lg.innerHTML=steps.map(function(s){return '<div>· '+s+'</div>'}).join('');
+  var ds=lg.querySelectorAll('div'),i=0;
+  document.getElementById('lb').textContent=(m==='L3'?'正在识别试卷…':'正在分析作答…');
+  var t=setInterval(function(){
+    if(i>0)ds[i-1].classList.remove('on');
+    if(i<ds.length){ds[i].classList.add('on');i++;}
+    else{clearInterval(t);report();}
+  },620);
+}
+
+/* ===== 报告 ===== */
+function report(){
+  res=(mode==='L3')?fake():calc();
+  var h='';
+  res.arr.forEach(function(b,i){
+    var cls=b.m<50?'lo':(b.m<70?'md':'hi');
+    var pc=i<2?'p1':(i<4?'p2':'p3');
+    h+='<div class="brow '+cls+'"><div class="bt"><b>'+b.n+'<em>'+b.s+'</em></b>'+
+       '<span class="pct">'+b.m+'%</span><i class="pri '+pc+'">第 '+(i+1)+' 位</i></div>'+
+       '<div class="bb"><div style="width:'+Math.max(b.m,3)+'%"></div></div></div>';
+  });
+  document.getElementById('bars').innerHTML=h;
+  document.getElementById('keybox').innerHTML='<b>'+res.t.h+'</b><p>'+res.t.p+'</p><div class="evi">'+res.t.e+'</div>';
+  document.getElementById('qabox').style.display=(mode==='L3')?'block':'none';
+  document.getElementById('s5sub').textContent=(mode==='L3')?'基于整张试卷的逐题分析':'基于 15 道题的作答';
+  go('s5');
+}
+
+/* ===== 3天8节 ===== */
+function plan(){
+  var top=[res.arr[0].k,res.arr[1].k];
+  var L=[];
+  top.forEach(function(k){LIB[k].forEach(function(x){L.push({t:x[0],d:x[1],dy:true,blk:B[k].n})})});
+  var third=res.arr.find(function(b){return top.indexOf(b.k)<0&&b.k!=='base'});
+  var baseIn=top.indexOf('base')>=0;
+  var fk=baseIn?third.k:'base';
+  LIB[fk].forEach(function(x){L.push({t:x[0],d:x[1],dy:false,blk:B[fk].n})});
+  FIX.forEach(function(x){L.push({t:x[0],d:x[1],dy:false,blk:'通用方法'})});
+  var days=[[0,1,2],[3,4,5],[6,7]],names=['第 1 天','第 2 天','第 3 天'],h='';
+  days.forEach(function(d,di){
+    h+='<div class="day"><div class="dh"><b>'+names[di]+'</b><span>'+d.length+' 讲 · 约 '+(d.length*20)+' 分钟</span><s></s></div>';
+    d.forEach(function(i){var l=L[i];
+      h+='<div class="ls'+(l.dy?' dy':'')+'"><div class="lh"><b>'+(i+1)+'. '+l.t+'</b>'+
+         '<span class="'+(l.dy?'sdy':'sfx')+'">'+(l.dy?'按诊断编排':'固定')+'</span></div>'+
+         '<div class="lm">'+l.d+'</div>'+
+         '<div class="flow"><span>学</span><span>当堂练</span><span>当场改</span><span>错题自动收</span></div></div>';});
+    h+='</div>';
+  });
+  h+='<div class="retest"><b>第 3 天结束 · 复测 5 分钟</b><p>换题不换考点，把练过的板块和没练的板块摆在一起看。<br>变化是自己测出来的，不是我们说的。</p></div>';
+  h+='<div class="tip" style="margin-top:14px">红色 <b>4 讲由诊断结果决定</b>，灰色 4 讲固定。<br>一半动态一半固定——真的个性化，又不会变成无限组合没法运营。</div>';
+  document.getElementById('planc').innerHTML=h;
+  document.getElementById('s6sub').textContent='主攻：'+res.arr[0].n+' ＋ '+res.arr[1].n;
+  /* 复测与年课 */
+  var a=res.arr[0],b=res.arr[1];
+  /* "没练"对照：取未进入 3 天安排、且还有提升空间的板块 */
+  var c=res.arr.slice(2).filter(function(x){return x.m<90})[0];
+  var up=function(m){return Math.max(m,Math.min(98,m+(m<50?24:13)))};
+  var flat=function(m){return Math.min(100,m+2)};
+  var cells=['<div><h4>'+a.n+'<br>（练过）</h4><div class="v">'+a.m+'%<i>→</i><span class="up">'+up(a.m)+'%</span></div></div>',
+     '<div><h4>'+b.n+'<br>（练过）</h4><div class="v">'+b.m+'%<i>→</i><span class="up">'+up(b.m)+'%</span></div></div>'];
+  if(c)cells.push('<div><h4>'+c.n+'<br>（没练）</h4><div class="v">'+c.m+'%<i>→</i><span class="flat">'+flat(c.m)+'%</span></div></div>');
+  document.getElementById('cmpbox').innerHTML=cells.join('');
+  document.querySelector('#s7 .rcard .frm').innerHTML = c
+    ? '没练的那一栏是<b>故意留的</b>——它证明变化来自训练，<b>不是来自"又长大了三天"</b>。'
+    : '其余板块掌握度都已较高，<b>这次没有安排对照列</b>。';
+  var wk=['第1–4周','第5–8周','第9–12周','第13–16周','第17–20周'];
+  var need=res.arr.filter(function(x){return x.m<85}).slice(0,5);
+  var w='';
+  need.forEach(function(b,i){
+    w+='<div class="wk"><div class="p">'+wk[i]+'</div><div class="m"><b>'+b.n+
+       '</b><em>掌握度 '+b.m+'% · 占卷面 '+b.w+' 分</em></div></div>';});
+  var done=res.arr.filter(function(x){return x.m>=85});
+  if(done.length)w+='<div class="frm" style="margin-top:2px">'+
+    done.map(function(x){return x.n}).join('、')+
+    ' 掌握度已在 85% 以上，<b>不单独占用训练周期</b>，随堂保持即可。</div>';
+  if(!need.length)w='<div class="frm">六大板块掌握度均在 85% 以上，<b>暂不需要板块专项训练</b>，建议按年级进度同步巩固。</div>';
+  document.getElementById('wkbox').innerHTML=w;
+  MONTHS=buildMonths();showMonth(0);
+  go('s6');
+}
+
+/* ===== 年课月度跟踪 ===== */
+var MONTHS=null,mi=0;
+function rank(st){var a=[];for(var k in B){a.push({k:k,n:B[k].n,s:B[k].s,w:B[k].w,m:st[k],
+  loss:(1-st[k]/100)*B[k].w});}a.sort(function(x,y){return y.loss-x.loss});return a;}
+/* 边际递减：越差涨得越快；没练的板块会轻微回落（遗忘） */
+function gain(m){return m<40?22:m<60?15:m<75?9:5;}
+var LOG=[{plan:8,done:8,q:186,wr:47,fx:29,days:18,min:22},
+         {plan:8,done:8,q:203,wr:41,fx:33,days:21,min:24},
+         {plan:8,done:6,q:152,wr:38,fx:32,days:13,min:26}];
+
+function buildMonths(){
+  var st={};res.arr.forEach(function(b){st[b.k]=b.m;});
+  var out=[],trained={};
+  for(var i=0;i<3;i++){
+    var order=rank(st),focus=[order[0].k,order[1].k],before={};
+    for(var k in st)before[k]=st[k];
+    focus.forEach(function(k){st[k]=Math.min(95,st[k]+gain(st[k]));});
+    focus.forEach(function(k){trained[k]=1;});
+    /* 只有练过的板块才会回落——没学过的不存在"忘" */
+    for(var k in st){if(focus.indexOf(k)<0&&trained[k]&&st[k]<95)
+      st[k]=Math.max(0,st[k]-(st[k]>=80?1:3));}
+    var after={};for(var k in st)after[k]=st[k];
+    var d=LOG[i];d.rate=Math.round(d.fx/d.wr*100);
+    /* 回落板块 */
+    var drop=null;
+    for(var k in after){var dd=before[k]-after[k];
+      if(dd>=3&&before[k]>=50&&after[k]<90&&(!drop||dd>drop.dt))
+        drop={k:k,n:B[k].n,a:before[k],b:after[k],dt:dd};}
+    /* 问题：按真实数据触发，不是写死的 */
+    var probs=[];
+    if(d.rate<70)probs.push({t:'错题订正率只有 '+d.rate+'%',
+      d:'本月练了 '+d.q+' 道，错了 '+d.wr+' 道，只订正了 '+d.fx+' 道。<b>错了不改，等于只做了一半</b>——学练改里最值钱的恰恰是"改"。'});
+    if(d.done<d.plan)probs.push({t:'本月计划 '+d.plan+' 讲，完成 '+d.done+' 讲',
+      d:'有 '+(d.plan-d.done)+' 讲没跟上。<b>周期表是按进度排的</b>，落下的讲会影响下个板块的起点。'});
+    if(drop)probs.push({t:drop.n+' 出现回落：'+drop.a+'% → '+drop.b+'%',
+      d:'这块已经两个月没回头了。<b>练过不等于记住</b>，隔一段不碰就会退。'});
+    if(d.days<15)probs.push({t:'本月有效学习 '+d.days+' 天',
+      d:'学习集中在周末，工作日基本空档。<b>语文最怕攒着学</b>，每天 20 分钟比周末补 2 小时有效。'});
+    if(!probs.length)probs.push({t:'本月没有发现明显问题',
+      d:'完课、订正、节奏都正常。<b>保持现在的节奏就好</b>，不建议临时加量。'});
+    /* 下月推荐：从本月数据推出来，不是拍脑袋 */
+    var nx=rank(after),recs=[];
+    recs.push({t:'下月主攻：'+nx[0].n,
+      d:'掌握度 '+nx[0].m+'%，占卷面 <b>'+nx[0].w+' 分</b>，是目前丢分最多的板块。'});
+    recs.push({t:'次攻：'+nx[1].n,
+      d:'掌握度 '+nx[1].m+'%，占卷面 '+nx[1].w+' 分。'});
+    if(drop)recs.push({t:'加一条：每周 1 次 '+drop.n+' 滚动复习',
+      d:'只要 10 分钟，把练过的板块拉回来。<b>回落比没学更可惜</b>。'});
+    if(d.rate<70)recs.push({t:'先把订正率提到 85% 以上',
+      d:'这件事<b>比多学两讲更有用</b>。错题本里躺着的每一道，都是已经找出来的漏洞。'});
+    if(d.days<15)recs.push({t:'把学习拆到工作日',
+      d:'目标不是加量，是<b>把 '+d.days+' 天变成 20 天</b>，每次 20 分钟即可。'});
+    out.push({i:i+1,focus:focus,before:before,after:after,d:d,probs:probs,recs:recs,drop:drop});
+  }
+  return out;
+}
+
+function showMonth(k){
+  mi=k;
+  document.getElementById('mtab').innerHTML=MONTHS.map(function(m,j){
+    return '<div class="'+(j===k?'on':'')+'" onclick="showMonth('+j+')">第 '+m.i+' 个月</div>';})
+    .join('')+'<div class="lk">第 4 个月…</div>';
+  var M=MONTHS[k],h='';
+  h+='<div class="focus"><em>本月主攻</em><b>'+M.focus.map(function(x){return B[x].n}).join(' ＋ ')+
+     '</b><p>按上月的失分权重排出来的，不是按教材顺序。</p></div>';
+  /* 能力变化 */
+  h+='<div class="rcard"><div class="rt"><s></s>六大板块，这个月动了多少</div><div class="rs">上月 → 本月 · 复测实得，不是估算</div>';
+  rank(M.after).forEach(function(b){
+    var a=M.before[b.k],c=M.after[b.k],dt=c-a;
+    var cls=dt>0?'d-up':(dt<0?'d-dn':'d-fl');
+    var tx=dt>0?('▲ '+dt):(dt<0?('▼ '+(-dt)):'—');
+    h+='<div class="chg"><div class="nm">'+b.n+(M.focus.indexOf(b.k)>=0?'<i>主攻</i>':'')+
+       '</div><div class="vs">'+a+'% → <b>'+c+'%</b></div><div class="dt '+cls+'">'+tx+'</div></div>';});
+  h+='</div>';
+  /* 过程数据 */
+  var d=M.d;
+  h+='<div class="rcard"><div class="rt"><s></s>学习过程</div><div class="rs">系统自动记录，不用手填</div><div class="grid">'+
+     '<div><b'+(d.done<d.plan?' class="al"':'')+'>'+d.done+'/'+d.plan+'</b><em>完成讲数</em></div>'+
+     '<div><b>'+d.q+'</b><em>练习题数</em></div>'+
+     '<div><b>'+d.wr+'</b><em>错题数</em></div>'+
+     '<div><b'+(d.rate<70?' class="al"':'')+'>'+d.rate+'%</b><em>错题订正率</em></div>'+
+     '<div><b'+(d.days<15?' class="al"':'')+'>'+d.days+'</b><em>有效学习天</em></div>'+
+     '<div><b>'+d.min+'</b><em>平均分钟/次</em></div></div></div>';
+  /* 问题 */
+  h+='<div class="rt" style="margin:18px 0 3px"><s></s>本月的问题</div>'+
+     '<div class="rs">月报只报喜就没人信了</div>';
+  M.probs.forEach(function(p){h+='<div class="prob"><b>⚠ '+p.t+'</b><p>'+p.d+'</p></div>';});
+  /* 推荐 */
+  h+='<div class="rt" style="margin:18px 0 3px"><s></s>下个月的重点</div>'+
+     '<div class="rs">全部从上面的数据推出来，每条都能对上</div>';
+  M.recs.forEach(function(r){h+='<div class="rec"><b>→ '+r.t+'</b><p>'+r.d+'</p></div>';});
+  h+='<div class="tip">掌握度是<b>复测测出来的</b>，不是老师估的<br>全程没有一个提分承诺，但每一栏你都能自己核对</div>';
+  document.getElementById('mc').innerHTML=h;
+  var ph=document.getElementById('phone');if(ph)ph.scrollTop=0;window.scrollTo(0,0);
+}
+
+function reset(){cur=0;ans=[];res=null;MONTHS=null;mi=0;
+  document.getElementById('up').style.display='block';
+  document.getElementById('pv').style.display='none';
+  var b1=document.getElementById('b1');b1.disabled=true;b1.textContent='先上传卷子';
+  document.getElementById('sc').value='';document.getElementById('b2').disabled=true;
+  render();go('s0');}
+render();
+</script></body></html>

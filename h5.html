@@ -234,6 +234,8 @@ body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;b
 .ptr span{font-size:11.5px;color:#5a6b80;text-align:center;flex-shrink:0}
 .ptr span.al{color:#d9534f;font-weight:800}
 .ptr span.ok{color:#3a9e63;font-weight:700}
+.ptr.off .c1{color:#b3bfd0}
+.ptr.off span{color:#cbd5e2}
 .grid{display:flex;flex-wrap:wrap;gap:8px}
 .grid div{width:calc(33.33% - 6px);background:#f7f9fc;border-radius:10px;padding:11px 8px;text-align:center}
 .grid div b{display:block;font-size:17px;font-weight:800;color:#1f2d3d}
@@ -622,7 +624,7 @@ function plan(){
       body+='<div class="pr"><div class="nm">'+b.n+'<span class="rl '+(r[1]==='主攻'?'rl-m':'rl-s')+'">'+r[1]+'</span></div>'+
         '<div class="vv">'+from+'% → <b>'+(lo===hi?lo+'%':lo+'–'+hi+'%')+'</b>'+
         (hi>from?'<i>+'+(lo-from)+'~'+(hi-from)+'</i>':'')+'</div></div>';
-      st[b.k]=Math.min(95,Math.round(from+g));
+      st[b.k]=bump(from,g);
     });
     w+='<div class="per"><div class="ph"><b>'+wk[i]+'</b><span>训练点 '+pts+' 个 · 期末复测</span></div>'+body+'</div>';
   }
@@ -648,6 +650,8 @@ function gain(m){return m<40?22:m<60?15:m<75?9:5;}
 var POINTS={jixu:12,xiezuo:10,guwen:14,base:16,shuoming:8,mingzhu:6};
 /* 训练点越少 = 一个周期越能覆盖完 = 单周期提升越快。这也是"说明文最容易速成"的量化依据 */
 function gainAdj(m,k){return gain(m)*(1+(12-(POINTS[k]||12))/24);}
+/* 封顶 95 但绝不低于原值——否则 100% 的板块会被"练"到 95% */
+function bump(m,g){return Math.max(m,Math.min(95,Math.round(m+g)));}
 function estRange(m,k){var g=gainAdj(m,k);
   return [Math.min(95,Math.round(m+g*0.7)),Math.min(96,Math.round(m+g*1.15))];}
 /* 月度行为参数：讲数缺口、学习天数、单次时长、订正率基线。
@@ -689,7 +693,7 @@ function buildMonths(){
     d.q=rows.reduce(function(a,r){return a+r.q},0);
     d.wr=rows.reduce(function(a,r){return a+r.wr},0);
     d.fx=rows.reduce(function(a,r){return a+r.fx},0);
-    rows.forEach(function(r){st[r.k]=Math.min(95,st[r.k]+Math.round(gainAdj(st[r.k],r.k)*r.f));});
+    rows.forEach(function(r){st[r.k]=bump(st[r.k],gainAdj(st[r.k],r.k)*r.f);});
     focus.forEach(function(k){trained[k]=1;});
     /* 只有练过的板块才会回落——没学过的不存在"忘" */
     for(var k in st){if(focus.indexOf(k)<0&&trained[k]&&st[k]<95)
@@ -752,10 +756,17 @@ function showMonth(k){
   h+='</div>';
   /* 过程数据 */
   var d=M.d;
-  h+='<div class="rcard"><div class="rt"><s></s>学习过程</div><div class="rs">分板块记录，系统自动生成，不用手填</div>'+
+  h+='<div class="rcard"><div class="rt"><s></s>学习过程</div><div class="rs">六大板块全列 · 系统自动记录，不用手填</div>'+
      '<div class="ptb"><div class="pth"><span class="c1" style="text-align:left;color:#a3b0c2">板块</span>'+
      '<span class="c2">完成/安排</span><span class="c3">练习题</span><span class="c4">错题</span><span class="c5">订正率</span></div>';
-  d.rows.forEach(function(r){
+  var byK={};d.rows.forEach(function(r){byK[r.k]=r;});
+  /* 六大板块全列，行序与上方"这个月动了多少"完全一致，两张表可以对着看 */
+  rank(M.after).forEach(function(b){
+    var r=byK[b.k];
+    if(!r){
+      h+='<div class="ptr off"><div class="c1">'+b.n+'<i class="i-s" style="background:#f7f9fc;color:#cbd5e2">未安排</i></div>'+
+         '<span class="c2">0/0 讲</span><span class="c3">—</span><span class="c4">—</span><span class="c5">—</span></div>';
+      return;}
     h+='<div class="ptr"><div class="c1">'+r.n+'<i class="'+(r.role==='主攻'?'i-m':'i-s')+'">'+r.role+'</i></div>'+
        '<span class="c2'+(r.done<r.plan?' al':'')+'">'+r.done+'/'+r.plan+' 讲</span>'+
        '<span class="c3">'+r.q+'</span><span class="c4">'+r.wr+'</span>'+
@@ -764,7 +775,9 @@ function showMonth(k){
      '<span class="c2'+(d.done<d.plan?' al':'')+'">'+d.done+'/'+d.plan+' 讲</span>'+
      '<span class="c3">'+d.q+'</span><span class="c4">'+d.wr+'</span>'+
      '<span class="c5'+(d.rate<70?' al':'')+'">'+d.rate+'%</span></div></div>'+
-     '<div class="grid" style="margin-top:14px">'+
+     '<div class="frm" style="margin-top:10px">标"未安排"的板块本月没有排课——'+
+     '<b>这几块的掌握度会小幅回落</b>，属于正常现象，会在后面的周期轮到。</div>'+
+     '<div class="grid" style="margin-top:12px">'+
      '<div style="width:calc(50% - 4px)"><b'+(d.days<15?' class="al"':'')+'>'+d.days+'</b><em>有效学习天</em></div>'+
      '<div style="width:calc(50% - 4px)"><b>'+d.min+'</b><em>平均分钟/次</em></div></div></div>';
   /* 问题 */

@@ -180,11 +180,28 @@ body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;b
 .cmp .v{font-size:16px;font-weight:800;color:#1f2d3d;white-space:nowrap}
 .cmp .v i{font-style:normal;color:#cfd8e5;font-size:12px;margin:0 2px}
 .up{color:#3a9e63}.flat{color:#a3b0c2}
-.wk{display:flex;align-items:center;background:#fff;border-radius:11px;padding:12px 14px;margin-bottom:8px;
+.wk{display:flex;align-items:flex-start;background:#fff;border-radius:11px;padding:12px 14px;margin-bottom:8px;
     box-shadow:0 2px 8px rgba(30,70,140,.06)}
-.wk .p{width:62px;font-size:11px;font-weight:800;color:#2f6fd0}
-.wk .m{flex:1}.wk .m b{font-size:13px;color:#1f2d3d;display:block}
+.wk .p{width:62px;font-size:11px;font-weight:800;color:#2f6fd0;padding-top:2px;flex-shrink:0}
+.wk .m{flex:1;min-width:0}.wk .m b{font-size:13px;color:#1f2d3d;display:block}
 .wk .m em{font-style:normal;font-size:10px;color:#a3b0c2}
+.per{background:#fff;border-radius:12px;padding:13px 14px;margin-bottom:9px;box-shadow:0 2px 8px rgba(30,70,140,.06)}
+.per .ph{display:flex;justify-content:space-between;align-items:center;padding-bottom:9px;margin-bottom:5px;border-bottom:1px solid #f0f4fa}
+.per .ph b{font-size:13px;color:#2f6fd0;font-weight:800}
+.per .ph span{font-size:10px;color:#a3b0c2}
+.pr{display:flex;align-items:center;padding:7px 0}
+.pr .nm{flex:1;font-size:12.5px;color:#1f2d3d;min-width:0;display:flex;align-items:center}
+.pr .rl{font-size:9px;padding:2px 7px;border-radius:6px;margin-left:6px;flex-shrink:0}
+.rl-m{background:#eaf2fd;color:#2f6fd0;font-weight:800}
+.rl-s{background:#f2f4f7;color:#9aa8bc}
+.pr .vv{font-size:12px;color:#b3bfd0;white-space:nowrap;flex-shrink:0}
+.pr .vv b{color:#2f6fd0;font-weight:800;font-size:12.5px}
+.pr .vv i{font-style:normal;color:#3a9e63;font-weight:800;margin-left:6px;font-size:11px}
+.wkf{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.wkf span{font-size:10px;padding:4px 9px;border-radius:8px;background:#f2f6fc;color:#6b7d94;white-space:nowrap;flex-shrink:0}
+.wk .m .wkf span b{display:inline;font-size:11px;color:#1f2d3d;font-weight:800}
+.wkf span.est{background:#eaf2fd;color:#5a80b0}
+.wk .m .wkf span.est b{color:#2f6fd0}
 .mtab{display:flex;background:#fff;padding:9px 12px;gap:7px;flex-shrink:0;border-bottom:1px solid #eef2f7}
 .mtab div{flex:1;text-align:center;padding:8px 0;font-size:12px;color:#93a1b5;border-radius:9px;cursor:pointer}
 .mtab div.on{background:#eaf2fd;color:#2f6fd0;font-weight:800}
@@ -351,7 +368,7 @@ body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;b
       <div class="frm">没练的那一栏是<b>故意留的</b>——它证明变化来自训练，<b>不是来自"又长大了三天"</b>。</div>
     </div>
 
-    <div class="rcard"><div class="rt"><s></s>剩下的板块，按这个顺序过</div><div class="rs">按失分权重排，不按教材顺序排</div>
+    <div class="rcard"><div class="rt"><s></s>半年能力提升计划</div><div class="rs">记录孩子的每一次学习数据，让孩子能力成长一目了然</div>
       <div id="wkbox"></div>
       <div class="frm">每个周期有终点、有复测。<b>什么时候能看到反馈是写明的</b>，不是"买了慢慢学"。</div>
     </div>
@@ -571,17 +588,35 @@ function plan(){
   document.querySelector('#s7 .rcard .frm').innerHTML = c
     ? '没练的那一栏是<b>故意留的</b>——它证明变化来自训练，<b>不是来自"又长大了三天"</b>。'
     : '其余板块掌握度都已较高，<b>这次没有安排对照列</b>。';
-  var wk=['第1–4周','第5–8周','第9–12周','第13–16周','第17–20周'];
-  var need=res.arr.filter(function(x){return x.m<85}).slice(0,5);
+  var wk=['第 1–4 周','第 5–8 周','第 9–12 周','第 13–16 周','第 17–20 周'];
+  /* 半年计划：每期 1 个主攻 + 2 个辅练，掌握度跨周期累计（第5期的起点是第4期的终点） */
+  var st={};res.arr.forEach(function(b){st[b.k]=b.m;});
   var w='';
-  need.forEach(function(b,i){
-    w+='<div class="wk"><div class="p">'+wk[i]+'</div><div class="m"><b>'+b.n+
-       '</b><em>掌握度 '+b.m+'% · 占卷面 '+b.w+' 分</em></div></div>';});
-  var done=res.arr.filter(function(x){return x.m>=85});
-  if(done.length)w+='<div class="frm" style="margin-top:2px">'+
-    done.map(function(x){return x.n}).join('、')+
-    ' 掌握度已在 85% 以上，<b>不单独占用训练周期</b>，随堂保持即可。</div>';
-  if(!need.length)w='<div class="frm">六大板块掌握度均在 85% 以上，<b>暂不需要板块专项训练</b>，建议按年级进度同步巩固。</div>';
+  for(var i=0;i<5;i++){
+    var cur=rank(st),pick=cur.filter(function(x){return x.m<90;});
+    if(!pick.length)pick=cur;
+    var main=pick[0],subs=pick.slice(1,3),pts=POINTS[main.k]||12;
+    var rows=[[main,'主攻',1]];
+    subs.forEach(function(x){rows.push([x,'辅练',0.35]);pts+=Math.round((POINTS[x.k]||12)/3);});
+    var body='';
+    rows.forEach(function(r){
+      var b=r[0],g=gainAdj(st[b.k],b.k)*r[2],from=st[b.k];
+      var lo=Math.min(95,Math.round(from+g*0.7)),hi=Math.min(96,Math.round(from+g*1.15));
+      if(hi<=from){lo=from;hi=from;}
+      body+='<div class="pr"><div class="nm">'+b.n+'<span class="rl '+(r[1]==='主攻'?'rl-m':'rl-s')+'">'+r[1]+'</span></div>'+
+        '<div class="vv">'+from+'% → <b>'+(lo===hi?lo+'%':lo+'–'+hi+'%')+'</b>'+
+        (hi>from?'<i>+'+(lo-from)+'~'+(hi-from)+'</i>':'')+'</div></div>';
+      st[b.k]=Math.min(95,Math.round(from+g));
+    });
+    w+='<div class="per"><div class="ph"><b>'+wk[i]+'</b><span>训练点 '+pts+' 个 · 期末复测</span></div>'+body+'</div>';
+  }
+  var hold=res.arr.filter(function(x){return x.m>=90});
+  if(hold.length)w+='<div class="frm" style="margin-top:2px">'+hold.map(function(x){return x.n}).join('、')+
+    ' 掌握度已在 90% 以上，<b>不作为主攻</b>，以辅练和随堂保持为主。</div>';
+  w+='<div class="frm" style="margin-top:2px">每期<b>一个主攻 ＋ 两个辅练</b>，不是一次只碰一块——'+
+     '语文的板块需要滚动，隔太久不碰就会退。<br>'+
+     '各期的起点是<b>上一期的终点</b>，所以数字是累计的，不是每次都从诊断那天算。<br>'+
+     '"预计"给的是<b>掌握度区间，不是分数</b>，依据是当前掌握度与训练点数量，<b>每期复测校准一次</b>。</div>';
   document.getElementById('wkbox').innerHTML=w;
   MONTHS=buildMonths();showMonth(0);
   go('s6');
@@ -593,6 +628,12 @@ function rank(st){var a=[];for(var k in B){a.push({k:k,n:B[k].n,s:B[k].s,w:B[k].
   loss:(1-st[k]/100)*B[k].w});}a.sort(function(x,y){return y.loss-x.loss});return a;}
 /* 边际递减：越差涨得越快；没练的板块会轻微回落（遗忘） */
 function gain(m){return m<40?22:m<60?15:m<75?9:5;}
+/* 每板块一个 4 周周期内的可训练考点数（源自《教研落地包_初一语文》六大板块图谱） */
+var POINTS={jixu:12,xiezuo:10,guwen:14,base:16,shuoming:8,mingzhu:6};
+/* 训练点越少 = 一个周期越能覆盖完 = 单周期提升越快。这也是"说明文最容易速成"的量化依据 */
+function gainAdj(m,k){return gain(m)*(1+(12-(POINTS[k]||12))/24);}
+function estRange(m,k){var g=gainAdj(m,k);
+  return [Math.min(95,Math.round(m+g*0.7)),Math.min(96,Math.round(m+g*1.15))];}
 var LOG=[{plan:8,done:8,q:186,wr:47,fx:29,days:18,min:22},
          {plan:8,done:8,q:203,wr:41,fx:33,days:21,min:24},
          {plan:8,done:6,q:152,wr:38,fx:32,days:13,min:26}];
@@ -603,7 +644,7 @@ function buildMonths(){
   for(var i=0;i<3;i++){
     var order=rank(st),focus=[order[0].k,order[1].k],before={};
     for(var k in st)before[k]=st[k];
-    focus.forEach(function(k){st[k]=Math.min(95,st[k]+gain(st[k]));});
+    focus.forEach(function(k){st[k]=Math.min(95,st[k]+Math.round(gainAdj(st[k],k)));});
     focus.forEach(function(k){trained[k]=1;});
     /* 只有练过的板块才会回落——没学过的不存在"忘" */
     for(var k in st){if(focus.indexOf(k)<0&&trained[k]&&st[k]<95)
@@ -650,8 +691,10 @@ function showMonth(k){
     return '<div class="'+(j===k?'on':'')+'" onclick="showMonth('+j+')">第 '+m.i+' 个月</div>';})
     .join('')+'<div class="lk">第 4 个月…</div>';
   var M=MONTHS[k],h='';
+  var pts=M.focus.reduce(function(a,k){return a+(POINTS[k]||12)},0);
   h+='<div class="focus"><em>本月主攻</em><b>'+M.focus.map(function(x){return B[x].n}).join(' ＋ ')+
-     '</b><p>按上月的失分权重排出来的，不是按教材顺序。</p></div>';
+     '</b><p>按上月的失分权重排出来的，不是按教材顺序。<br>本月覆盖 <b>'+pts+' 个训练点</b>，'+
+     '下面每一栏的实际变化，都落在上个周期给出的预计区间里。</p></div>';
   /* 能力变化 */
   h+='<div class="rcard"><div class="rt"><s></s>六大板块，这个月动了多少</div><div class="rs">上月 → 本月 · 复测实得，不是估算</div>';
   rank(M.after).forEach(function(b){

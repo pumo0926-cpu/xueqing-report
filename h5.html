@@ -218,6 +218,22 @@ body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;b
 .chg .vs b{color:#1f2d3d;font-weight:800;font-size:14px}
 .chg .dt{width:52px;text-align:right;font-size:11.5px;font-weight:800;white-space:nowrap}
 .d-up{color:#3a9e63}.d-dn{color:#d9534f}.d-fl{color:#c3cfe0}
+.ptb{width:100%}
+.pth,.ptr{display:flex;align-items:center}
+.pth{padding:0 0 9px;border-bottom:1px solid #eef2f7;margin-bottom:3px}
+.pth span{font-size:10px;color:#a3b0c2;text-align:center}
+.ptr{padding:9px 0;border-bottom:1px solid #f7f9fc}
+.ptr.sum{border-bottom:0;border-top:2px solid #eef2f7;margin-top:3px;padding-top:11px}
+.ptr.sum .c1{font-weight:800;color:#1b4b8f}
+.ptr.sum span{font-weight:800;color:#1f2d3d}
+.c1{flex:1;min-width:0;font-size:12px;color:#1f2d3d;display:flex;align-items:center;padding-right:4px}
+.c1 i{font-style:normal;font-size:8.5px;padding:2px 5px;border-radius:5px;margin-left:5px;flex-shrink:0}
+.i-m{background:#eaf2fd;color:#2f6fd0;font-weight:800}
+.i-s{background:#f2f4f7;color:#9aa8bc}
+.ptb .c2{width:46px}.ptb .c3{width:40px}.ptb .c4{width:38px}.ptb .c5{width:46px}
+.ptr span{font-size:11.5px;color:#5a6b80;text-align:center;flex-shrink:0}
+.ptr span.al{color:#d9534f;font-weight:800}
+.ptr span.ok{color:#3a9e63;font-weight:700}
 .grid{display:flex;flex-wrap:wrap;gap:8px}
 .grid div{width:calc(33.33% - 6px);background:#f7f9fc;border-radius:10px;padding:11px 8px;text-align:center}
 .grid div b{display:block;font-size:17px;font-weight:800;color:#1f2d3d}
@@ -634,23 +650,52 @@ var POINTS={jixu:12,xiezuo:10,guwen:14,base:16,shuoming:8,mingzhu:6};
 function gainAdj(m,k){return gain(m)*(1+(12-(POINTS[k]||12))/24);}
 function estRange(m,k){var g=gainAdj(m,k);
   return [Math.min(95,Math.round(m+g*0.7)),Math.min(96,Math.round(m+g*1.15))];}
-var LOG=[{plan:8,done:8,q:186,wr:47,fx:29,days:18,min:22},
-         {plan:8,done:8,q:203,wr:41,fx:33,days:21,min:24},
-         {plan:8,done:6,q:152,wr:38,fx:32,days:13,min:26}];
+/* 月度行为参数：讲数缺口、学习天数、单次时长、订正率基线。
+   练习题/错题/订正数由分板块算出后汇总，保证总分与分项恒等 */
+var LOG=[{short:0,days:18,min:22,rate:62},
+         {short:0,days:21,min:24,rate:80},
+         {short:2,days:13,min:26,rate:84}];
+function qPer(k){return 18+Math.round((POINTS[k]||12)*0.5);}   /* 训练点越多，每讲配题越多 */
+function wrRate(m){return Math.min(.45,Math.max(.08,(1-m/100)*0.5));}
 
 function buildMonths(){
   var st={};res.arr.forEach(function(b){st[b.k]=b.m;});
   var out=[],trained={};
   for(var i=0;i<3;i++){
-    var order=rank(st),focus=[order[0].k,order[1].k],before={};
+    var order=rank(st),pick=order.filter(function(x){return x.m<90;});
+    if(pick.length<3)pick=order;
+    var main=pick[0].k,subs=[pick[1].k,pick[2].k],focus=[main].concat(subs),before={};
     for(var k in st)before[k]=st[k];
-    focus.forEach(function(k){st[k]=Math.min(95,st[k]+Math.round(gainAdj(st[k],k)));});
+    var d=LOG[i];
+    /* 分板块学习过程：主攻 4 讲、辅练各 2 讲；缺口优先扣在辅练上 */
+    var rows=[],left=d.short;
+    [[main,'主攻',4,1],[subs[0],'辅练',2,0.35],[subs[1],'辅练',2,0.35]].forEach(function(x){
+      var k=x[0],plan=x[2],cut=(x[1]==='辅练')?Math.min(left,1):0;left-=cut;
+      var done=plan-cut,q=done*qPer(k),wr=Math.round(q*wrRate(st[k]));
+      var rt=Math.max(30,Math.min(98,d.rate+Math.round((st[k]-60)/10)));
+      rows.push({k:k,n:B[k].n,role:x[1],plan:plan,done:done,q:q,wr:wr,
+                 raw:wr*rt/100,rate:rt,f:x[3]});
+    });
+    /* 最大余额法分配订正数，保证 合计订正率 ≈ 各行加权平均 */
+    var tgt=Math.round(rows.reduce(function(a,r){return a+r.raw},0));
+    rows.forEach(function(r){r.fx=Math.floor(r.raw);});
+    var rem=tgt-rows.reduce(function(a,r){return a+r.fx},0);
+    rows.slice().sort(function(x,y){return (y.raw-Math.floor(y.raw))-(x.raw-Math.floor(x.raw));})
+        .forEach(function(r){if(rem>0&&r.fx<r.wr){r.fx++;rem--;}});
+    rows.forEach(function(r){r.rate=r.wr?Math.round(r.fx/r.wr*100):0;});
+    d.rows=rows;
+    d.plan=rows.reduce(function(a,r){return a+r.plan},0);
+    d.done=rows.reduce(function(a,r){return a+r.done},0);
+    d.q=rows.reduce(function(a,r){return a+r.q},0);
+    d.wr=rows.reduce(function(a,r){return a+r.wr},0);
+    d.fx=rows.reduce(function(a,r){return a+r.fx},0);
+    rows.forEach(function(r){st[r.k]=Math.min(95,st[r.k]+Math.round(gainAdj(st[r.k],r.k)*r.f));});
     focus.forEach(function(k){trained[k]=1;});
     /* 只有练过的板块才会回落——没学过的不存在"忘" */
     for(var k in st){if(focus.indexOf(k)<0&&trained[k]&&st[k]<95)
       st[k]=Math.max(0,st[k]-(st[k]>=80?1:3));}
     var after={};for(var k in st)after[k]=st[k];
-    var d=LOG[i];d.rate=Math.round(d.fx/d.wr*100);
+    d.rate=Math.round(d.fx/d.wr*100);
     /* 回落板块 */
     var drop=null;
     for(var k in after){var dd=before[k]-after[k];
@@ -680,7 +725,7 @@ function buildMonths(){
       d:'这件事<b>比多学两讲更有用</b>。错题本里躺着的每一道，都是已经找出来的漏洞。'});
     if(d.days<15)recs.push({t:'把学习拆到工作日',
       d:'目标不是加量，是<b>把 '+d.days+' 天变成 20 天</b>，每次 20 分钟即可。'});
-    out.push({i:i+1,focus:focus,before:before,after:after,d:d,probs:probs,recs:recs,drop:drop});
+    out.push({i:i+1,focus:focus,main:main,subs:subs,before:before,after:after,d:d,probs:probs,recs:recs,drop:drop});
   }
   return out;
 }
@@ -691,28 +736,37 @@ function showMonth(k){
     return '<div class="'+(j===k?'on':'')+'" onclick="showMonth('+j+')">第 '+m.i+' 个月</div>';})
     .join('')+'<div class="lk">第 4 个月…</div>';
   var M=MONTHS[k],h='';
-  var pts=M.focus.reduce(function(a,k){return a+(POINTS[k]||12)},0);
-  h+='<div class="focus"><em>本月主攻</em><b>'+M.focus.map(function(x){return B[x].n}).join(' ＋ ')+
-     '</b><p>按上月的失分权重排出来的，不是按教材顺序。<br>本月覆盖 <b>'+pts+' 个训练点</b>，'+
-     '下面每一栏的实际变化，都落在上个周期给出的预计区间里。</p></div>';
+  var pts=(POINTS[M.main]||12)+M.subs.reduce(function(a,k){return a+Math.round((POINTS[k]||12)/3)},0);
+  h+='<div class="focus"><em>本月安排</em><b>'+B[M.main].n+'</b>'+
+     '<p>主攻 1 块 ＋ 辅练 '+M.subs.map(function(x){return B[x].n}).join('、')+
+     '<br>按上月的失分权重排出来的，不是按教材顺序。本月覆盖 <b>'+pts+' 个训练点</b>。</p></div>';
   /* 能力变化 */
   h+='<div class="rcard"><div class="rt"><s></s>六大板块，这个月动了多少</div><div class="rs">上月 → 本月 · 复测实得，不是估算</div>';
   rank(M.after).forEach(function(b){
     var a=M.before[b.k],c=M.after[b.k],dt=c-a;
     var cls=dt>0?'d-up':(dt<0?'d-dn':'d-fl');
     var tx=dt>0?('▲ '+dt):(dt<0?('▼ '+(-dt)):'—');
-    h+='<div class="chg"><div class="nm">'+b.n+(M.focus.indexOf(b.k)>=0?'<i>主攻</i>':'')+
+    var rl=(b.k===M.main)?'<i>主攻</i>':(M.subs.indexOf(b.k)>=0?'<i style="background:#f2f4f7;color:#9aa8bc">辅练</i>':'');
+    h+='<div class="chg"><div class="nm">'+b.n+rl+
        '</div><div class="vs">'+a+'% → <b>'+c+'%</b></div><div class="dt '+cls+'">'+tx+'</div></div>';});
   h+='</div>';
   /* 过程数据 */
   var d=M.d;
-  h+='<div class="rcard"><div class="rt"><s></s>学习过程</div><div class="rs">系统自动记录，不用手填</div><div class="grid">'+
-     '<div><b'+(d.done<d.plan?' class="al"':'')+'>'+d.done+'/'+d.plan+'</b><em>完成讲数</em></div>'+
-     '<div><b>'+d.q+'</b><em>练习题数</em></div>'+
-     '<div><b>'+d.wr+'</b><em>错题数</em></div>'+
-     '<div><b'+(d.rate<70?' class="al"':'')+'>'+d.rate+'%</b><em>错题订正率</em></div>'+
-     '<div><b'+(d.days<15?' class="al"':'')+'>'+d.days+'</b><em>有效学习天</em></div>'+
-     '<div><b>'+d.min+'</b><em>平均分钟/次</em></div></div></div>';
+  h+='<div class="rcard"><div class="rt"><s></s>学习过程</div><div class="rs">分板块记录，系统自动生成，不用手填</div>'+
+     '<div class="ptb"><div class="pth"><span class="c1" style="text-align:left;color:#a3b0c2">板块</span>'+
+     '<span class="c2">完成/安排</span><span class="c3">练习题</span><span class="c4">错题</span><span class="c5">订正率</span></div>';
+  d.rows.forEach(function(r){
+    h+='<div class="ptr"><div class="c1">'+r.n+'<i class="'+(r.role==='主攻'?'i-m':'i-s')+'">'+r.role+'</i></div>'+
+       '<span class="c2'+(r.done<r.plan?' al':'')+'">'+r.done+'/'+r.plan+' 讲</span>'+
+       '<span class="c3">'+r.q+'</span><span class="c4">'+r.wr+'</span>'+
+       '<span class="c5'+(r.rate<70?' al':(r.rate>=85?' ok':''))+'">'+r.rate+'%</span></div>';});
+  h+='<div class="ptr sum"><div class="c1">合计</div>'+
+     '<span class="c2'+(d.done<d.plan?' al':'')+'">'+d.done+'/'+d.plan+' 讲</span>'+
+     '<span class="c3">'+d.q+'</span><span class="c4">'+d.wr+'</span>'+
+     '<span class="c5'+(d.rate<70?' al':'')+'">'+d.rate+'%</span></div></div>'+
+     '<div class="grid" style="margin-top:14px">'+
+     '<div style="width:calc(50% - 4px)"><b'+(d.days<15?' class="al"':'')+'>'+d.days+'</b><em>有效学习天</em></div>'+
+     '<div style="width:calc(50% - 4px)"><b>'+d.min+'</b><em>平均分钟/次</em></div></div></div>';
   /* 问题 */
   h+='<div class="rt" style="margin:18px 0 3px"><s></s>本月的问题</div>'+
      '<div class="rs">月报只报喜就没人信了</div>';

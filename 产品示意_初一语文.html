@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><title>初一语文 · 能力诊断与训练方案（产品示意）</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:#e8eef7;display:flex;justify-content:center;padding:24px 0}
+.page{width:1080px;background:#f2f6fc}
+.hd{background:linear-gradient(120deg,#2f6fd0,#4a8ee6 60%,#6aa8f0);padding:44px 56px;color:#fff;position:relative;overflow:hidden}
+.hd::after{content:"";position:absolute;right:-60px;top:-80px;width:320px;height:320px;background:rgba(255,255,255,.1);border-radius:50%}
+.hd h1{font-size:42px;font-weight:800;letter-spacing:1px}
+.hd p{font-size:22px;margin-top:10px;opacity:.92}
+.hd .mark{position:absolute;right:56px;top:52px;font-size:19px;background:rgba(255,255,255,.2);padding:8px 20px;border-radius:20px}
+.body{padding:36px 40px 0}
+.sec{margin-bottom:34px}
+.sec-t{display:flex;align-items:center;font-size:29px;font-weight:800;color:#1b4b8f;margin-bottom:8px}
+.sec-t i{width:7px;height:29px;background:#2f6fd0;border-radius:4px;margin-right:14px}
+.sec-s{font-size:20px;color:#8a97ab;margin:0 0 20px 21px}
+.card{background:#fff;border-radius:14px;padding:30px 34px;box-shadow:0 2px 10px rgba(30,70,140,.06)}
+.key{background:#eaf2fd;border-left:8px solid #2f6fd0;border-radius:10px;padding:24px 30px;font-size:28px;font-weight:800;color:#1b4b8f;line-height:1.5}
+.key small{display:block;font-size:20px;font-weight:400;color:#4a6b8a;margin-top:10px}
+
+/* 能力条 */
+.rowh{display:flex;font-size:18px;color:#9aa8bc;padding:0 0 12px;border-bottom:1px solid #eef2f7;margin-bottom:16px}
+.rowh span:nth-child(1){width:190px}.rowh span:nth-child(2){flex:1}
+.rowh span:nth-child(3){width:96px;text-align:center}.rowh span:nth-child(4){width:120px;text-align:center}
+.row{display:flex;align-items:center;margin-bottom:18px}
+.row .nm{width:190px;font-size:23px;font-weight:700;color:#1f2d3d}
+.row .nm em{display:block;font-style:normal;font-size:17px;color:#9aa8bc;font-weight:400;margin-top:3px}
+.bar{flex:1;height:26px;background:#eef2f7;border-radius:13px;position:relative;margin-right:80px}
+.bar div{height:100%;border-radius:13px}
+.bar b{position:absolute;left:calc(100% + 14px);top:1px;font-size:20px;color:#5a6b80;width:58px;text-align:left}
+.w-lo div{background:linear-gradient(90deg,#f08a7a,#e05c46)}
+.w-md div{background:linear-gradient(90deg,#f0c987,#e0a33a)}
+.w-hi div{background:linear-gradient(90deg,#7fce9f,#3a9e63)}
+.sp{width:96px;text-align:center;font-size:21px;color:#5a6b80}
+.pr{width:120px;text-align:center}
+.pr span{display:inline-block;font-size:19px;font-weight:800;padding:5px 14px;border-radius:14px}
+.p1{background:#fdeaea;color:#d9534f}.p2{background:#fdf3e0;color:#d1873a}.p3{background:#eef1f5;color:#8a97ab}
+.formula{margin-top:22px;padding:18px 24px;background:#f7f9fc;border-radius:10px;font-size:20px;color:#5a6b80;line-height:1.7}
+.formula b{color:#1b4b8f}
+
+/* 体验课 */
+.lessons{display:flex;flex-wrap:wrap;gap:14px}
+.ls{width:calc(25% - 11px);background:#fff;border-radius:12px;padding:20px 18px;box-shadow:0 2px 8px rgba(30,70,140,.06);border-top:5px solid #cfd8e5}
+.ls.dy{border-top-color:#e05c46;background:#fffaf9}
+.ls .n{font-size:17px;color:#9aa8bc;margin-bottom:8px}
+.ls .t{font-size:21px;font-weight:700;color:#1f2d3d;line-height:1.4}
+.ls .g{font-size:16px;margin-top:10px;padding:3px 10px;border-radius:10px;display:inline-block}
+.g-dy{background:#fdeaea;color:#d9534f}.g-fx{background:#eef1f5;color:#8a97ab}
+.legend{margin-top:18px;font-size:20px;color:#5a6b80;line-height:1.7}
+.legend b{color:#d9534f}
+
+/* 复测 */
+.cmp{display:flex;gap:18px}
+.cmp>div{flex:1;background:#fff;border-radius:14px;padding:26px 28px;box-shadow:0 2px 10px rgba(30,70,140,.06)}
+.cmp h4{font-size:22px;color:#8a97ab;font-weight:600;margin-bottom:16px}
+.cmp .big{font-size:44px;font-weight:800;color:#1f2d3d}
+.cmp .big i{font-style:normal;font-size:26px;color:#9aa8bc;margin:0 8px}
+.cmp .up{color:#3a9e63}.cmp .flat{color:#8a97ab}
+.cmp .tag{display:inline-block;font-size:18px;padding:5px 14px;border-radius:12px;margin-top:14px}
+.t-up{background:#e6f5ec;color:#3a9e63}.t-flat{background:#eef1f5;color:#8a97ab}
+
+/* 周期表 */
+.wk{display:flex;align-items:center;background:#fff;border-radius:12px;padding:20px 26px;margin-bottom:12px;box-shadow:0 2px 8px rgba(30,70,140,.06)}
+.wk .p{width:130px;font-size:20px;font-weight:800;color:#2f6fd0}
+.wk .m{flex:1}
+.wk .m b{font-size:24px;color:#1f2d3d;display:block}
+.wk .m em{font-style:normal;font-size:18px;color:#8a97ab}
+.wk .r{font-size:19px;color:#3a9e63;background:#e6f5ec;padding:7px 16px;border-radius:12px}
+.ft{background:#1b3a63;color:#fff;padding:30px 56px;display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+.ft b{font-size:26px;font-weight:800}.ft p{font-size:18px;opacity:.75;margin-top:6px}
+.ft .r{text-align:right;font-size:19px;opacity:.9;line-height:1.6}
+</style></head><body><div class="page">
+
+<div class="hd"><div class="mark">产品示意</div>
+<h1>初一语文 · 能力诊断与训练方案</h1>
+<p>测 → 定向练 → 复测 · 像私教，不像年卡</p></div>
+
+<div class="body">
+
+<div class="sec">
+  <div class="sec-t"><i></i>① 诊断结果：六大板块，哪块在漏分</div>
+  <div class="sec-s">来源：15 道题测试（3–5 分钟）· 示例学生：语文 79 分</div>
+  <div class="card">
+    <div class="rowh"><span>板块</span><span style="padding-left:6px">掌握度</span><span>卷面占分</span><span>训练优先级</span></div>
+
+    <div class="row"><div class="nm">记叙文阅读<em>概括·赏析·主旨</em></div>
+      <div class="bar w-lo"><div style="width:38%"></div><b>38%</b></div><div class="sp">20 分</div>
+      <div class="pr"><span class="p1">第 1 位</span></div></div>
+
+    <div class="row"><div class="nm">写作意识<em>选材·细节描写</em></div>
+      <div class="bar w-md"><div style="width:70%"></div><b>70%</b></div><div class="sp">30 分</div>
+      <div class="pr"><span class="p1">第 2 位</span></div></div>
+
+    <div class="row"><div class="nm">古诗文<em>默写·实词·句意</em></div>
+      <div class="bar w-lo"><div style="width:45%"></div><b>45%</b></div><div class="sp">15 分</div>
+      <div class="pr"><span class="p2">第 3 位</span></div></div>
+
+    <div class="row"><div class="nm">基础积累<em>字词·成语·病句</em></div>
+      <div class="bar w-hi"><div style="width:72%"></div><b>72%</b></div><div class="sp">20 分</div>
+      <div class="pr"><span class="p2">第 4 位</span></div></div>
+
+    <div class="row"><div class="nm">说明文阅读<em>筛选·说明方法</em></div>
+      <div class="bar w-md"><div style="width:65%"></div><b>65%</b></div><div class="sp">10 分</div>
+      <div class="pr"><span class="p3">第 5 位</span></div></div>
+
+    <div class="row" style="margin-bottom:0"><div class="nm">名著阅读<em>情节·人物</em></div>
+      <div class="bar w-lo"><div style="width:30%"></div><b>30%</b></div><div class="sp">5 分</div>
+      <div class="pr"><span class="p3">第 6 位</span></div></div>
+
+    <div class="formula"><b>排序规则：失分权重 = （1 − 掌握度）× 卷面占分</b><br>
+    所以名著虽然掌握度最低（30%），但只占 5 分，排在最后；<br>
+    写作掌握度有 70%，因为占 30 分，反而排到第 2 位。<b>先练"丢分最多的"，不是"最弱的"。</b></div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-t"><i></i>② 一句话归因</div>
+  <div class="sec-s">15 题里的交叉验证得出，家长自己看不出来</div>
+  <div class="key">孩子读得懂，但不会按采分点答题。
+  <small>依据：内容概括题全对，赏析题和主旨题全错 —— 这不是阅读能力问题，是答题方法问题。<br>
+  这是初一最高频、也最容易补的一类。</small></div>
+</div>
+
+<div class="sec">
+  <div class="sec-t"><i></i>③ 体验课 8 讲：一半由诊断决定</div>
+  <div class="sec-s">别家体验课谁来都一样；这里第 1 讲就直接打你的短板</div>
+  <div class="lessons">
+    <div class="ls dy"><div class="n">第 1 讲</div><div class="t">记叙文·<br>内容概括采分点</div><div class="g g-dy">按诊断编排</div></div>
+    <div class="ls dy"><div class="n">第 2 讲</div><div class="t">记叙文·<br>赏析题答题模板</div><div class="g g-dy">按诊断编排</div></div>
+    <div class="ls dy"><div class="n">第 3 讲</div><div class="t">写作·<br>细节描写怎么写</div><div class="g g-dy">按诊断编排</div></div>
+    <div class="ls dy"><div class="n">第 4 讲</div><div class="t">写作·<br>写人选材三原则</div><div class="g g-dy">按诊断编排</div></div>
+    <div class="ls"><div class="n">第 5 讲</div><div class="t">基础积累·<br>高频成语辨析</div><div class="g g-fx">固定底座</div></div>
+    <div class="ls"><div class="n">第 6 讲</div><div class="t">基础积累·<br>病句常见类型</div><div class="g g-fx">固定底座</div></div>
+    <div class="ls"><div class="n">第 7 讲</div><div class="t">通法·<br>怎么找采分点</div><div class="g g-fx">固定通法</div></div>
+    <div class="ls"><div class="n">第 8 讲</div><div class="t">通法·<br>答题规范与踩分</div><div class="g g-fx">固定通法</div></div>
+  </div>
+  <div class="legend"><b>红色 4 讲由诊断结果决定</b>，灰色 4 讲固定。一半动态一半固定 —— 既真的个性化，又不会变成无限组合、没法运营。<br>
+  每讲内部走学练改：<b>学 → 当堂练 → 当场改 → 错题自动收</b>。这是"私教纠动作"在产品里的落点。</div>
+</div>
+
+<div class="sec">
+  <div class="sec-t"><i></i>④ 体验结束先复测，不直接卖年课</div>
+  <div class="sec-s">换题不换考点 · 5 分钟 · 把"练过的"和"没练的"摆在一起</div>
+  <div class="cmp">
+    <div><h4>记叙文阅读（练过）</h4><div class="big">38%<i>→</i><span class="up">61%</span></div><div class="tag t-up">▲ 提升 23 个百分点</div></div>
+    <div><h4>写作意识（练过）</h4><div class="big">70%<i>→</i><span class="up">82%</span></div><div class="tag t-up">▲ 提升 12 个百分点</div></div>
+    <div><h4>古诗文（没练）</h4><div class="big">45%<i>→</i><span class="flat">47%</span></div><div class="tag t-flat">— 基本没动</div></div>
+  </div>
+  <div class="legend" style="margin-top:20px">没练的那一栏是故意留的 —— <b>它证明变化来自训练，不是来自"又长大了两周"。</b><br>
+  年课的话术因此变成：<b>"记叙文两周就有变化，剩下四块按同样的方法一块一块过。"</b><br>
+  这句话里没有任何提分承诺，但比"提分 30 分"有力，因为家长刚刚亲眼验证过一次。</div>
+</div>
+
+<div class="sec">
+  <div class="sec-t"><i></i>⑤ 年课＝训练周期表，不是课程目录</div>
+  <div class="sec-s">按诊断优先级排，不按教材顺序排 —— 这是"定制"看得见的证据</div>
+  <div class="wk"><div class="p">第 1–4 周</div><div class="m"><b>记叙文阅读</b><em>失分权重最高，占分 20 分</em></div><div class="r">期末复测</div></div>
+  <div class="wk"><div class="p">第 5–8 周</div><div class="m"><b>写作 · 细节与选材</b><em>卷面占分最大的单项，30 分</em></div><div class="r">期末复测</div></div>
+  <div class="wk"><div class="p">第 9–12 周</div><div class="m"><b>古诗文</b><em>初一新增的硬失分板块</em></div><div class="r">期末复测</div></div>
+  <div class="wk"><div class="p">第 13–16 周</div><div class="m"><b>基础积累</b><em>底座，随堂持续渗透</em></div><div class="r">期末复测</div></div>
+  <div class="wk"><div class="p">第 17–20 周</div><div class="m"><b>说明文 ＋ 名著</b><em>题型固定，最容易速成 —— 留作后期的提分惊喜</em></div><div class="r">期末复测</div></div>
+  <div class="legend" style="margin-top:18px">每个周期有终点、有复测，家长知道什么时候能看到反馈，而不是"买了慢慢学"。<br>
+  <b>复测数据累积成阶段报告 —— 续费时不用推销，把报告给家长看就行。</b></div>
+</div>
+
+</div>
+
+<div class="ft"><div><b>【JOJOUP】</b><p>测 → 定向练 → 复测</p></div>
+<div class="r">别家卖的是器械和课时<br>我们卖的是训练计划和复测</div></div>
+
+</div></body></html>

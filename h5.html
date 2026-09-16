@@ -245,6 +245,9 @@ body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;b
 .ptr span{font-size:11.5px;color:#5a6b80;text-align:center;flex-shrink:0}
 .ptr span.al{color:#d9534f;font-weight:800}
 .ptr span.ok{color:#3a9e63;font-weight:700}
+.ptr.exm{border-bottom:0;background:#f4f9ff;margin-top:6px;border-radius:9px;padding:10px 8px}
+.ptr.exm .c1{font-weight:800;color:#1b4b8f;padding-left:6px}
+.c1 i.i-e{background:#e6f5ec;color:#3a9e63;font-weight:800}
 .ptr.off .c1{color:#b3bfd0}
 .ptr.off span{color:#cbd5e2}
 .grid{display:flex;flex-wrap:wrap;gap:8px}
@@ -399,7 +402,7 @@ body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;b
 
     <div class="rcard"><div class="rt"><s></s>半年能力提升计划</div><div class="rs">记录孩子的每一次学习数据，让孩子能力成长一目了然</div>
       <div id="wkbox"></div>
-      <div class="frm">进入年课后，每个周期有终点、有阶段测。<b>什么时候能看到反馈是写明的</b>，不是"买了慢慢学"。<br>（体验的这 3 天<b>不加测</b>，数据直接取自当堂练习）</div>
+      <div class="frm">进入年课后，每个月产品里本来就有<b>一次月考专项练</b>——掌握度就从那次的作答里读出来，<b>不额外加测、不多占时间</b>。<br>什么时候能看到反馈是写明的，不是"买了慢慢学"。（体验的这 3 天同样不加测，数据取自当堂练习）</div>
     </div>
 
     <div class="key"><b>"记叙文三天就有变化，剩下几块按同样的方法一块一块过。"</b>
@@ -605,7 +608,7 @@ function plan(){
   document.getElementById('planc').innerHTML=h;
   document.getElementById('s6sub').textContent='主攻：'+res.arr[0].n+' ＋ '+res.arr[1].n;
   /* 体验小结与年课 */
-  /* 体验小结：只用这 8 讲真实练出来的量和正确率，不做复测 */
+  /* 体验小结：只用这 8 讲真实练出来的量和正确率，不加测 */
   var seen={},order=[];
   L.forEach(function(x){if(x.k){if(!seen[x.k]){seen[x.k]={n:B[x.k].n,k:x.k,ls:0,dy:x.dy};order.push(x.k);}seen[x.k].ls++;}});
   var ex=order.map(function(k){
@@ -650,7 +653,7 @@ function plan(){
         (hi>from?'<i>+'+(lo-from)+'~'+(hi-from)+'</i>':'')+'</div></div>';
       st[b.k]=bump(from,g);
     });
-    w+='<div class="per"><div class="ph"><b>'+wk[i]+'</b><span>训练点 '+pts+' 个 · 期末复测</span></div>'+body+'</div>';
+    w+='<div class="per"><div class="ph"><b>'+wk[i]+'</b><span>训练点 '+pts+' 个 · 含月考专项练</span></div>'+body+'</div>';
   }
   var hold=res.arr.filter(function(x){return x.m>=90});
   if(hold.length)w+='<div class="frm" style="margin-top:2px">'+hold.map(function(x){return x.n}).join('、')+
@@ -658,7 +661,7 @@ function plan(){
   w+='<div class="frm" style="margin-top:2px">每期<b>一个主攻 ＋ 两个辅练</b>，不是一次只碰一块——'+
      '语文的板块需要滚动，隔太久不碰就会退。<br>'+
      '各期的起点是<b>上一期的终点</b>，所以数字是累计的，不是每次都从诊断那天算。<br>'+
-     '"预计"给的是<b>掌握度区间，不是分数</b>，依据是当前掌握度与训练点数量，<b>每期复测校准一次</b>。</div>';
+     '"预计"给的是<b>掌握度区间，不是分数</b>，依据是当前掌握度与训练点数量，<b>每月的月考专项练会校准一次</b>。</div>';
   document.getElementById('wkbox').innerHTML=w;
   MONTHS=buildMonths();showMonth(0);
   go('s6');
@@ -711,6 +714,9 @@ function buildMonths(){
     rows.slice().sort(function(x,y){return (y.raw-Math.floor(y.raw))-(x.raw-Math.floor(x.raw));})
         .forEach(function(r){if(rem>0&&r.fx<r.wr){r.fx++;rem--;}});
     rows.forEach(function(r){r.rate=r.wr?Math.round(r.fx/r.wr*100):0;});
+    /* 月考专项练：产品里本来就有的一讲，同时充当当月掌握度的测量点 */
+    var tw=0,ts=0;for(var k in B){tw+=B[k].w;ts+=st[k]*B[k].w;}
+    d.exam={ls:1,q:30,acc:Math.round(ts/tw)};
     d.rows=rows;
     d.plan=rows.reduce(function(a,r){return a+r.plan},0);
     d.done=rows.reduce(function(a,r){return a+r.done},0);
@@ -769,7 +775,7 @@ function showMonth(k){
      '<p>主攻 1 块 ＋ 辅练 '+M.subs.map(function(x){return B[x].n}).join('、')+
      '<br>按上月的失分权重排出来的，不是按教材顺序。本月覆盖 <b>'+pts+' 个训练点</b>。</p></div>';
   /* 能力变化 */
-  h+='<div class="rcard"><div class="rt"><s></s>六大板块，这个月动了多少</div><div class="rs">上月 → 本月 · 复测实得，不是估算</div>';
+  h+='<div class="rcard"><div class="rt"><s></s>六大板块，这个月动了多少</div><div class="rs">上月 → 本月 · 月考专项练实测，不是估算</div>';
   rank(M.after).forEach(function(b){
     var a=M.before[b.k],c=M.after[b.k],dt=c-a;
     var cls=dt>0?'d-up':(dt<0?'d-dn':'d-fl');
@@ -795,10 +801,16 @@ function showMonth(k){
        '<span class="c2'+(r.done<r.plan?' al':'')+'">'+r.done+'/'+r.plan+' 讲</span>'+
        '<span class="c3">'+r.q+'</span><span class="c4">'+r.wr+'</span>'+
        '<span class="c5'+(r.rate<70?' al':(r.rate>=85?' ok':''))+'">'+r.rate+'%</span></div>';});
-  h+='<div class="ptr sum"><div class="c1">合计</div>'+
+  h+='<div class="ptr sum"><div class="c1">板块训练 合计</div>'+
      '<span class="c2'+(d.done<d.plan?' al':'')+'">'+d.done+'/'+d.plan+' 讲</span>'+
      '<span class="c3">'+d.q+'</span><span class="c4">'+d.wr+'</span>'+
-     '<span class="c5'+(d.rate<70?' al':'')+'">'+d.rate+'%</span></div></div>'+
+     '<span class="c5'+(d.rate<70?' al':'')+'">'+d.rate+'%</span></div>'+
+     '<div class="ptr exm"><div class="c1">月考专项练<i class="i-e">测量点</i></div>'+
+     '<span class="c2">'+d.exam.ls+'/1 讲</span><span class="c3">'+d.exam.q+'</span>'+
+     '<span class="c4">—</span><span class="c5 '+(d.exam.acc<60?'al':d.exam.acc>=80?'ok':'')+'">'+d.exam.acc+'%</span></div></div>'+
+     '<div class="frm" style="margin-top:10px">最后一行是<b>产品里本来就有的月考专项练</b>——'+
+     '上面"六大板块这个月动了多少"的掌握度，就是从这一讲的作答里读出来的。<br>'+
+     '<b>不是额外加的测试</b>，孩子照常上完这一讲，数据就有了。</div>'+
      '<div class="frm" style="margin-top:10px">标"未安排"的板块本月没有排课——'+
      '<b>这几块的掌握度会小幅回落</b>，属于正常现象，会在后面的周期轮到。</div>'+
      '<div class="grid" style="margin-top:12px">'+
@@ -812,7 +824,7 @@ function showMonth(k){
   h+='<div class="rt" style="margin:18px 0 3px"><s></s>下个月的重点</div>'+
      '<div class="rs">全部从上面的数据推出来，每条都能对上</div>';
   M.recs.forEach(function(r){h+='<div class="rec"><b>→ '+r.t+'</b><p>'+r.d+'</p></div>';});
-  h+='<div class="tip">掌握度是<b>复测测出来的</b>，不是老师估的<br>全程没有一个提分承诺，但每一栏你都能自己核对</div>';
+  h+='<div class="tip">掌握度是孩子在<b>月考专项练里做出来的</b>，不是老师估的<br>全程没有一个提分承诺，但每一栏你都能自己核对</div>';
   document.getElementById('mc').innerHTML=h;
   var ph=document.getElementById('phone');if(ph)ph.scrollTop=0;window.scrollTo(0,0);
 }

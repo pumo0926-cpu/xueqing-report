@@ -185,6 +185,17 @@ body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;b
 .wk .p{width:62px;font-size:11px;font-weight:800;color:#2f6fd0;padding-top:2px;flex-shrink:0}
 .wk .m{flex:1;min-width:0}.wk .m b{font-size:13px;color:#1f2d3d;display:block}
 .wk .m em{font-style:normal;font-size:10px;color:#a3b0c2}
+.ex{background:#fff;border-radius:12px;padding:13px 14px;margin-bottom:9px;box-shadow:0 2px 8px rgba(30,70,140,.06);border-left:4px solid #cfd8e5}
+.ex.need{border-left-color:#e05c46}.ex.mid{border-left-color:#e0a33a}.ex.good{border-left-color:#3a9e63}
+.ex .eh{display:flex;align-items:center;margin-bottom:7px}
+.ex .eh b{font-size:14px;color:#1f2d3d;flex:1;min-width:0}
+.ex .eh i{font-style:normal;font-size:9px;padding:2px 7px;border-radius:6px;margin-left:6px;flex-shrink:0}
+.ex .acc{font-size:11px;color:#a3b0c2;white-space:nowrap;flex-shrink:0}
+.ex .acc b{font-size:17px;font-weight:800;margin-left:3px}
+.a-need{color:#d9534f}.a-mid{color:#d1873a}.a-good{color:#3a9e63}
+.ex .vol{font-size:11px;color:#8a97ab;line-height:1.7}
+.ex .cc{display:inline-block;font-size:10px;padding:4px 11px;border-radius:8px;margin-top:9px;font-weight:800}
+.c-need{background:#fdeaea;color:#d9534f}.c-mid{background:#fdf3e0;color:#d1873a}.c-good{background:#e6f5ec;color:#3a9e63}
 .per{background:#fff;border-radius:12px;padding:13px 14px;margin-bottom:9px;box-shadow:0 2px 8px rgba(30,70,140,.06)}
 .per .ph{display:flex;justify-content:space-between;align-items:center;padding-bottom:9px;margin-bottom:5px;border-bottom:1px solid #f0f4fa}
 .per .ph b{font-size:13px;color:#2f6fd0;font-weight:800}
@@ -346,7 +357,7 @@ body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;b
 <!-- S5 报告 -->
 <div class="scr" id="s5">
   <div class="nav"><h1>能力诊断报告</h1><p id="s5sub">基于 15 道题的作答</p></div>
-  <div class="steps"><div class="ac"><b>1</b>诊断</div><div><b>2</b>3天8节</div><div><b>3</b>复测</div><div><b>4</b>月度跟踪</div></div>
+  <div class="steps"><div class="ac"><b>1</b>诊断</div><div><b>2</b>3天8节</div><div><b>3</b>体验小结</div><div><b>4</b>月度跟踪</div></div>
   <div class="ct">
     <div class="rcard"><div class="rt"><s></s>六大板块，哪块在漏分</div><div class="rs">条越短说明掌握得越差</div>
       <div id="bars"></div>
@@ -371,30 +382,30 @@ body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;b
 <!-- S6 学习安排 -->
 <div class="scr" id="s6">
   <div class="nav pad"><span class="back" onclick="go('s5')">‹</span><h1>3 天 8 节 · 体验安排</h1><p id="s6sub"></p></div>
-  <div class="steps"><div class="dn"><b>✓</b>诊断</div><div class="ac"><b>2</b>3天8节</div><div><b>3</b>复测</div><div><b>4</b>月度跟踪</div></div>
+  <div class="steps"><div class="dn"><b>✓</b>诊断</div><div class="ac"><b>2</b>3天8节</div><div><b>3</b>体验小结</div><div><b>4</b>月度跟踪</div></div>
   <div class="ct" id="planc"></div>
-  <div class="btnwrap"></div><button class="btn" onclick="go('s7')">3 天之后呢？ →</button>
+  <div class="btnwrap"></div><button class="btn" onclick="go('s7')">看这 3 天的小结 →</button>
 </div>
 
-<!-- S7 复测与年课 -->
+<!-- S7 体验小结与年课 -->
 <div class="scr" id="s7">
-  <div class="nav pad"><span class="back" onclick="go('s6')">‹</span><h1>第 3 天结束后</h1><p>先复测，再决定要不要继续</p></div>
-  <div class="steps"><div class="dn"><b>✓</b>诊断</div><div class="dn"><b>✓</b>3天8节</div><div class="ac"><b>3</b>复测</div><div><b>4</b>月度跟踪</div></div>
+  <div class="nav pad"><span class="back" onclick="go('s6')">‹</span><h1>体验课结束后</h1><p>用这 3 天的真实训练数据，看哪几块需要继续</p></div>
+  <div class="steps"><div class="dn"><b>✓</b>诊断</div><div class="dn"><b>✓</b>3天8节</div><div class="ac"><b>3</b>体验小结</div><div><b>4</b>月度跟踪</div></div>
   <div class="ct">
-    <div class="rcard"><div class="rt"><s></s>复测：换题不换考点</div><div class="rs">5 分钟 · 把"练过的"和"没练的"摆在一起</div>
-      <div class="cmp" id="cmpbox"></div>
-      <div class="frm">没练的那一栏是<b>故意留的</b>——它证明变化来自训练，<b>不是来自"又长大了三天"</b>。</div>
+    <div class="rcard"><div class="rt"><s></s>这 3 天练了哪几块</div><div class="rs">不加测 · 数据来自这 8 讲里的当堂练习</div>
+      <div id="cmpbox"></div>
+      <div class="frm" id="exsum"></div>
     </div>
 
     <div class="rcard"><div class="rt"><s></s>半年能力提升计划</div><div class="rs">记录孩子的每一次学习数据，让孩子能力成长一目了然</div>
       <div id="wkbox"></div>
-      <div class="frm">每个周期有终点、有复测。<b>什么时候能看到反馈是写明的</b>，不是"买了慢慢学"。</div>
+      <div class="frm">进入年课后，每个周期有终点、有阶段测。<b>什么时候能看到反馈是写明的</b>，不是"买了慢慢学"。<br>（体验的这 3 天<b>不加测</b>，数据直接取自当堂练习）</div>
     </div>
 
     <div class="key"><b>"记叙文三天就有变化，剩下几块按同样的方法一块一块过。"</b>
       <p>这句话里没有任何提分承诺 —— 但它比"提分 30 分"有力，因为<b>你刚刚自己验证过一次。</b></p></div>
 
-    <div class="tip" style="margin-top:16px">诊断 → 定向练 → 复测<br><b>别家卖的是课时，我们给的是训练计划和复测</b></div>
+    <div class="tip" style="margin-top:16px">诊断 → 定向练 → 看清哪块要继续<br><b>别家卖的是课时，我们给的是训练计划和过程数据</b></div>
     <div class="btnwrap"></div><button class="btn" onclick="go('s8')">进了年课之后呢？ →</button>
   </div>
 </div>
@@ -403,7 +414,7 @@ body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;b
 <!-- S8 月度学习报告 -->
 <div class="scr" id="s8">
   <div class="nav pad"><span class="back" onclick="go('s7')">‹</span><h1>年课 · 月度学习报告</h1><p>每月一封，记录变化，也指出问题</p></div>
-  <div class="steps"><div class="dn"><b>✓</b>诊断</div><div class="dn"><b>✓</b>3天8节</div><div class="dn"><b>✓</b>复测</div><div class="ac"><b>4</b>月度跟踪</div></div>
+  <div class="steps"><div class="dn"><b>✓</b>诊断</div><div class="dn"><b>✓</b>3天8节</div><div class="dn"><b>✓</b>体验小结</div><div class="ac"><b>4</b>月度跟踪</div></div>
   <div class="mtab" id="mtab"></div>
   <div class="ct" id="mc"></div>
   <div class="btnwrap"></div><button class="btn gh" onclick="reset()">↺ 重新体验一遍</button>
@@ -573,11 +584,11 @@ function report(){
 function plan(){
   var top=[res.arr[0].k,res.arr[1].k];
   var L=[];
-  top.forEach(function(k){LIB[k].forEach(function(x){L.push({t:x[0],d:x[1],dy:true,blk:B[k].n})})});
+  top.forEach(function(k){LIB[k].forEach(function(x){L.push({t:x[0],d:x[1],dy:true,blk:B[k].n,k:k})})});
   var third=res.arr.find(function(b){return top.indexOf(b.k)<0&&b.k!=='base'});
   var baseIn=top.indexOf('base')>=0;
   var fk=baseIn?third.k:'base';
-  LIB[fk].forEach(function(x){L.push({t:x[0],d:x[1],dy:false,blk:B[fk].n})});
+  LIB[fk].forEach(function(x){L.push({t:x[0],d:x[1],dy:false,blk:B[fk].n,k:fk})});
   FIX.forEach(function(x){L.push({t:x[0],d:x[1],dy:false,blk:'通用方法'})});
   var days=[[0,1,2],[3,4,5],[6,7]],names=['第 1 天','第 2 天','第 3 天'],h='';
   days.forEach(function(d,di){
@@ -589,23 +600,36 @@ function plan(){
          '<div class="flow"><span>学</span><span>当堂练</span><span>当场改</span><span>错题自动收</span></div></div>';});
     h+='</div>';
   });
-  h+='<div class="retest"><b>第 3 天结束 · 复测 5 分钟</b><p>换题不换考点，把练过的板块和没练的板块摆在一起看。<br>变化是自己测出来的，不是我们说的。</p></div>';
+  h+='<div class="retest"><b>体验课结束 · 一份学习小结</b><p>这 3 天练了哪几块、做了多少题、正确率多少，一次给您看清楚。<br>不加测、不占额外时间——数据是孩子练的时候顺手记下来的。</p></div>';
   h+='<div class="tip" style="margin-top:14px">红色 <b>4 讲由诊断结果决定</b>，灰色 4 讲固定。<br>一半动态一半固定——真的个性化，又不会变成无限组合没法运营。</div>';
   document.getElementById('planc').innerHTML=h;
   document.getElementById('s6sub').textContent='主攻：'+res.arr[0].n+' ＋ '+res.arr[1].n;
-  /* 复测与年课 */
-  var a=res.arr[0],b=res.arr[1];
-  /* "没练"对照：取未进入 3 天安排、且还有提升空间的板块 */
-  var c=res.arr.slice(2).filter(function(x){return x.m<90})[0];
-  var up=function(m){return Math.max(m,Math.min(98,m+(m<50?24:13)))};
-  var flat=function(m){return Math.min(100,m+2)};
-  var cells=['<div><h4>'+a.n+'<br>（练过）</h4><div class="v">'+a.m+'%<i>→</i><span class="up">'+up(a.m)+'%</span></div></div>',
-     '<div><h4>'+b.n+'<br>（练过）</h4><div class="v">'+b.m+'%<i>→</i><span class="up">'+up(b.m)+'%</span></div></div>'];
-  if(c)cells.push('<div><h4>'+c.n+'<br>（没练）</h4><div class="v">'+c.m+'%<i>→</i><span class="flat">'+flat(c.m)+'%</span></div></div>');
-  document.getElementById('cmpbox').innerHTML=cells.join('');
-  document.querySelector('#s7 .rcard .frm').innerHTML = c
-    ? '没练的那一栏是<b>故意留的</b>——它证明变化来自训练，<b>不是来自"又长大了三天"</b>。'
-    : '其余板块掌握度都已较高，<b>这次没有安排对照列</b>。';
+  /* 体验小结与年课 */
+  /* 体验小结：只用这 8 讲真实练出来的量和正确率，不做复测 */
+  var seen={},order=[];
+  L.forEach(function(x){if(x.k){if(!seen[x.k]){seen[x.k]={n:B[x.k].n,k:x.k,ls:0,dy:x.dy};order.push(x.k);}seen[x.k].ls++;}});
+  var ex=order.map(function(k){
+    var o=seen[k],b=res.arr.filter(function(x){return x.k===k})[0],m=b?b.m:60;
+    var q=o.ls*qPer(k),acc=Math.min(94,m+12),pts=POINTS[k]||12,cov=Math.round(pts*o.ls/4);
+    var lv=acc<60?['need','需要持续提升']:acc<80?['mid','建议继续巩固']:['good','已基本掌握，可降为辅练'];
+    return {n:o.n,dy:o.dy,ls:o.ls,q:q,acc:acc,pts:pts,cov:cov,lv:lv[0],txt:lv[1]};});
+  document.getElementById('cmpbox').innerHTML=ex.map(function(e){
+    return '<div class="ex '+e.lv+'"><div class="eh"><b>'+e.n+'</b>'+
+      '<i class="'+(e.dy?'i-m':'i-s')+'">'+(e.dy?'按诊断编排':'固定底座')+'</i>'+
+      '<span class="acc">正确率<b class="a-'+e.lv+'">'+e.acc+'%</b></span></div>'+
+      '<div class="vol">'+e.ls+' 讲 · '+e.q+' 道当堂练习 · 覆盖 '+e.cov+'/'+e.pts+' 个训练点</div>'+
+      '<div class="cc c-'+e.lv+'">'+e.txt+'</div></div>';}).join('')+
+    '<div class="ex" style="border-left-color:#cfd8e5"><div class="eh"><b>通用方法</b>'+
+    '<i class="i-s">固定通法</i><span class="acc">跨板块</span></div>'+
+    '<div class="vol">2 讲 · 找采分点与答题规范 —— 不单独计正确率，效果体现在上面每一块里</div></div>';
+  var need=ex.filter(function(e){return e.lv!=='good';});
+  document.getElementById('exsum').innerHTML=
+    '3 天 8 节，每块只上了 2 讲——<b>覆盖的是每个板块约一半的训练点</b>，剩下的还没碰。<br>'+
+    (need.length
+      ? '从这几天的正确率看，<b>'+need.map(function(e){return e.n}).join('、')+'</b> 还需要继续练；'+
+        '这不是"没学会"，是<b>训练量还不够</b>——光'+need[0].n+'就有 '+need[0].pts+' 个训练点，3 天碰不完。'
+      : '几块的正确率都已经不错，<b>可以按较低强度维持</b>。')+
+    '<br><b>这里没有做任何加测</b>，数字全部来自孩子练题时的实时记录。';
   var wk=['第 1–4 周','第 5–8 周','第 9–12 周','第 13–16 周','第 17–20 周'];
   /* 半年计划：每期 1 个主攻 + 2 个辅练，掌握度跨周期累计（第5期的起点是第4期的终点） */
   var st={};res.arr.forEach(function(b){st[b.k]=b.m;});

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>JOJOUP 初一语文 · 学生端</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:#c9d6e8;
+     display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:20px 0}
+#phone{width:390px;min-height:844px;background:#f4f7fc;position:relative;overflow:hidden;border-radius:34px;
+       box-shadow:0 12px 40px rgba(20,50,100,.25)}
+@media(max-width:430px){body{padding:0;background:#f4f7fc}#phone{width:100%;min-height:100vh;border-radius:0;box-shadow:none}}
+.scr{display:none;min-height:844px;flex-direction:column}
+.scr.on{display:flex}
+@media(max-width:430px){.scr{min-height:100vh}}
+
+/* 顶栏 */
+.top{background:linear-gradient(135deg,#3a7ee0,#5aa0f0 55%,#78c0f5);color:#fff;padding:26px 20px 22px;position:relative;overflow:hidden;flex-shrink:0}
+.top::after{content:"";position:absolute;right:-50px;top:-70px;width:250px;height:250px;background:rgba(255,255,255,.12);border-radius:50%}
+.top h1{font-size:23px;font-weight:800}
+.top p{font-size:13px;opacity:.9;margin-top:6px}
+.streak{position:absolute;right:18px;top:26px;background:rgba(255,255,255,.22);border-radius:16px;padding:7px 13px;font-size:13px;font-weight:700}
+.tbar{background:#2f6fd0;color:#fff;padding:18px 18px;display:flex;align-items:center;flex-shrink:0}
+.tbar .bk{font-size:21px;margin-right:12px;cursor:pointer}
+.tbar b{font-size:16px;flex:1}
+.tbar em{font-style:normal;font-size:13px;opacity:.85}
+
+.ct{padding:18px 16px 96px;flex:1}
+
+/* 今日任务卡 */
+.task{background:#fff;border-radius:20px;padding:20px;box-shadow:0 4px 16px rgba(30,70,140,.1);margin-bottom:14px}
+.task .tag{display:inline-block;font-size:11px;background:#eaf2fd;color:#2f6fd0;padding:5px 12px;border-radius:12px;font-weight:700}
+.task h2{font-size:21px;color:#1f2d3d;margin:13px 0 8px;line-height:1.4}
+.task .sub{font-size:13px;color:#8a97ab;line-height:1.7}
+.task .meta{display:flex;gap:10px;margin-top:15px}
+.task .meta div{flex:1;background:#f4f7fc;border-radius:12px;padding:12px 8px;text-align:center}
+.task .meta b{display:block;font-size:19px;color:#2f6fd0;font-weight:800}
+.task .meta em{font-style:normal;font-size:11px;color:#9aa8bc;display:block;margin-top:4px}
+
+.mini{background:#fff;border-radius:16px;padding:16px 18px;box-shadow:0 2px 10px rgba(30,70,140,.07);
+      display:flex;align-items:center;margin-bottom:12px;cursor:pointer}
+.mini .ic{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-right:13px;flex-shrink:0}
+.ic-r{background:#fff1e8}.ic-g{background:#e8f6ee}
+.mini .tx{flex:1;min-width:0}
+.mini .tx b{font-size:15px;color:#1f2d3d;display:block}
+.mini .tx p{font-size:12px;color:#9aa8bc;margin-top:4px;line-height:1.6}
+.mini .go{font-size:20px;color:#cbd5e2}
+
+/* 大按钮 */
+.btn{position:fixed;left:50%;transform:translateX(-50%);bottom:86px;width:358px;padding:17px;
+     background:linear-gradient(135deg,#f0913a,#e8762a);color:#fff;border:0;border-radius:28px;
+     font-size:17px;font-weight:800;cursor:pointer;box-shadow:0 8px 20px rgba(232,118,42,.35);font-family:inherit}
+.btn.blue{background:linear-gradient(135deg,#3a7ee0,#2f6fd0);box-shadow:0 8px 20px rgba(47,111,208,.35)}
+.btn.low{bottom:24px}
+.btn:disabled{background:#c3cfe0;box-shadow:none}
+@media(max-width:430px){.btn{width:calc(100% - 32px)}}
+
+/* 底部 tab */
+.tabs{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:390px;background:#fff;
+      display:flex;padding:9px 0 12px;box-shadow:0 -2px 14px rgba(30,70,140,.08)}
+@media(max-width:430px){.tabs{width:100%}}
+.tabs div{flex:1;text-align:center;font-size:11px;color:#b3bfd0;cursor:pointer}
+.tabs div b{display:block;font-size:21px;margin-bottom:3px;font-weight:400;filter:grayscale(1);opacity:.5}
+.tabs div.on{color:#2f6fd0;font-weight:800}
+.tabs div.on b{filter:none;opacity:1}
+
+/* 学 */
+.stage{background:#1b3a63;border-radius:18px;margin-bottom:16px;position:relative;overflow:hidden;
+       height:210px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff}
+.stage .em{font-size:52px}
+.stage .cap{font-size:14px;margin-top:14px;opacity:.9;padding:0 26px;text-align:center;line-height:1.7}
+.pbar{height:5px;background:rgba(255,255,255,.25);position:absolute;bottom:0;left:0;right:0}
+.pbar div{height:100%;background:#f0913a;width:0;transition:.25s linear}
+.pts{background:#fff;border-radius:16px;padding:18px;box-shadow:0 2px 10px rgba(30,70,140,.07)}
+.pts h3{font-size:15px;color:#1b4b8f;font-weight:800;margin-bottom:12px}
+.pts .li{display:flex;font-size:14px;color:#33414f;line-height:1.75;margin-bottom:11px}
+.pts .li b{color:#e8762a;margin-right:9px;flex-shrink:0}
+.pts .li:last-child{margin-bottom:0}
+.formula{background:#fff8ee;border-radius:12px;padding:15px;text-align:center;margin-top:14px;
+         font-size:17px;font-weight:800;color:#b9762a;letter-spacing:1px}
+
+/* 题 */
+.qbar{background:#fff;padding:13px 18px;display:flex;align-items:center;flex-shrink:0;border-bottom:1px solid #eef2f7}
+.qbar .dots{display:flex;gap:6px;flex:1}
+.qbar .dots i{width:100%;height:6px;background:#eef2f7;border-radius:3px}
+.qbar .dots i.ok{background:#3a9e63}.qbar .dots i.no{background:#e05c46}.qbar .dots i.now{background:#2f6fd0}
+.qbar span{font-size:12px;color:#9aa8bc;margin-left:12px;white-space:nowrap}
+.psg{background:#fff;border-radius:14px;padding:16px;font-size:14px;color:#4a5a6e;line-height:2;margin-bottom:15px;
+     box-shadow:0 2px 10px rgba(30,70,140,.06)}
+.qz{font-size:16px;color:#1f2d3d;font-weight:700;line-height:1.7;margin-bottom:15px}
+.opt{background:#fff;border:2px solid #eef2f7;border-radius:14px;padding:14px 16px;margin-bottom:10px;
+     font-size:14.5px;color:#33414f;cursor:pointer;line-height:1.65;display:flex}
+.opt i{font-style:normal;font-weight:800;color:#b3bfd0;margin-right:10px;flex-shrink:0}
+.opt.pick{border-color:#2f6fd0;background:#eaf2fd}
+.opt.right{border-color:#3a9e63;background:#e8f6ee}
+.opt.right i{color:#3a9e63}
+.opt.wrong{border-color:#e05c46;background:#fdeeea}
+.opt.wrong i{color:#e05c46}
+
+/* 当场改 */
+.fix{background:#fff;border-radius:16px;padding:18px;margin-top:4px;box-shadow:0 2px 12px rgba(30,70,140,.08);
+     border-top:5px solid #e05c46}
+.fix.good{border-top-color:#3a9e63}
+.fix h3{font-size:17px;font-weight:800;margin-bottom:12px;color:#d9534f}
+.fix.good h3{color:#3a9e63}
+.fix p{font-size:13.5px;color:#4a5a6e;line-height:1.85;margin-bottom:11px}
+.fix p b{color:#1f2d3d}
+.fix .key{background:#fff8ee;border-radius:11px;padding:13px 15px;font-size:13.5px;color:#b9762a;line-height:1.8;font-weight:700}
+.fix .into{margin-top:12px;font-size:12px;color:#9aa8bc;display:flex;align-items:center}
+.fix .into b{color:#e8762a;margin:0 4px}
+
+/* 完成 */
+.done{flex:1;display:flex;flex-direction:column;align-items:center;padding:34px 24px 0}
+.done .big{font-size:64px}
+.done h2{font-size:25px;font-weight:800;color:#1f2d3d;margin-top:14px}
+.done .sub{font-size:14px;color:#8a97ab;margin-top:9px;text-align:center;line-height:1.8}
+.stats{display:flex;gap:10px;width:100%;margin-top:26px}
+.stats div{flex:1;background:#fff;border-radius:16px;padding:16px 6px;text-align:center;box-shadow:0 2px 10px rgba(30,70,140,.07)}
+.stats b{display:block;font-size:24px;font-weight:800;color:#2f6fd0}
+.stats em{font-style:normal;font-size:11px;color:#9aa8bc;display:block;margin-top:5px}
+.unlock{width:100%;background:#fff;border-radius:16px;padding:18px;margin-top:14px;box-shadow:0 2px 10px rgba(30,70,140,.07)}
+.unlock .r{display:flex;align-items:center;justify-content:space-between}
+.unlock .r b{font-size:15px;color:#1f2d3d}
+.unlock .st{font-size:19px;letter-spacing:3px;color:#f0913a}
+.unlock p{font-size:12.5px;color:#8a97ab;margin-top:10px;line-height:1.75}
+.unlock p b{color:#e8762a}
+
+/* 错题本 */
+.wcard{background:#fff;border-radius:16px;padding:16px 18px;margin-bottom:11px;box-shadow:0 2px 10px rgba(30,70,140,.07);
+       border-left:4px solid #e05c46}
+.wcard.due2{border-left-color:#f0c987}
+.wcard .wh{display:flex;align-items:center;margin-bottom:8px}
+.wcard .wh b{font-size:14.5px;color:#1f2d3d;flex:1}
+.wcard .wh span{font-size:10px;background:#fdeeea;color:#d9534f;padding:3px 9px;border-radius:8px;font-weight:700}
+.wcard .wh span.s2{background:#fff8ec;color:#b9762a}
+.wcard p{font-size:12.5px;color:#8a97ab;line-height:1.7}
+.empty{text-align:center;padding:40px 20px;color:#9aa8bc;font-size:13.5px;line-height:1.9}
+.empty .e{font-size:50px;display:block;margin-bottom:14px}
+
+/* 成长 */
+.gcard{background:#fff;border-radius:16px;padding:17px 18px;box-shadow:0 2px 10px rgba(30,70,140,.07);margin-bottom:13px}
+.gr{display:flex;align-items:center;padding:11px 0;border-bottom:1px solid #f7f9fc}
+.gr:last-child{border:0}
+.gr .gn{width:96px;font-size:13.5px;color:#1f2d3d;font-weight:600;flex-shrink:0}
+.gr .gs{width:62px;font-size:16px;letter-spacing:2px;color:#f0913a;flex-shrink:0}
+.gr .gs.dim{color:#dbe3ee}
+.gr .gt{flex:1;font-size:12px;color:#9aa8bc;line-height:1.6;min-width:0}
+.goal{background:linear-gradient(135deg,#3a7ee0,#5aa0f0);color:#fff;border-radius:16px;padding:18px}
+.goal b{font-size:16px;display:block;margin-bottom:8px}
+.goal p{font-size:13px;opacity:.93;line-height:1.8}
+.hd2{font-size:15px;font-weight:800;color:#1b4b8f;margin:4px 0 11px;display:flex;align-items:center}
+.hd2 s{text-decoration:none;width:4px;height:15px;background:#2f6fd0;border-radius:3px;margin-right:8px}
+</style></head><body><div id="phone">
+
+<!-- 今天 -->
+<div class="scr on" id="s0">
+  <div class="top"><div class="streak">🔥 12 天</div>
+    <h1>下午好，浩然</h1><p>今天只有一讲，18 分钟就能弄完</p></div>
+  <div class="ct">
+    <div class="task"><span class="tag">今日新课 · 第 1 讲</span>
+      <h2>记叙文 · 内容概括的采分点</h2>
+      <div class="sub">上次测出来，你阅读题的"概括"这块最容易丢分。<br>这一讲专门讲它，学完当场练 5 道。</div>
+      <div class="meta">
+        <div><b>18</b><em>分钟</em></div>
+        <div><b>5</b><em>道当堂练</em></div>
+        <div><b>1/4</b><em>本板块进度</em></div>
+      </div>
+    </div>
+    <div class="mini" onclick="go('s4')"><div class="ic ic-r">📕</div>
+      <div class="tx"><b>昨天的 3 道错题</b><p>今天要重做一遍，大概 2 分钟</p></div><div class="go">›</div></div>
+    <div class="mini" onclick="go('s5')"><div class="ic ic-g">🌱</div>
+      <div class="tx"><b>我的成长</b><p>这周学了 5 讲，改掉 11 道错题</p></div><div class="go">›</div></div>
+  </div>
+  <button class="btn" onclick="startLearn()">开始今天的 18 分钟</button>
+  <div class="tabs" id="tabs"></div>
+</div>
+
+<!-- 学 -->
+<div class="scr" id="s1">
+  <div class="tbar"><span class="bk" onclick="go('s0')">‹</span><b>记叙文 · 内容概括</b><em id="lp">00:00</em></div>
+  <div class="ct" style="padding-bottom:100px">
+    <div class="stage"><div class="em" id="stEm">🎬</div><div class="cap" id="stCap">动画讲解中…</div>
+      <div class="pbar"><div id="pf"></div></div></div>
+    <div id="lbody"></div>
+  </div>
+  <button class="btn blue low" id="lbtn" style="display:none" onclick="toQuiz()">去练 5 道</button>
+</div>
+
+<!-- 练 -->
+<div class="scr" id="s2">
+  <div class="tbar"><span class="bk" onclick="go('s0')">‹</span><b>当堂练</b><em id="qc">第 1 / 5 题</em></div>
+  <div class="qbar"><div class="dots" id="dots"></div><span id="qok">对 0 道</span></div>
+  <div class="ct" id="qbody" style="padding-bottom:100px"></div>
+  <button class="btn blue low" id="qbtn" style="display:none" onclick="nextQ()">下一题</button>
+</div>
+
+<!-- 今日完成 -->
+<div class="scr" id="s3">
+  <div class="done">
+    <div class="big">🎉</div>
+    <h2 id="dTitle">今天的任务完成了</h2>
+    <div class="sub" id="dSub"></div>
+    <div class="stats" id="dStats"></div>
+    <div class="unlock" id="dUnlock"></div>
+  </div>
+  <button class="btn low" onclick="go('s0')">回首页</button>
+</div>
+
+<!-- 错题本 -->
+<div class="scr" id="s4">
+  <div class="top"><h1>错题本</h1><p>错的题会自己跑进来，到期了提醒你重做</p></div>
+  <div class="ct">
+    <div class="hd2"><s></s>今天到期 · 3 道</div>
+    <div class="wcard"><div class="wh"><b>概括题：漏了"谁"</b><span>错 2 次</span></div>
+      <p>来自《记叙文·内容概括》· 上次错在 9 月 14 日</p></div>
+    <div class="wcard"><div class="wh"><b>把"评价"当成了"概括"</b><span>错 2 次</span></div>
+      <p>来自《记叙文·内容概括》· 上次错在 9 月 15 日</p></div>
+    <div class="wcard due2"><div class="wh"><b>成语：美不胜收 用错对象</b><span class="s2">错 1 次</span></div>
+      <p>来自《基础积累·高频成语》· 上次错在 9 月 15 日</p></div>
+    <div class="hd2" style="margin-top:22px"><s></s>明天到期 · 2 道</div>
+    <div class="empty" style="padding:22px 20px">明天再提醒你，今天不用管 👌</div>
+  </div>
+  <button class="btn low" onclick="alert('原型演示：这里会进入错题重做流程')">重做这 3 道（约 2 分钟）</button>
+  <div class="tabs"></div>
+</div>
+
+<!-- 我的成长 -->
+<div class="scr" id="s5">
+  <div class="top"><h1>我的成长</h1><p>语文六块，现在各是什么样</p></div>
+  <div class="ct">
+    <div class="gcard" id="gbox"></div>
+    <div class="hd2"><s></s>这一周</div>
+    <div class="gcard"><div class="stats" style="margin:0">
+      <div><b>5</b><em>学了几讲</em></div><div><b>42</b><em>做了几题</em></div>
+      <div><b>11</b><em>改掉错题</em></div><div><b>12</b><em>连续天数</em></div></div></div>
+    <div class="goal"><b>🎯 下一个小目标</b>
+      <p>《记叙文》这块还差 2 讲就能点亮第 3 颗星。<br>按现在的节奏，大概下周三能拿到。</p></div>
+    <div class="empty" style="padding:24px 10px 6px;font-size:12px">
+      星星不是分数，是"这个考点你练到什么程度了"<br>练过、错过、改过，才会亮</div>
+  </div>
+  <div class="tabs"></div>
+</div>
+
+</div>
+<script>
+var PSG_A='课间，班长把新买的篮球抱到操场。刚打了两分钟，球就滚进花坛，压坏了几株月季。班长愣了一下，蹲下来把花扶正，又跑去传达室借了铁锹培土。';
+var PSG_B='周三放学，雨下得很大。值日的小林发现窗户没关，教室地上已经积了水。他放下书包，用拖把一遍遍拖，直到粉笔灰和水渍都干净了，才背着湿了一半的书包回家。';
+
+var QZ=[
+{p:PSG_A,q:'这段话最好的概括是哪一个？',o:[
+ '班长买了一个新篮球',
+ '班长打球时球压坏了花，他主动把花扶正、培土',
+ '班长很爱护花草，是个好班长',
+ '课间同学们在操场上打篮球'],a:1,
+ e:['你只抓住了第一句。概括要盖住<b>起因—经过—结果</b>，不能停在开头。',
+    '',
+    '这是<b>你的评价</b>，不是文章写的事。采分点只给"事"，不给"看法"。',
+    '漏了"谁"和"结果"。<b>没有主角的概括，老师找不到采分点。</b>']},
+{q:'概括一段话，最不能少的是下面哪一样？',o:['时间','地点','谁做了什么','天气'],a:2,
+ e:['时间可有可无，很多概括里根本不出现。','地点同理，不是必需的。','',
+    '天气一般是环境描写，不进概括。']},
+{p:PSG_B,q:'这段话最好的概括是哪一个？',o:[
+ '周三下了很大的雨',
+ '小林是这天的值日生',
+ '小林放学后发现教室进水，独自清理干净才回家',
+ '小林的书包湿了一半'],a:2,
+ e:['这是<b>背景</b>，不是这段话要讲的事。','这是<b>身份</b>，不是他做的事。','',
+    '这是<b>细节</b>。细节能加分，但不能拿来当概括——它盖不住整段。']},
+{q:'"班长把花扶正、培土" —— 这个概括缺了什么？',o:[
+ '缺"谁"','缺"起因"（球压坏了花）','缺"地点"','什么都不缺'],a:1,
+ e:['"班长"已经写了。','','地点不是必需的。',
+    '缺了起因。<b>只写结果不写起因，事情是断的</b>，老师会扣掉起因那个点。']},
+{q:'下面哪种写法，在概括题里最容易被扣分？',o:[
+ '谁 + 做什么 + 结果，一句话说完',
+ '把段落原话抄一大段下来',
+ '用自己的话，但保留关键事实',
+ '先写起因，再写结果'],a:1,
+ e:['这正是标准写法。','','这是对的做法。','这也是对的。']}
+];
+
+var GROW=[['记叙文阅读','★☆☆','会概括了，赏析题还差一点'],
+          ['写作意识','★★☆','细节写得比以前具体了'],
+          ['基础积累','★★☆','成语和病句基本稳了'],
+          ['说明文阅读','★★☆','找答案挺快的'],
+          ['古诗文','★☆☆','背得出，意思还记不牢'],
+          ['名著阅读','☆☆☆','还没开始，5 分先欠着']];
+
+var qi=0,ok=0,wrongN=0,answered=false;
+
+function go(id){document.querySelectorAll('.scr').forEach(function(e){e.classList.remove('on')});
+  document.getElementById(id).classList.add('on');
+  drawTabs(id);var p=document.getElementById('phone');if(p)p.scrollTop=0;window.scrollTo(0,0);}
+
+function drawTabs(id){
+  var m=[['s0','📘','今天'],['s4','📕','错题本'],['s5','🌱','我的']];
+  var h=m.map(function(x){return '<div class="'+(x[0]===id?'on':'')+'" data-go="'+x[0]+'"><b>'+x[1]+'</b>'+x[2]+'</div>';}).join('');
+  document.querySelectorAll('.tabs').forEach(function(t){
+    t.innerHTML=h;
+    t.querySelectorAll('[data-go]').forEach(function(d){
+      d.onclick=function(){go(d.getAttribute('data-go'));};});});
+}
+
+/* ===== 学：动画讲解 + 中途互动 ===== */
+var lt=null,lsec=0;
+function startLearn(){
+  go('s1');lsec=0;
+  document.getElementById('lbody').innerHTML='';
+  document.getElementById('lbtn').style.display='none';
+  document.getElementById('pf').style.width='0';
+  document.getElementById('stEm').textContent='🎬';
+  document.getElementById('stCap').textContent='动画讲解中：什么叫"概括"，什么不叫';
+  var pct=0;
+  clearInterval(lt);
+  lt=setInterval(function(){
+    pct+=2.2;lsec+=0.6;
+    document.getElementById('pf').style.width=Math.min(pct,100)+'%';
+    document.getElementById('lp').textContent='0'+Math.floor(lsec/60)+':'+('0'+Math.floor(lsec%60)).slice(-2);
+    if(pct>=42&&pct<44.5){clearInterval(lt);askMid(pct);}
+    else if(pct>=100){clearInterval(lt);endLearn();}
+  },120);
+}
+function askMid(pct){
+  document.getElementById('stEm').textContent='✋';
+  document.getElementById('stCap').innerHTML='讲到一半，先问你一句——<br>答完继续放';
+  document.getElementById('lbody').innerHTML=
+   '<div class="pts"><h3>随堂一问</h3>'+
+   '<div class="qz" style="margin-bottom:12px">"班长很爱护花草" —— 这句话能当概括吗？</div>'+
+   '<div class="opt" onclick="midAns(this,0)"><i>A</i><span>能，它说清了班长是什么人</span></div>'+
+   '<div class="opt" onclick="midAns(this,1)"><i>B</i><span>不能，这是评价不是事</span></div></div>';
+}
+function midAns(el,i){
+  document.querySelectorAll('#lbody .opt').forEach(function(o){o.style.pointerEvents='none';});
+  el.classList.add(i===1?'right':'wrong');
+  document.getElementById('lbody').insertAdjacentHTML('beforeend',
+    '<div class="fix '+(i===1?'good':'')+'" style="margin-top:12px"><h3>'+(i===1?'对了 ✓':'再想想')+'</h3>'+
+    '<p>"爱护花草"是<b>你对他的看法</b>；"球压坏了花，他把花扶正"才是<b>文章写的事</b>。<br>概括题只给"事"的分。</p></div>');
+  setTimeout(function(){
+    document.getElementById('stEm').textContent='🎬';
+    document.getElementById('stCap').textContent='继续讲：怎么一句话说完一整段';
+    var pct=44;
+    lt=setInterval(function(){
+      pct+=2.2;lsec+=0.6;
+      document.getElementById('pf').style.width=Math.min(pct,100)+'%';
+      document.getElementById('lp').textContent='0'+Math.floor(lsec/60)+':'+('0'+Math.floor(lsec%60)).slice(-2);
+      if(pct>=100){clearInterval(lt);endLearn();}
+    },120);
+  },1400);
+}
+function endLearn(){
+  document.getElementById('stEm').textContent='✅';
+  document.getElementById('stCap').textContent='这一讲讲完了，方法就一条';
+  document.getElementById('lbody').innerHTML=
+    '<div class="pts"><h3>这一讲你要记住的</h3>'+
+    '<div class="li"><b>1</b><span>概括 = 把一整段压成<b>一句话</b>，不是抄原文</span></div>'+
+    '<div class="li"><b>2</b><span>三个部分缺一不可：<b>谁 · 做什么 · 结果</b></span></div>'+
+    '<div class="li"><b>3</b><span><b>评价不算概括</b>——"他是个好人"是看法，不是事</span></div>'+
+    '<div class="formula">谁 ＋ 做什么 ＋ 结果</div></div>';
+  document.getElementById('lbtn').style.display='block';
+}
+
+/* ===== 练：答完立刻改 ===== */
+function toQuiz(){qi=0;ok=0;wrongN=0;go('s2');drawQ();}
+function drawQ(){
+  answered=false;
+  var q=QZ[qi],h='';
+  if(q.p)h+='<div class="psg">'+q.p+'</div>';
+  h+='<div class="qz">'+(qi+1)+'. '+q.q+'</div>';
+  q.o.forEach(function(t,i){h+='<div class="opt" onclick="pick(this,'+i+')"><i>'+'ABCD'[i]+'</i><span>'+t+'</span></div>';});
+  h+='<div id="fixbox"></div>';
+  document.getElementById('qbody').innerHTML=h;
+  document.getElementById('qc').textContent='第 '+(qi+1)+' / '+QZ.length+' 题';
+  document.getElementById('qbtn').style.display='none';
+  drawDots();
+}
+function drawDots(){
+  var h='';
+  for(var i=0;i<QZ.length;i++)h+='<i class="'+(i<qi?(QZ[i].got?'ok':'no'):(i===qi?'now':''))+'"></i>';
+  document.getElementById('dots').innerHTML=h;
+  document.getElementById('qok').textContent='对 '+ok+' 道';
+}
+function pick(el,i){
+  if(answered)return;answered=true;
+  var q=QZ[qi],good=(i===q.a);
+  q.got=good;if(good)ok++;else wrongN++;
+  var opts=document.querySelectorAll('#qbody .opt');
+  opts.forEach(function(o){o.style.pointerEvents='none';});
+  el.classList.add(good?'right':'wrong');
+  if(!good)opts[q.a].classList.add('right');
+  var h='';
+  if(good){
+    h='<div class="fix good"><h3>对了 ✓</h3><p>'+
+      '就是这个思路，<b>下一题保持</b>。</p></div>';
+  }else{
+    h='<div class="fix"><h3>错了，现在就改</h3>'+
+      '<p>你选的是 <b>'+'ABCD'[i]+'</b>，正确答案是 <b>'+'ABCD'[q.a]+'</b>。</p>'+
+      '<p>'+q.e[i]+'</p>'+
+      '<div class="key">记住：谁 ＋ 做什么 ＋ 结果。评价、背景、细节，都不是概括。</div>'+
+      '<div class="into">📕 这道已经自动进<b>错题本</b>，明天会再考你一次</div></div>';
+  }
+  document.getElementById('fixbox').innerHTML=h;
+  drawDots();
+  var b=document.getElementById('qbtn');
+  b.style.display='block';
+  b.textContent=(qi===QZ.length-1)?'看今天的结果':'下一题';
+  document.getElementById('fixbox').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function nextQ(){if(qi<QZ.length-1){qi++;drawQ();}else{finish();}}
+
+function finish(){
+  go('s3');
+  var tip=ok>=4?'今天状态不错，错的两道明天再考你一次。'
+         :ok>=3?'过得去，错的几道已经进错题本了，明天补上就行。'
+         :'今天这块还有点生，别急——错题本会一直盯着，练到会为止。';
+  document.getElementById('dSub').innerHTML='18 分钟，1 讲 + 5 道练习<br>'+tip;
+  document.getElementById('dStats').innerHTML=
+    '<div><b>'+ok+'/'+QZ.length+'</b><em>做对</em></div>'+
+    '<div><b>'+wrongN+'</b><em>进错题本</em></div>'+
+    '<div><b>13</b><em>连续天数</em></div>';
+  var pct=Math.round(ok/QZ.length*100);
+  document.getElementById('dUnlock').innerHTML=
+    '<div class="r"><b>记叙文阅读</b><span class="st">'+(pct>=80?'★★☆':'★☆☆')+'</span></div>'+
+    '<p>这一讲是《记叙文》4 讲里的第 1 讲，本讲正确率 <b>'+pct+'%</b>。<br>'+
+    (pct>=80?'再学 2 讲就能点亮第 3 颗星。':'把今天错的题改掉，这一讲就算过了。')+'</p>';
+}
+/* 我的成长：六块能力用星星呈现，配一句孩子自己看得懂的话 */
+document.getElementById('gbox').innerHTML=GROW.map(function(g){
+  return '<div class="gr"><div class="gn">'+g[0]+'</div>'+
+    '<div class="gs'+(g[1]==='\u2606\u2606\u2606'?' dim':'')+'">'+g[1]+'</div>'+
+    '<div class="gt">'+g[2]+'</div></div>';}).join('');
+drawTabs('s0');
+</script></body></html>

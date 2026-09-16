@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>JOJOUP 学情分析报告 · 达瓦普尺</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+         background:#e8eef7; display:flex; justify-content:center; padding:24px 0; }
+  .page { width:1080px; background:#f2f6fc; }
+
+  /* 页眉 */
+  .hd { background:linear-gradient(120deg,#2f6fd0 0%,#4a8ee6 60%,#6aa8f0 100%);
+        padding:48px 56px 44px; color:#fff; position:relative; overflow:hidden; }
+  .hd::after { content:""; position:absolute; right:-60px; top:-80px; width:320px; height:320px;
+        background:rgba(255,255,255,.10); border-radius:50%; }
+  .hd h1 { font-size:46px; letter-spacing:2px; font-weight:800; }
+  .hd p  { font-size:24px; margin-top:12px; opacity:.92; letter-spacing:1px; }
+
+  .body { padding:36px 40px 0; }
+
+  /* 区块标题 */
+  .sec { margin-bottom:34px; }
+  .sec-t { display:flex; align-items:center; font-size:30px; font-weight:800;
+           color:#1b4b8f; margin-bottom:20px; }
+  .sec-t i { display:inline-block; width:7px; height:30px; background:#2f6fd0;
+             border-radius:4px; margin-right:14px; }
+
+  .card { background:#fff; border-radius:14px; padding:30px 34px;
+          box-shadow:0 2px 10px rgba(30,70,140,.06); }
+
+  /* 基本信息 */
+  .info { display:flex; gap:20px; }
+  .info div { flex:1; background:#fff; border-radius:14px; padding:24px 28px;
+              box-shadow:0 2px 10px rgba(30,70,140,.06); }
+  .info span { display:block; font-size:20px; color:#8a97ab; margin-bottom:10px; }
+  .info b { font-size:30px; color:#1f2d3d; font-weight:700; }
+
+  /* 成绩 */
+  .sc { display:flex; gap:20px; }
+  .sc div { flex:1; background:#fff; border-radius:14px; padding:26px 0;
+            text-align:center; box-shadow:0 2px 10px rgba(30,70,140,.06); }
+  .sc .tag { display:inline-block; font-size:21px; padding:5px 22px; border-radius:20px;
+             margin-bottom:14px; font-weight:700; }
+  .sc .n { font-size:56px; font-weight:800; color:#1f2d3d; line-height:1; }
+  .t-yw { background:#fdeaea; color:#d9534f; }
+  .t-sx { background:#fdf3e0; color:#e0913a; }
+  .t-yy { background:#e6f5ec; color:#3a9e63; }
+  .note { margin-top:16px; font-size:20px; color:#8a97ab; text-align:center; }
+
+  /* 结论条 */
+  .key { background:#eaf2fd; border-left:8px solid #2f6fd0; border-radius:10px;
+         padding:26px 30px; font-size:30px; font-weight:800; color:#1b4b8f;
+         line-height:1.5; margin-bottom:22px; }
+
+  ul { list-style:none; }
+  li { font-size:23px; line-height:1.8; color:#33414f; margin-bottom:16px;
+       padding-left:34px; position:relative; }
+  li::before { content:"✓"; position:absolute; left:0; top:0; color:#2f6fd0; font-weight:800; font-size:23px; }
+  li:last-child { margin-bottom:0; }
+  li b { color:#1b4b8f; }
+
+  /* 行动块 */
+  .act { background:#fff8ec; border:2px solid #f0c987; border-radius:14px; padding:30px 34px; }
+  .act h3 { font-size:27px; color:#b9762a; margin-bottom:18px; font-weight:800; }
+  .act .do { font-size:25px; color:#33414f; line-height:1.75; margin-bottom:22px; }
+  .act .do b { color:#b9762a; }
+  .rule { display:flex; align-items:center; font-size:22px; color:#33414f;
+          padding:14px 20px; background:#fff; border-radius:10px; margin-bottom:12px; }
+  .rule em { font-style:normal; font-weight:800; color:#b9762a; min-width:190px; }
+  .why { margin-top:18px; font-size:21px; color:#8a6a3c; line-height:1.7; }
+
+  /* 优先级 */
+  .order { display:flex; align-items:center; justify-content:center; gap:16px;
+           font-size:28px; font-weight:800; color:#1b4b8f; margin-bottom:10px; }
+  .order s { text-decoration:none; color:#9db4d4; font-size:24px; }
+  .order u { text-decoration:none; background:#eaf2fd; padding:10px 24px; border-radius:10px; }
+
+  /* 学科 */
+  .subj { background:#fff; border-radius:14px; padding:28px 32px; margin-bottom:18px;
+          box-shadow:0 2px 10px rgba(30,70,140,.06); border-top:6px solid #ccc; }
+  .s-yw { border-top-color:#d9534f; } .s-sx { border-top-color:#e0913a; } .s-yy { border-top-color:#3a9e63; }
+  .subj h3 { font-size:28px; font-weight:800; margin-bottom:6px; color:#1f2d3d; }
+  .subj .lv { font-size:21px; font-weight:700; padding:4px 16px; border-radius:16px; margin-left:12px; }
+  .lv-a { background:#fdf3e0; color:#e0913a; } .lv-b { background:#e6f5ec; color:#3a9e63; }
+  .lv-c { background:#eef1f5; color:#8a97ab; }
+  .subj .sub { font-size:21px; color:#8a97ab; margin-bottom:18px; }
+
+  /* 家长的话 */
+  .talk { background:#eaf2fd; border-radius:14px; padding:34px 38px; }
+  .talk p { font-size:24px; line-height:1.9; color:#33414f; margin-bottom:18px; }
+  .talk p:last-child { margin-bottom:0; }
+  .talk b { color:#1b4b8f; }
+
+  /* 页脚 */
+  .ft { background:#1b3a63; color:#fff; padding:34px 56px; display:flex;
+        justify-content:space-between; align-items:center; margin-top:14px; }
+  .ft .l b { font-size:28px; font-weight:800; letter-spacing:1px; }
+  .ft .l p { font-size:19px; opacity:.75; margin-top:8px; }
+  .ft .r { text-align:right; font-size:20px; line-height:1.7; opacity:.9; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hd">
+    <h1>【JOJOUP】</h1>
+    <p>初中学习规划 · 学情分析报告</p>
+  </div>
+
+  <div class="body">
+
+    <!-- 一 -->
+    <div class="sec">
+      <div class="sec-t"><i></i>一、孩子的基本情况</div>
+      <div class="info">
+        <div><span>学生姓名</span><b>达瓦普尺</b></div>
+        <div><span>所在地区</span><b>西藏日喀则江孜县</b></div>
+        <div><span>当前年级</span><b>初三</b></div>
+      </div>
+    </div>
+
+    <!-- 二 -->
+    <div class="sec">
+      <div class="sec-t"><i></i>二、当前成绩</div>
+      <div class="sc">
+        <div><div class="tag t-yw">语文</div><div class="n">79</div></div>
+        <div><div class="tag t-sx">数学</div><div class="n">28</div></div>
+        <div><div class="tag t-yy">英语</div><div class="n">38</div></div>
+      </div>
+      <div class="note">〔初三上学期 · 期中考试 · 满分 150〕</div>
+    </div>
+
+    <!-- 三 -->
+    <div class="sec">
+      <div class="sec-t"><i></i>三、从这三个分数，我们看到什么</div>
+      <div class="key">孩子不是学不进去，是数学和英语中间断了档。</div>
+      <div class="card">
+        <ul>
+          <li><b>语文能考 79，说明孩子的学习能力、专注力、坐得住，都没问题。</b>这一条最重要——它排除了"孩子不是读书的料"这个最容易被误判的可能。底子是在的。</li>
+          <li><b>数学和英语，和语文最大的区别是"链条式"。</b>语文断一阵，靠平时的阅读和语感还能接上；数学英语前面一环断了，后面每一环都接不上——初三讲的内容里，用的全是初一初二的东西。</li>
+          <li><b>所以问题不在态度，在于某个阶段断了档、之后一直没补。</b>对现在的孩子来说，<b>找到断在哪，比多刷题重要得多</b>——断点不找出来，后面花的每一分力气都会漏掉。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 四 -->
+    <div class="sec">
+      <div class="sec-t"><i></i>四、最该先做的一件事（今晚就能做）</div>
+      <div class="act">
+        <h3>⚠ 先别急着补课，先找到断点在哪</h3>
+        <div class="do">找一套<b>初一上学期的数学期末卷</b>，让孩子做一遍。<br>不计时、不监考、不用告诉他这是测试。</div>
+        <div class="rule"><em>能考 70 分以上</em>断点在初二（全等、函数），补两个专题就能起来</div>
+        <div class="rule"><em>考 50–70 分</em>断点在初一下（方程、不等式），需要回去过一轮</div>
+        <div class="rule"><em>考 50 分以下</em>断点更早（有理数、整式运算），要从这里重新搭</div>
+        <div class="why">为什么先做这个：数学 28 分的孩子，再多刷初三的题也是没用的——那些题里用到的是初一初二的知识。<b>不先把断点找出来，补课补在哪一层都是猜的。</b>这件事不花钱、今晚就能做，做完您自己心里也有底了。</div>
+      </div>
+    </div>
+
+    <!-- 五 -->
+    <div class="sec">
+      <div class="sec-t"><i></i>五、三科按这个顺序使力</div>
+      <div class="card" style="margin-bottom:18px;">
+        <div class="order"><u>① 数学基础题</u><s>▶</s><u>② 英语词汇·听力</u><s>▶</s><u>③ 语文保持</u></div>
+        <div class="note" style="margin-top:14px;font-size:22px;color:#5a6b80;">同样花一个小时，数学基础题拿回来的分最多，语文最少。初三时间有限，顺序比努力更重要。</div>
+      </div>
+
+      <div class="subj s-sx">
+        <h3>数学 <span class="lv lv-a">主攻</span></h3>
+        <div class="sub">原则：只攻基础，先不碰难题</div>
+        <ul>
+          <li><b>先不碰几何综合、二次函数压轴。</b>以现在的基础，这部分投入产出极低，碰了只会打击信心。</li>
+          <li><b>只做三块：</b>有理数与整式运算 → 一元一次/二次方程 → 一次函数基础。这几块是中考卷里最基础、占比也最大的部分，是最容易拿回来的分。</li>
+          <li><b>一个考点配一组题，做完当场改，错的第二天再做一遍。</b>光看讲解不动手，学完就忘——<b>分是练出来和改出来的，不是听出来的</b>。</li>
+        </ul>
+      </div>
+
+      <div class="subj s-yy">
+        <h3>英语 <span class="lv lv-b">次攻</span></h3>
+        <div class="sub">原则：先攻不依赖语法的部分</div>
+        <ul>
+          <li><b>先不啃长难句和语法体系。</b>语法要建在词汇上，词汇不够时啃语法是白费力气。</li>
+          <li><b>只做两件：</b>初一初二核心词汇过一遍、每天 10 分钟听力。<b>这两块是英语里唯一不依赖语法基础、投入就有回报的部分。</b></li>
+          <li>词汇每天 20 个、第二天先回头默写前一天的——<b>同样是练完就改</b>，比一次背 100 个有用得多。</li>
+        </ul>
+      </div>
+
+      <div class="subj s-yw">
+        <h3>语文 <span class="lv lv-c">保持，不作为重点</span></h3>
+        <div class="sub">原则：守住已经拿到的分</div>
+        <ul>
+          <li><b>79 分已经在中上，再往上要拼作文和古诗文，花时间最多、见效最慢。</b>这一年不建议把精力放在这里。</li>
+          <li>每天 10 分钟守住基本盘：文言实词、古诗文默写。<b>这些是不丢分的部分，别把已经拿到的分丢掉。</b></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 六 -->
+    <div class="sec">
+      <div class="sec-t"><i></i>六、做完把结果发我</div>
+      <div class="card">
+        <ul>
+          <li><b>把那套初一数学卷的分数发给我。</b>有了这个分数，我才能按孩子真实的断点，给您排一份具体到章节、具体到每周的补法——现在这份给的是方向，还不是具体的步骤。</li>
+          <li><b>另外我会帮您确认两件事：</b>西藏中考的科目设置与总分、以及内地西藏班的报考条件和时间节点。孩子语文底子在，这条路值得提前看一眼，别错过了报名时间。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 七 -->
+    <div class="sec">
+      <div class="sec-t"><i></i>七、给家长的几句话</div>
+      <div class="talk">
+        <p>这一年最怕的，是三科一起抓，最后哪科都没抓起来。</p>
+        <p>孩子语文能考 79，说明<b>底子和习惯都在</b>，剩下的是方法和顺序的问题——这两样是能解决的，比态度问题好办得多。</p>
+        <p>我们不建议您追求三科同时大幅提升。<b>把数学从 28 分拉到能稳稳拿住基础分，比什么都实在</b>，这也是这一年里最拿得到的东西。</p>
+        <p>先做那套初一的卷子，做完随时找我。</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ft">
+    <div class="l"><b>【JOJOUP】</b><p>专注初中教育 · 助力每一位学子成长</p></div>
+    <div class="r">制作人：JOJOUP【毅飞】老师<br>联系电话：13103861230</div>
+  </div>
+
+</div>
+</body>
+</html>

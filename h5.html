@@ -390,7 +390,7 @@ body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;b
   <div class="btnwrap"></div><button class="btn" onclick="go('s7')">看这 3 天的小结 →</button>
 </div>
 
-<!-- S7 体验小结与年课 -->
+<!-- S7 体验小结与 24 周训练计划 -->
 <div class="scr" id="s7">
   <div class="nav pad"><span class="back" onclick="go('s6')">‹</span><h1>体验课结束后</h1><p>用这 3 天的真实训练数据，看哪几块需要继续</p></div>
   <div class="steps"><div class="dn"><b>✓</b>诊断</div><div class="dn"><b>✓</b>3天8节</div><div class="ac"><b>3</b>体验小结</div><div><b>4</b>月度跟踪</div></div>
@@ -400,23 +400,23 @@ body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;b
       <div class="frm" id="exsum"></div>
     </div>
 
-    <div class="rcard"><div class="rt"><s></s>半年能力提升计划</div><div class="rs">记录孩子的每一次学习数据，让孩子能力成长一目了然</div>
+    <div class="rcard"><div class="rt"><s></s>半年能力提升计划</div><div class="rs">24 周 · 6 个周期 · 记录孩子的每一次学习数据，让能力成长一目了然</div>
       <div id="wkbox"></div>
-      <div class="frm">进入年课后，每个月产品里本来就有<b>一次月考专项练</b>——掌握度就从那次的作答里读出来，<b>不额外加测、不多占时间</b>。<br>什么时候能看到反馈是写明的，不是"买了慢慢学"。（体验的这 3 天同样不加测，数据取自当堂练习）</div>
+      <div class="frm">开始 24 周训练后，每个月产品里本来就有<b>一次月考专项练</b>——掌握度就从那次的作答里读出来，<b>不额外加测、不多占时间</b>。<br>什么时候能看到反馈是写明的，不是"买了慢慢学"。（体验的这 3 天同样不加测，数据取自当堂练习）</div>
     </div>
 
     <div class="key"><b>"记叙文三天就有变化，剩下几块按同样的方法一块一块过。"</b>
       <p>这句话里没有任何提分承诺 —— 但它比"提分 30 分"有力，因为<b>你刚刚自己验证过一次。</b></p></div>
 
     <div class="tip" style="margin-top:16px">诊断 → 定向练 → 看清哪块要继续<br><b>别家卖的是课时，我们给的是训练计划和过程数据</b></div>
-    <div class="btnwrap"></div><button class="btn" onclick="go('s8')">进了年课之后呢？ →</button>
+    <div class="btnwrap"></div><button class="btn" onclick="go('s8')">马上开启 24 周训练 →</button>
   </div>
 </div>
 
 
 <!-- S8 月度学习报告 -->
 <div class="scr" id="s8">
-  <div class="nav pad"><span class="back" onclick="go('s7')">‹</span><h1>年课 · 月度学习报告</h1><p>每月一封，记录变化，也指出问题</p></div>
+  <div class="nav pad"><span class="back" onclick="go('s7')">‹</span><h1>24 周训练 · 月度学习报告</h1><p>每月一封，记录变化，也指出问题</p></div>
   <div class="steps"><div class="dn"><b>✓</b>诊断</div><div class="dn"><b>✓</b>3天8节</div><div class="dn"><b>✓</b>体验小结</div><div class="ac"><b>4</b>月度跟踪</div></div>
   <div class="mtab" id="mtab"></div>
   <div class="ct" id="mc"></div>
@@ -607,7 +607,7 @@ function plan(){
   h+='<div class="tip" style="margin-top:14px">红色 <b>4 讲由诊断结果决定</b>，灰色 4 讲固定。<br>一半动态一半固定——真的个性化，又不会变成无限组合没法运营。</div>';
   document.getElementById('planc').innerHTML=h;
   document.getElementById('s6sub').textContent='主攻：'+res.arr[0].n+' ＋ '+res.arr[1].n;
-  /* 体验小结与年课 */
+  /* 体验小结与 24 周训练计划 */
   /* 体验小结：只用这 8 讲真实练出来的量和正确率，不加测 */
   var seen={},order=[];
   L.forEach(function(x){if(x.k){if(!seen[x.k]){seen[x.k]={n:B[x.k].n,k:x.k,ls:0,dy:x.dy};order.push(x.k);}seen[x.k].ls++;}});
@@ -633,11 +633,11 @@ function plan(){
         '这不是"没学会"，是<b>训练量还不够</b>——光'+need[0].n+'就有 '+need[0].pts+' 个训练点，3 天碰不完。'
       : '几块的正确率都已经不错，<b>可以按较低强度维持</b>。')+
     '<br><b>这里没有做任何加测</b>，数字全部来自孩子练题时的实时记录。';
-  var wk=['第 1–4 周','第 5–8 周','第 9–12 周','第 13–16 周','第 17–20 周'];
+  var wk=['第 1–4 周','第 5–8 周','第 9–12 周','第 13–16 周','第 17–20 周','第 21–24 周'];
   /* 半年计划：每期 1 个主攻 + 2 个辅练，掌握度跨周期累计（第5期的起点是第4期的终点） */
   var st={};res.arr.forEach(function(b){st[b.k]=b.m;});
   var w='';
-  for(var i=0;i<5;i++){
+  for(var i=0;i<6;i++){
     var cur=rank(st),pick=cur.filter(function(x){return x.m<90;});
     if(!pick.length)pick=cur;
     var main=pick[0],subs=pick.slice(1,3),pts=POINTS[main.k]||12;
@@ -667,7 +667,7 @@ function plan(){
   go('s6');
 }
 
-/* ===== 年课月度跟踪 ===== */
+/* ===== 24 周训练 · 月度跟踪 ===== */
 var MONTHS=null,mi=0;
 function rank(st){var a=[];for(var k in B){a.push({k:k,n:B[k].n,s:B[k].s,w:B[k].w,m:st[k],
   loss:(1-st[k]/100)*B[k].w});}a.sort(function(x,y){return y.loss-x.loss});return a;}

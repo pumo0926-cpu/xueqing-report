@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><title>家长与孩子完整链路</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:#e8eef7;display:flex;justify-content:center;padding:24px 0}
+.j-page{width:1128px;background:#f2f6fc}
+.j-hd{background:linear-gradient(120deg,#2f6fd0,#4a8ee6 60%,#6aa8f0);padding:44px 56px;color:#fff;position:relative;overflow:hidden}
+.j-hd::after{content:"";position:absolute;right:-60px;top:-80px;width:320px;height:320px;background:rgba(255,255,255,.1);border-radius:50%}
+.j-hd h1{font-size:40px;font-weight:800;letter-spacing:1px}
+.j-hd p{font-size:21px;margin-top:11px;opacity:.92}
+.j-legend{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.j-legend span{font-size:17px;background:rgba(255,255,255,.2);padding:7px 16px;border-radius:18px}
+.j-body{padding:34px 40px 0}
+.j-ph{display:flex;align-items:center;margin:26px 0 16px}
+.j-ph b{font-size:27px;font-weight:800;color:#1b4b8f}
+.j-ph em{font-style:normal;font-size:18px;color:#8a97ab;margin-left:14px}
+.j-ph s{text-decoration:none;flex:1;height:2px;background:#dde6f2;margin-left:18px}
+.j-step{background:#fff;border-radius:14px;padding:20px 24px;margin-bottom:11px;box-shadow:0 2px 10px rgba(30,70,140,.06);display:flex;align-items:flex-start;border-left:7px solid #cfd8e5}
+.j-p{border-left-color:#2f6fd0}.j-k{border-left-color:#e8762a}
+.j-s{border-left-color:#3a9e63}.j-f{border-left-color:#2aa6a0}.j-a{border-left-color:#8a9cc4}
+.j-no{width:46px;height:46px;border-radius:12px;background:#f2f6fc;color:#8a97ab;font-size:21px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-right:18px;flex-shrink:0}
+.j-m{flex:1;min-width:0}
+.j-t{display:flex;align-items:center;flex-wrap:wrap;gap:9px}
+.j-t b{font-size:23px;color:#1f2d3d}
+.j-tag{font-size:15px;padding:4px 12px;border-radius:9px;font-weight:700}
+.t-p{background:#eaf2fd;color:#2f6fd0}.t-k{background:#fff1e8;color:#e8762a}
+.t-s{background:#e8f6ee;color:#3a9e63}.t-f{background:#e6f5f4;color:#2aa6a0}.t-a{background:#eef1f7;color:#7d8da3}
+.j-loc{font-size:15px;color:#a3b0c2;background:#f7f9fc;padding:4px 11px;border-radius:8px}
+.j-o{font-size:18px;color:#5a6b80;margin-top:9px;line-height:1.7}
+.j-o b{color:#1f2d3d}
+.j-st{width:190px;text-align:right;flex-shrink:0;padding-left:14px}
+.j-st span{display:inline-block;font-size:15px;padding:6px 13px;border-radius:9px;font-weight:700}
+.ok{background:#e6f5ec;color:#3a9e63}.part{background:#fdf3e0;color:#d1873a}
+.gap{background:#fdeaea;color:#d9534f}.ops{background:#eef1f7;color:#8a97ab}
+.j-st em{font-style:normal;display:block;font-size:14px;color:#a3b0c2;margin-top:7px;line-height:1.5}
+.j-arrow{text-align:center;font-size:20px;color:#c3cfe0;margin:-4px 0 7px}
+.j-note{background:#fff8ec;border-left:7px solid #f0c987;border-radius:12px;padding:20px 24px;margin:6px 0 11px;font-size:18px;color:#8a6a3c;line-height:1.8}
+.j-note b{color:#b9762a}
+.j-risk{background:#fff;border-radius:14px;padding:24px 28px;box-shadow:0 2px 10px rgba(30,70,140,.06)}
+.j-rr{display:flex;align-items:flex-start;padding:15px 0;border-bottom:1px solid #f4f7fb}
+.j-rr:last-child{border:0}
+.j-rn{width:44px;height:44px;border-radius:50%;background:#fdeaea;color:#d9534f;font-size:19px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-right:17px;flex-shrink:0}
+.j-rm b{font-size:21px;color:#1f2d3d;display:block;margin-bottom:6px}
+.j-rm p{font-size:17px;color:#7d8da3;line-height:1.8}
+.j-rm p b{display:inline;color:#b9762a;font-size:17px}
+.j-ft{background:#1b3a63;color:#fff;padding:32px 56px;display:flex;justify-content:space-between;align-items:center;margin-top:16px}
+.j-ft b{font-size:26px;font-weight:800}.j-ft p{font-size:18px;opacity:.75;margin-top:7px}
+.j-ft .r{text-align:right;font-size:19px;line-height:1.7;opacity:.9}
+</style></head><body><div class="j-page">
+
+<div class="j-hd"><h1>家长 × 孩子 · 完整链路</h1>
+<p>从看到广告到第二个月的训练报告 —— 17 步，4 个角色，3 个场域</p>
+<div class="j-legend"><span>🔵 家长</span><span>🟠 孩子</span><span>🟢 销售</span><span>🔷 服务</span><span>⚪ APP 自动</span></div></div>
+
+<div class="j-body">
+
+<div class="j-ph"><b>第一段 · 获客</b><em>广告 → 微信 → APP，全是交接</em><s></s></div>
+
+<div class="j-step j-p"><div class="j-no">01</div><div class="j-m">
+<div class="j-t"><b>看到广告，产生兴趣</b><span class="j-tag t-p">家长</span><span class="j-loc">短视频 / 信息流</span></div>
+<div class="j-o">钩子应当是<b>"先测出孩子弱在哪"</b>，不是"名师好课"——测评是低承诺入口，课是高承诺入口。</div></div>
+<div class="j-st"><span class="ops">运营侧</span><em>不在本次原型范围</em></div></div>
+<div class="j-arrow">↓</div>
+
+<div class="j-step j-p"><div class="j-no">02</div><div class="j-m">
+<div class="j-t"><b>领取体验</b><span class="j-tag t-p">家长</span><span class="j-loc">落地页</span></div>
+<div class="j-o">产出：<b>领取码 / 订单</b>。此处只留手机号与孩子年级，字段越少完成率越高。</div></div>
+<div class="j-st"><span class="ops">运营侧</span></div></div>
+<div class="j-arrow">↓</div>
+
+<div class="j-step j-s"><div class="j-no">03</div><div class="j-m">
+<div class="j-t"><b>加销售，进入 1v1</b><span class="j-tag t-p">家长</span><span class="j-tag t-s">销售</span><span class="j-loc">微信</span></div>
+<div class="j-o">从公域进私域。<b>加上之后销售的第一句话决定后面所有事</b>——此时不要讲课，先约诊断。</div></div>
+<div class="j-st"><span class="part">话术已有</span><em>见方案文档口径卡</em></div></div>
+<div class="j-arrow">↓</div>
+
+<div class="j-step j-p"><div class="j-no">04</div><div class="j-m">
+<div class="j-t"><b>下载 APP</b><span class="j-tag t-p">家长</span><span class="j-loc">应用商店</span></div>
+<div class="j-o">链路上<b>最重的一次动作</b>。能不能把 L1/L2 诊断放在 H5 先做、做完再引导下载，值得验证。</div></div>
+<div class="j-st"><span class="gap">高流失点</span><em>建议先测后下载</em></div></div>
+
+<div class="j-note">⚠ <b>前 4 步全是交接</b>：公域→落地页→微信→APP。每一次交接都掉一批人，
+而真正的产品价值要到第 6 步才第一次出现。<b>越早让家长拿到一个"他自己得不出的结论"，越能扛住这几次跳转。</b></div>
+
+<div class="j-ph"><b>第二段 · 体验</b><em>产品第一次说话</em><s></s></div>
+
+<div class="j-step j-p"><div class="j-no">05</div><div class="j-m">
+<div class="j-t"><b>做诊断</b><span class="j-tag t-p">家长</span><span class="j-tag t-k">孩子</span><span class="j-loc">APP 家长端</span></div>
+<div class="j-o">三个入口：<b>填分数（10秒）／15 题（3–5 分钟）／拍照试卷</b>。填分数只做钩子，导流到 15 题。</div></div>
+<div class="j-st"><span class="ok">已建</span><em>h5.html · S0–S3</em></div></div>
+<div class="j-arrow">↓</div>
+
+<div class="j-step j-a"><div class="j-no">06</div><div class="j-m">
+<div class="j-t"><b>自动出诊断报告</b><span class="j-tag t-a">APP 自动</span><span class="j-loc">APP 家长端</span></div>
+<div class="j-o">六大板块掌握度 + 失分权重排序 + <b>一句话归因</b>（"读得懂，但不会按采分点答题"）。
+<b>这是整条链路上产品第一次给出家长自己得不出的东西。</b></div></div>
+<div class="j-st"><span class="ok">已建</span><em>h5.html · S5</em></div></div>
+<div class="j-arrow">↓</div>
+
+<div class="j-step j-s"><div class="j-no">07</div><div class="j-m">
+<div class="j-t"><b>销售解读报告</b><span class="j-tag t-s">销售</span><span class="j-loc">微信</span></div>
+<div class="j-o">报告是死的，解读是活的。<b>解读的任务不是复述报告，是回答"那我该怎么办"</b>，并约定 3 天怎么上。</div></div>
+<div class="j-st"><span class="part">话术待补</span><em>缺逐画像解读脚本</em></div></div>
+<div class="j-arrow">↓</div>
+
+<div class="j-step j-a"><div class="j-no">08</div><div class="j-m">
+<div class="j-t"><b>课表按诊断结果排出重要性</b><span class="j-tag t-a">APP 自动</span><span class="j-loc">APP 学生端</span></div>
+<div class="j-o">孩子打开 APP 看到的<b>不是一堆课，是排好序的 3 天 8 讲</b>，并标明"为什么第一讲是它"。
+8 讲中 4 讲由诊断动态决定、4 讲固定（底座 2 + 通法 2）。</div></div>
+<div class="j-st"><span class="gap">缺口</span><em>学生端目前只有「今日任务」<br>缺完整课表页</em></div></div>
+<div class="j-arrow">↓</div>
+
+<div class="j-step j-k"><div class="j-no">09</div><div class="j-m">
+<div class="j-t"><b>孩子启动学习</b><span class="j-tag t-k">孩子</span><span class="j-loc">APP 学生端</span></div>
+<div class="j-o">每讲 18–20 分钟：<b>学 → 中途互动 → 当堂练 → 答错当场改 → 错题自动收</b>。</div></div>
+<div class="j-st"><span class="ok">已建</span><em>student.html · 学/练/改</em></div></div>
+<div class="j-arrow">↓</div>
+
+<div class="j-step j-a"><div class="j-no">10</div><div class="j-m">
+<div class="j-t"><b>学后自动生成小结</b><span class="j-tag t-a">APP 自动</span><span class="j-loc">APP 学生端</span></div>
+<div class="j-o">当天：做对几道、几道进错题本、连续天数、这一讲点亮了几颗星。<b>孩子侧的反馈必须当天给，不能等月报。</b></div></div>
+<div class="j-st"><span class="ok">已建</span><em>student.html · 今日完成</em></div></div>
+
+<div class="j-ph"><b>第三段 · 转化</b><em>用数据说话，不加测</em><s></s></div>
+
+<div class="j-step j-s"><div class="j-no">11</div><div class="j-m">
+<div class="j-t"><b>销售反馈 3 天体验小结</b><span class="j-tag t-s">销售</span><span class="j-loc">微信</span></div>
+<div class="j-o">分板块给：<b>练了几讲、多少题、正确率、覆盖了几个训练点</b>，以及哪几块需要持续提升。
+<b>不加测</b>——三天测不出提升，硬测反而给家长质疑的抓手。</div></div>
+<div class="j-st"><span class="ok">已建</span><em>h5.html · S7 体验小结</em></div></div>
+<div class="j-arrow">↓</div>
+
+<div class="j-step j-s"><div class="j-no">12</div><div class="j-m">
+<div class="j-t"><b>推送 24 周训练计划</b><span class="j-tag t-s">销售</span><span class="j-loc">微信</span></div>
+<div class="j-o">半年包 6 个周期，每期<b>一个主攻 + 两个辅练</b>，各自给训练点数与预计掌握度区间。
+掌握度跨周期累计，<b>不出现任何提分承诺</b>。</div></div>
+<div class="j-st"><span class="ok">已建</span><em>h5.html · 24 周计划</em></div></div>
+<div class="j-arrow">↓</div>
+
+<div class="j-step j-p"><div class="j-no">13</div><div class="j-m">
+<div class="j-t"><b>家长购买半年包</b><span class="j-tag t-p">家长</span><span class="j-loc">APP / 小程序</span></div>
+<div class="j-o">半年包 24 周 · 年包 40 周。<b>当前只推半年包</b>，年包留作后续升级，不要在此时提。</div></div>
+<div class="j-st"><span class="ops">运营侧</span></div></div>
+
+<div class="j-ph"><b>第四段 · 服务</b><em>交付开始，续费也从这里开始</em><s></s></div>
+
+<div class="j-step j-f"><div class="j-no">14</div><div class="j-m">
+<div class="j-t"><b>服务角色介入</b><span class="j-tag t-s">销售</span><span class="j-tag t-f">服务</span><span class="j-loc">微信</span></div>
+<div class="j-o">销售 → 服务的交接。<b>家长最怕的就是"付完钱换了个人、还要重讲一遍孩子情况"。</b>
+交接必须带上诊断结论和 3 天体验数据，让服务第一句话就能接住。</div></div>
+<div class="j-st"><span class="gap">缺口</span><em>无交接单／无交接话术</em></div></div>
+<div class="j-arrow">↓</div>
+
+<div class="j-step j-f"><div class="j-no">15</div><div class="j-m">
+<div class="j-t"><b>介绍首月训练重点</b><span class="j-tag t-f">服务</span><span class="j-loc">微信</span></div>
+<div class="j-o">只讲<b>第 1–4 周这一个周期</b>：主攻哪块、辅练哪两块、覆盖多少训练点、月底看什么。
+不要把 24 周一次讲完——家长记不住，也没必要。</div></div>
+<div class="j-st"><span class="part">部分</span><em>计划页有，缺服务开场脚本</em></div></div>
+<div class="j-arrow">↓</div>
+
+<div class="j-step j-k"><div class="j-no">16</div><div class="j-m">
+<div class="j-t"><b>孩子每日学习</b><span class="j-tag t-k">孩子</span><span class="j-loc">APP 学生端</span></div>
+<div class="j-o">每天 18 分钟：新课 + 到期错题重做。<b>错题本按到期提醒，不是一长串列表。</b>
+另有每月一次<b>月考专项练</b>——本来就要上的一讲，顺带成为当月测量点。</div></div>
+<div class="j-st"><span class="ok">已建</span><em>student.html · 今天／错题本／我的</em></div></div>
+<div class="j-arrow">↓</div>
+
+<div class="j-step j-a"><div class="j-no">17</div><div class="j-m">
+<div class="j-t"><b>月度训练报告 + 下月安排</b><span class="j-tag t-a">APP 自动</span><span class="j-tag t-f">服务</span><span class="j-loc">APP 家长端 + 微信</span></div>
+<div class="j-o">六板块掌握度变化、<b>分板块学习过程</b>（完成/安排讲数、练习题、错题、订正率）、
+<b>本月的问题</b>（月报只报喜就没人信）、下月重点。掌握度取自当月<b>月考专项练</b>，不额外加测。</div></div>
+<div class="j-st"><span class="ok">已建</span><em>h5.html · S8 月报</em></div></div>
+
+<div class="j-note">🔁 <b>17 步之后不是结束，是回到第 15 步。</b>
+每个月「报告 → 下月重点 → 学习 → 报告」循环一次。
+<b>续费不靠推销，靠把累积的月报摊开给家长看</b>——这也是为什么第 17 步的数据必须真实可核。</div>
+
+<div class="j-ph"><b>最脆弱的五个点</b><em>按流失量排序，不按顺序</em><s></s></div>
+<div class="j-risk">
+<div class="j-rr"><div class="j-rn">1</div><div class="j-rm"><b>第 04 步 · 下载 APP</b>
+<p>链路上最重的动作，却发生在家长<b>还没拿到任何价值之前</b>。
+建议把 L1 分数入口与 L2 十五题做成 <b>H5 免下载</b>，出完报告再引导下载——把下载挪到价值之后。</p></div></div>
+<div class="j-rr"><div class="j-rn">2</div><div class="j-rm"><b>第 08 步 · 课表没有"重要性"</b>
+<p>诊断排了序，孩子端却看不到这个序。<b>孩子不知道为什么先学这一讲，家长也就看不到"定制"</b>。
+这是目前学生端最大的缺口。</p></div></div>
+<div class="j-rr"><div class="j-rn">3</div><div class="j-rm"><b>第 14 步 · 销售→服务交接</b>
+<p><b>付完钱换个人、还要重讲一遍孩子情况</b>——这是退费和差评的高发点。
+交接单必须带诊断结论、3 天数据、家长原话三项。</p></div></div>
+<div class="j-rr"><div class="j-rn">4</div><div class="j-rm"><b>第 07 步 · 销售解读</b>
+<p>报告自动生成，解读却因人而异。<b>同一份报告，不同销售讲出来效果差三倍。</b>
+缺的是按四类画像各写一版解读脚本。</p></div></div>
+<div class="j-rr"><div class="j-rn">5</div><div class="j-rm"><b>第 01–02 步 · 广告钩子</b>
+<p>如果广告卖的是"名师好课"，进来的人期待的是课；<b>而我们第 6 步给的是一份报告</b>——预期错位。
+钩子必须是"先测出孩子弱在哪"。</p></div></div>
+</div>
+
+</div>
+
+<div class="j-ft"><div><b>【JOJOUP】</b><p>诊断 → 定向练 → 看数据 → 月考专项练</p></div>
+<div class="r">17 步里 9 步已有页面<br>缺口集中在交接和课表</div></div>
+
+</div></body></html>

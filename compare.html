@@ -1,0 +1,208 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><title>三版链路对比</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:#e8eef7;display:flex;justify-content:center;padding:24px 0}
+.p{width:1180px;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 6px 28px rgba(20,50,100,.14)}
+.hd{background:linear-gradient(120deg,#1b3a63,#2f6fd0 60%,#4a8ee6);padding:40px 46px;color:#fff;position:relative;overflow:hidden}
+.hd::after{content:"";position:absolute;right:-60px;top:-80px;width:300px;height:300px;background:rgba(255,255,255,.1);border-radius:50%}
+.hd h1{font-size:36px;font-weight:800}.hd p{font-size:19px;margin-top:10px;opacity:.92}
+.bd{padding:34px 46px 0}
+.sec{margin-bottom:36px}
+.st{display:flex;align-items:center;margin-bottom:6px}
+.st b{font-size:26px;font-weight:800;color:#1b4b8f}
+.st s{text-decoration:none;flex:1;height:2px;background:#e3eaf4;margin-left:18px}
+.ss{font-size:17px;color:#8a97ab;margin-bottom:18px}
+table{width:100%;border-collapse:collapse;font-size:17px}
+th{text-align:left;padding:12px 14px;font-size:15px;color:#fff;font-weight:700}
+th.a{background:#2f6fd0}th.b{background:#1f8f89}th.c{background:#e8762a}
+th.d{background:#f2f6fc;color:#8a97ab}
+td{padding:13px 14px;border-bottom:1px solid #eef2f7;color:#5a6b80;line-height:1.65;vertical-align:top}
+td.k{font-weight:700;color:#1f2d3d;background:#fafbfd;width:190px}
+td b{color:#1f2d3d}
+.win{background:#e8f6ee!important}
+.lose{background:#fdeeea!important}
+.badge{display:inline-block;font-size:13px;padding:3px 10px;border-radius:8px;font-weight:800;margin-left:6px}
+.bw{background:#3a9e63;color:#fff}.bl{background:#d9534f;color:#fff}.bm{background:#e0a33a;color:#fff}
+/* 卡点条 */
+.blk{margin-bottom:16px;background:#fafbfd;border-radius:12px;padding:16px 18px}
+.blk .h{display:flex;align-items:center;margin-bottom:12px}
+.blk .h b{font-size:19px;font-weight:800}
+.blk .h span{font-size:14px;color:#8a97ab;margin-left:10px}
+.bar{display:flex;gap:4px;align-items:flex-end;height:54px}
+.bar div{flex:1;border-radius:5px 5px 0 0;position:relative}
+.bar div em{position:absolute;bottom:-20px;left:0;right:0;text-align:center;font-style:normal;font-size:11px;color:#a3b0c2}
+.bar div i{position:absolute;top:-17px;left:0;right:0;text-align:center;font-style:normal;font-size:11px;font-weight:800}
+.lv0{background:#e6ecf4;height:14%}.lv1{background:#f0c987;height:42%}
+.lv2{background:#ef9a7f;height:70%}.lv3{background:#e05c46;height:100%}
+.blk .nt{font-size:15px;color:#7d8da3;margin-top:28px;line-height:1.7}
+.blk .nt b{color:#1f2d3d}
+/* 抓手时间轴 */
+.tl{background:#fafbfd;border-radius:12px;padding:18px;margin-bottom:14px}
+.tl .h{font-size:18px;font-weight:800;margin-bottom:16px}
+.tl .track{position:relative;height:56px}
+.tl .line{position:absolute;top:26px;left:0;right:0;height:3px;background:#e3eaf4;border-radius:2px}
+.tl .pt{position:absolute;top:14px;width:26px;height:26px;border-radius:50%;color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.tl .pt em{position:absolute;top:32px;left:50%;transform:translateX(-50%);font-style:normal;font-size:12.5px;white-space:nowrap;color:#5a6b80;font-weight:600}
+.pS{background:#3a9e63}.pW{background:#c3cfe0}
+.tl .day{position:absolute;top:-6px;font-size:12px;color:#b3bfd0}
+/* 推演 */
+.warn{background:#fff8ec;border-left:7px solid #e8a33a;border-radius:12px;padding:20px 24px;margin-bottom:20px;font-size:17px;color:#8a6a3c;line-height:1.85}
+.warn b{color:#b9762a}
+.calc td{font-size:16px}
+.calc td.f{font-family:ui-monospace,Menlo,monospace;font-size:15px;color:#2f6fd0;font-weight:700}
+.res{display:flex;gap:16px;margin-top:20px}
+.res div{flex:1;border-radius:14px;padding:22px 18px;text-align:center;color:#fff}
+.rA{background:linear-gradient(135deg,#4a8ee6,#2f6fd0)}
+.rB{background:linear-gradient(135deg,#2aa6a0,#1f8f89)}
+.rC{background:linear-gradient(135deg,#f0913a,#e8762a)}
+.res h4{font-size:16px;opacity:.9;font-weight:600}
+.res .n{font-size:44px;font-weight:800;margin:8px 0 4px}
+.res p{font-size:14px;opacity:.9;line-height:1.6}
+.ft{background:#1b3a63;color:#fff;padding:30px 46px;margin-top:10px}
+.ft b{font-size:24px}.ft p{font-size:17px;opacity:.85;margin-top:10px;line-height:1.8}
+</style></head><body><div class="p">
+<div class="hd"><h1>三版链路 · 五个维度对比</h1>
+<p>A 课前 15 题（现状）　|　B 纯后置诊断　|　C 摸底进第 1 讲</p></div>
+<div class="bd">
+
+<div class="sec"><div class="st"><b>① 链路步骤</b><s></s></div>
+<div class="ss">总步数意义不大，关键是「家长走几步才拿到东西」</div>
+<table>
+<tr><th class="d">维度</th><th class="a">A 课前 15 题</th><th class="b">B 纯后置</th><th class="c">C 摸底进第 1 讲</th></tr>
+<tr><td class="k">总步数</td><td>17 步</td><td>16 步</td><td>18 步</td></tr>
+<tr><td class="k">兑现承诺<br><span style="font-size:13px;color:#a3b0c2;font-weight:400">给到他要的"课"</span></td>
+<td class="lose">第 <b>9</b> 步 <span class="badge bl">最晚</span><br><span style="font-size:14px">要先过 15 题这一关</span></td>
+<td class="win">第 <b>5</b> 步 <span class="badge bw">最早</span></td>
+<td class="win">第 <b>5</b> 步 <span class="badge bw">最早</span></td></tr>
+<tr><td class="k">超预期价值<br><span style="font-size:13px;color:#a3b0c2;font-weight:400">给到他没想到的东西</span></td>
+<td class="win">第 <b>6</b> 步 · 第 0 天<br><span style="font-size:14px">诊断报告</span></td>
+<td class="lose">第 <b>10</b> 步 · 第 3 天 <span class="badge bl">最晚</span><br><span style="font-size:14px">中间 3 天空窗</span></td>
+<td class="win">第 <b>8</b> 步 · 第 1 天<br><span style="font-size:14px">个性化课表</span></td></tr>
+<tr><td class="k">结构特点</td><td>先设卡，再给</td><td>先给，很久才回报</td><td class="win"><b>先给，很快再给</b></td></tr>
+</table></div>
+
+<div class="sec"><div class="st"><b>② 阻断卡点</b><s></s></div>
+<div class="ss">柱高＝流失强度　|　共同卡点（下载 APP、服务交接）三版都有，此处只看差异项</div>
+
+<div class="blk"><div class="h"><b style="color:#2f6fd0">A 课前 15 题</b><span>4 个卡点，其中 2 个是自己加的</span></div>
+<div class="bar">
+<div class="lv3"><i style="color:#d9534f">高</i><em>下载 APP</em></div>
+<div class="lv3"><i style="color:#d9534f">高</i><em>愿不愿测</em></div>
+<div class="lv2"><i style="color:#e0733a">中高</i><em>报告信不信</em></div>
+<div class="lv1"><i style="color:#d1873a">中</i><em>服务交接</em></div>
+<div class="lv0"><em></em></div><div class="lv0"><em></em></div></div>
+<div class="nt"><b>"愿不愿测"和"报告信不信"是 A 独有的，而且是主动加上去的门槛。</b>两个卡点叠在一起，正好卡在家长热度最高的时刻。</div></div>
+
+<div class="blk"><div class="h"><b style="color:#1f8f89">B 纯后置</b><span>3 个卡点，新增一个"沉默期"</span></div>
+<div class="bar">
+<div class="lv3"><i style="color:#d9534f">高</i><em>下载 APP</em></div>
+<div class="lv0"><em></em></div><div class="lv0"><em></em></div>
+<div class="lv2"><i style="color:#e0733a">中高</i><em>3 天无反馈</em></div>
+<div class="lv1"><i style="color:#d1873a">中</i><em>服务交接</em></div>
+<div class="lv0"><em></em></div></div>
+<div class="nt">测试的门槛没了，但换来一个<b>被动的沉默期</b>——家长付出了（下载、催孩子学），3 天内收不到任何判断。<b>沉默的流失最难察觉，因为没人会来说"我不学了"。</b></div></div>
+
+<div class="blk"><div class="h"><b style="color:#e8762a">C 摸底进第 1 讲</b><span>3 个卡点，无新增</span></div>
+<div class="bar">
+<div class="lv3"><i style="color:#d9534f">高</i><em>下载 APP</em></div>
+<div class="lv0"><em></em></div>
+<div class="lv1"><i style="color:#d1873a">低中</i><em>第 1 讲完课</em></div>
+<div class="lv0"><em></em></div>
+<div class="lv1"><i style="color:#d1873a">中</i><em>服务交接</em></div>
+<div class="lv0"><em></em></div></div>
+<div class="nt">唯一的新增是<b>第 1 讲的完课率</b>——但孩子本来就要上这一讲，不算额外门槛。<b>三版里卡点最少、且没有一个是人为加的。</b></div></div>
+</div>
+
+<div class="sec"><div class="st"><b>③ 报告置信度</b><s></s></div>
+<div class="ss">家长心里那句"凭什么信"，靠什么回答</div>
+<table>
+<tr><th class="d">维度</th><th class="a">A</th><th class="b">B</th><th class="c">C</th></tr>
+<tr><td class="k">样本量</td><td class="lose">15 题<br><span style="font-size:14px">每板块 2–3 题</span></td>
+<td class="win">约 186 题 ＋ 行为数据</td><td class="win">约 186 题 ＋ 行为数据</td></tr>
+<tr><td class="k">数据性质</td><td>一次性测试<br><span style="font-size:14px">含临场发挥成分</span></td>
+<td class="win">真实学习场景作答</td><td class="win">真实学习场景作答</td></tr>
+<tr><td class="k">六板块覆盖</td><td>全（各 2–3 题）</td>
+<td class="win"><b>广度最好</b><br><span style="font-size:14px">8 讲均摊六块</span></td>
+<td>第 1 讲广 ＋ 后 7 讲深</td></tr>
+<tr><td class="k">薄弱项深度</td><td class="lose">浅</td><td>中<br><span style="font-size:14px">每块仅 1–2 讲</span></td>
+<td class="win"><b>最深</b><br><span style="font-size:14px">薄弱块有 7 讲数据</span></td></tr>
+<tr><td class="k">行为维度</td><td class="lose">无</td>
+<td class="win">有<br><span style="font-size:14px">秒答率·回看·订正及时性</span></td>
+<td class="win">有</td></tr>
+<tr><td class="k">家长的质疑</td><td class="lose">"15 题能测出什么？"<br><span class="badge bl">难回答</span></td>
+<td class="win">"这是孩子 3 天做的 186 道"<br><span class="badge bw">好回答</span></td>
+<td class="win">同左 <span class="badge bw">好回答</span></td></tr>
+</table></div>
+
+<div class="sec"><div class="st"><b>④ 销售做功抓手</b><s></s></div>
+<div class="ss">绿点＝能撑起一次完整沟通　|　灰点＝只能寒暄，没有实质内容</div>
+
+<div class="tl"><div class="h" style="color:#2f6fd0">A 课前 15 题 —— 2 次强抓手，但第一次的弹药很弱</div>
+<div class="track"><div class="line"></div>
+<div class="day" style="left:2%">第0天</div><div class="day" style="left:32%">第1天</div><div class="day" style="left:62%">第2天</div><div class="day" style="left:88%">第3天</div>
+<div class="pt pS" style="left:4%">1<em>解读诊断报告</em></div>
+<div class="pt pS" style="left:86%">2<em>3 天体验小结</em></div></div>
+<div class="nt" style="margin-top:22px">第一次抓手来得最早（第 0 天），<b>但手里的报告只有 15 题撑着</b>——解读得越细，越容易被问"就这 15 道题？"</div></div>
+
+<div class="tl"><div class="h" style="color:#1f8f89">B 纯后置 —— 实质只有 1 次，且在最后</div>
+<div class="track"><div class="line"></div>
+<div class="day" style="left:2%">第0天</div><div class="day" style="left:32%">第1天</div><div class="day" style="left:62%">第2天</div><div class="day" style="left:88%">第3天</div>
+<div class="pt pW" style="left:4%">·<em>只能说"让孩子先上课"</em></div>
+<div class="pt pW" style="left:34%">·<em>今天学了X</em></div>
+<div class="pt pW" style="left:62%">·<em>今天学了Y</em></div>
+<div class="pt pS" style="left:86%">1<em>行为诊断报告</em></div></div>
+<div class="nt" style="margin-top:22px"><b>前 3 天销售没有任何可解读的东西</b>，每日小结只能报流水账。
+唯一的强抓手在第 3 天，<b>一次定生死——那天没聊好就没有第二次机会了。</b></div></div>
+
+<div class="tl"><div class="h" style="color:#e8762a">C 摸底进第 1 讲 —— 2 次强抓手，节奏最好</div>
+<div class="track"><div class="line"></div>
+<div class="day" style="left:2%">第0天</div><div class="day" style="left:32%">第1天</div><div class="day" style="left:62%">第2天</div><div class="day" style="left:88%">第3天</div>
+<div class="pt pS" style="left:26%">1<em>解读课表：为什么先上这几讲</em></div>
+<div class="pt pS" style="left:86%">2<em>行为诊断报告</em></div></div>
+<div class="nt" style="margin-top:22px">第一次抓手推迟到第 1 讲之后，<b>但弹药是"我按你孩子的情况排了课"——比一份 15 题报告有力得多</b>，
+而且它同时证明了产品在干活。第二次是全量数据的报告。</div></div>
+</div>
+
+<div class="sec"><div class="st"><b>⑤ 转化结果推演</b><s></s></div>
+<div class="ss">结构推演，不是预测</div>
+
+<div class="warn">⚠️ <b>下面的数字是结构推演，不是转化率预测。</b><br>
+我不知道你们真实的各环节转化率，<b>任何绝对数字都会是编的</b>。
+所以这里只做一件事：<b>以 A 为基准 1.0，推三版在各环节的相对倍率</b>，并写明每个倍率的依据。<br>
+<b>把你们后台真实的漏斗数据填进 A 列，乘以倍率，才是能用的预测。</b></div>
+
+<table class="calc">
+<tr><th class="d" style="width:210px">漏斗环节</th><th class="a">A（基准）</th><th class="b">B</th><th class="c">C</th><th class="d" style="width:290px">倍率依据</th></tr>
+<tr><td class="k">领课 → 加销售</td><td class="f">1.0</td><td class="f">1.0</td><td class="f">1.0</td><td>三版完全相同</td></tr>
+<tr><td class="k">加销售 → 下载 APP</td><td class="f">1.0</td><td class="f">1.0</td><td class="f">1.0</td><td>三版完全相同</td></tr>
+<tr><td class="k">下载 → 开始学</td><td class="f">1.0</td><td class="f" style="background:#e8f6ee">1.35</td><td class="f" style="background:#e8f6ee">1.35</td>
+<td>A 中间横着 15 题；B/C 下载完直接开课。<b>去掉一道自设关卡</b></td></tr>
+<tr><td class="k">开始学 → 学满 3 天</td><td class="f">1.0</td><td class="f" style="background:#fdeeea">0.88</td><td class="f" style="background:#e8f6ee">1.12</td>
+<td>B 前 3 天无任何反馈，靠自驱；<br>C 第 1 讲后收到专属课表，<b>被看见 → 更愿意继续</b></td></tr>
+<tr><td class="k">学满 3 天 → 成交</td><td class="f">1.0</td><td class="f" style="background:#e8f6ee">1.20</td><td class="f" style="background:#e8f6ee">1.45</td>
+<td>B 报告强但只有一次触点、前期无信任积累；<br>C <b>报告强 ＋ 两次触点 ＋ 课表已验证过一次</b></td></tr>
+<tr><td class="k" style="background:#eef4fc"><b>综合相对转化</b></td>
+<td class="f" style="background:#eaf2fd;font-size:22px">1.00</td>
+<td class="f" style="background:#e9f6f5;font-size:22px">1.43</td>
+<td class="f" style="background:#fff1e8;font-size:22px">2.19</td>
+<td>各环节倍率连乘</td></tr>
+</table>
+
+<div class="res">
+<div class="rA"><h4>A 课前 15 题</h4><div class="n">1.00×</div><p>现状基准<br>两个自设卡点拖住前段</p></div>
+<div class="rB"><h4>B 纯后置</h4><div class="n">1.43×</div><p>门槛全消<br>但沉默期和单触点吃掉一部分</p></div>
+<div class="rC"><h4>C 摸底进第 1 讲</h4><div class="n">2.19×</div><p>门槛全消 ＋ 抓手保留<br><b>结构上最优</b></p></div></div>
+
+<div class="warn" style="margin-top:22px;border-left-color:#2f6fd0;background:#f2f6fc;color:#5a6b80">
+<b style="color:#1b4b8f">怎么用这张表：</b>把后台真实数据填进 A 列（比如"下载→开始学 = 62%"），
+再乘以 B/C 的倍率。倍率本身也该被检验——<b style="color:#1b4b8f">最该先验证的是「下载 → 开始学」这一环的 1.35</b>，
+因为它是三版差距的最大来源，而且<b style="color:#1b4b8f">不用改产品就能测</b>：
+让一半用户跳过 15 题直接开课，一周就能看出差多少。</div>
+</div>
+
+</div>
+<div class="ft"><b>结论</b>
+<p>· <b>A 的问题是自己给自己设卡</b>——"愿不愿测"和"报告信不信"两个卡点，都是引入课前诊断带来的。<br>
+· <b>B 解决了门槛，但制造了沉默</b>——3 天没有反馈，销售没有弹药，全压在最后一次沟通上。<br>
+· <b>C 在结构上占优</b>：门槛和 B 一样低，抓手和 A 一样多，报告置信度和 B 一样高。代价是第 1 讲的摸底题要重新做（教研工作量）。</p></div>
+</div></body></html>

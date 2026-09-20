@@ -269,24 +269,27 @@ body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;b
 
 <!-- S0 入口 -->
 <div class="scr on" id="s0">
-  <div class="nav"><h1>初一语文 · 能力诊断</h1><p>先测出哪块在漏分，再决定练什么</p></div>
+  <div class="nav"><h1>3 天 8 讲 · 开课前 3 分钟</h1><p>这 8 讲给孩子上什么，先看他卡在哪</p></div>
   <div class="ct">
-    <div class="h2">选一种方式开始</div>
-    <div class="h3">三种方式精度不同，用时也不同。没有卷子在手边，建议直接做 15 道题。</div>
+    <div class="h2">开课前，先花 3 分钟</div>
+    <div class="h3">您领的是 <b style="color:#2f6fd0">3 天 8 讲</b>。其中 <b style="color:#2f6fd0">4 讲由这次结果决定</b>——
+    不先摸个底，只能给所有孩子上同一套。<br>做完<b>当场出结果、当场排课</b>，不用等。</div>
 
     <div class="entry" onclick="go('s1')"><div class="ico i1">📄</div><div class="tx">
       <b>拍照上传试卷</b><p>拍一张最近的语文卷子，逐题分析失分原因</p>
       <div class="mt"><span>约 1 分钟</span><span class="hi">精度最高 · 到题型</span></div></div></div>
 
     <div class="entry rec" onclick="go('s3')"><div class="reco">推荐</div><div class="ico i2">📝</div><div class="tx">
-      <b>做 15 道题</b><p>覆盖六大板块，自动算出每块的掌握度</p>
+      <b>做 15 道题</b><p>六大板块各 2–3 题，看出哪块在漏分</p>
       <div class="mt"><span>约 3–5 分钟</span><span class="hi">精度中 · 到板块</span></div></div></div>
 
     <div class="entry" onclick="go('s2')"><div class="ico i3">💯</div><div class="tx">
-      <b>填最近一次考试分数</b><p>10 秒了解孩子目前大致位置</p>
+      <b>填最近一次考试分数</b><p>不想做题就选它，10 秒也能排课</p>
       <div class="mt"><span>约 10 秒</span><span>精度低 · 到科目</span></div></div></div>
 
-    <div class="tip" style="margin-top:20px">诊断结果只用于安排学习内容<br><b>不会给出任何提分承诺</b></div>
+    <div class="warn" style="margin-top:18px"><b>不计分、不排名、不给孩子看。</b><br>
+    结果只用来决定这 8 讲上什么，也不会给出任何提分承诺。<br>
+    孩子做、家长凭印象替他做，都可以。</div>
   </div>
 </div>
 
@@ -369,6 +372,24 @@ body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;b
     </div>
 
     <div class="key" id="keybox"></div>
+
+    <div class="rcard" id="trustbox" style="margin-top:13px">
+      <div class="rt"><s></s>这份判断靠不靠谱</div><div class="rs">先说清楚它能做什么、不能做什么</div>
+      <ul style="list-style:none">
+        <li style="font-size:13px;line-height:1.85;color:#33414f;padding-left:20px;position:relative;margin-bottom:11px">
+          <span style="position:absolute;left:0;color:#2f6fd0;font-weight:800">·</span>
+          <b>15 道题、每块 2–3 题</b>，能看出<b>哪块在漏分、该先练哪块</b>；
+          <b>看不出</b>孩子的精确水平——所以我们给的是<b>排序和方向，不是分数</b>。</li>
+        <li style="font-size:13px;line-height:1.85;color:#33414f;padding-left:20px;position:relative;margin-bottom:11px">
+          <span style="position:absolute;left:0;color:#2f6fd0;font-weight:800">·</span>
+          <b>这是初步判断，不是结论。</b>上面每条都写了依据，是孩子哪道答对、哪道答错推出来的，不是估的。</li>
+        <li style="font-size:13px;line-height:1.85;color:#33414f;padding-left:20px;position:relative">
+          <span style="position:absolute;left:0;color:#2f6fd0;font-weight:800">·</span>
+          <b id="verifyline"></b></li>
+      </ul>
+      <div class="frm" style="margin-top:12px">接下来这 <b>8 讲就是按这个判断排的</b>。
+      <b>如果排错了，3 天您就能看出来</b>——不用现在就信。</div>
+    </div>
 
     <div class="rcard" id="qabox" style="display:none;margin-top:13px">
       <div class="rt"><s></s>逐题失分归因</div><div class="rs">拍照诊断独有 · 区分"不会"和"会了没答对"</div>
@@ -520,15 +541,18 @@ function calc(){
   if(ok(6)&&(!ok(7)||!ok(8)))
     t={h:'孩子读得懂，但不会按采分点答题。',
        p:'这不是阅读能力问题，是答题方法问题——<b>初一最高频、也最容易补的一类。</b>',
-       e:'依据：内容概括题 <u>答对</u>，赏析题/主旨题 <s>答错</s>。看懂了，但不知道答案该怎么组织。'};
+       e:'依据：内容概括题 <u>答对</u>，赏析题/主旨题 <s>答错</s>。看懂了，但不知道答案该怎么组织。',
+       v:'<b>您可以自己核对：</b>翻一张孩子的语文卷，看阅读题的<b>选择题对得多、主观题丢得多</b>吗？如果是，这条判断就对了。'};
   else if(ok(3)&&(!ok(4)||!ok(5)))
     t={h:'古诗文只会背，不理解。',
        p:'现在靠记忆还能拿默写分，<b>但初二开始考课外文言，这条路就走不通了。</b>',
-       e:'依据：默写题 <u>答对</u>，实词/句意题 <s>答错</s>。记住了字，没记住意思。'};
+       e:'依据：默写题 <u>答对</u>，实词/句意题 <s>答错</s>。记住了字，没记住意思。',
+       v:'<b>您可以自己核对：</b>随便挑一句孩子背得出的古诗，问他<b>这句什么意思</b>。背得出、讲不出，就是这个问题。'};
   else if(!ok(11)&&!ok(12))
     t={h:'名著基本没读，5 分在白送。',
        p:'名著是六块里<b>最容易补的</b>——考点集中，突击串讲就能拿住。',
-       e:'依据：名著两题 <s>全错</s>。不是读不懂，是没读。'};
+       e:'依据：名著两题 <s>全错</s>。不是读不懂，是没读。',
+       v:'<b>您可以自己核对：</b>问孩子一句"<b>《朝花夕拾》里长妈妈给他买了什么</b>"。答不上来，就是没读。'};
   else if(arr[0].m<50&&arr[1].m<50&&arr[2].m<50)
     t={h:'多个板块同时偏弱，先看学习时间。',
        p:'三块以上同时薄弱，通常<b>不是单科方法问题</b>，建议先确认孩子每天真正投入的有效时间。',
@@ -578,6 +602,8 @@ function report(){
   });
   document.getElementById('bars').innerHTML=h;
   document.getElementById('keybox').innerHTML='<b>'+res.t.h+'</b><p>'+res.t.p+'</p><div class="evi">'+res.t.e+'</div>';
+  document.getElementById('verifyline').innerHTML=res.t.v||
+    '<b>您可以自己核对：</b>翻一张孩子最近的语文卷，看看丢分是不是集中在上面这几块。对得上，这份判断就站得住。';
   document.getElementById('qabox').style.display=(mode==='L3')?'block':'none';
   document.getElementById('s5sub').textContent=(mode==='L3')?'基于整张试卷的逐题分析':'基于 15 道题的作答';
   go('s5');
